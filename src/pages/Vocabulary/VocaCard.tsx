@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, IconButton, Typography } from "@mui/material"
+import { Button, Card, CardActions, CardContent, Typography } from "@mui/material"
 import React from "react"
 import Vocabulary from "../../interfaces/Vocabulary"
 import { AppDispatch } from "../../stores/store"

@@ -24,6 +24,7 @@ const initialState: groupState = {
 export const fetchGroupsByUserID = createAsyncThunk(
     'fetchGroupsByUserID',
     async (userID: string, thunkAPI) => {
+        console.log('thunkAPI ', thunkAPI);
         const response = await axios.get(`${VITE_SERVER_URL}/group/${userID}`);
         return response.data;
     }
@@ -33,6 +34,7 @@ export const fetchGroupsByUserID = createAsyncThunk(
 export const addNewGroup = createAsyncThunk(
     'addNewGroup',
     async (groupObject: any, thunkAPI) => {
+        console.log('thunkAPI ', thunkAPI);
         const config = {
             method: "post",
             url: `${VITE_SERVER_URL}/group`,
@@ -50,6 +52,7 @@ export const addNewGroup = createAsyncThunk(
 export const editGroupByID = createAsyncThunk(
     'editGroupByID',
     async (groupObject: { groupName:string, groupID: string }, thunkAPI) => {
+        console.log('thunkAPI ', thunkAPI);
         const config = {
             method: "put",
             url: `${VITE_SERVER_URL}/group`,
@@ -67,6 +70,7 @@ export const editGroupByID = createAsyncThunk(
 export const deleteGroupByID = createAsyncThunk(
     "deleteGroupByID",
     async (groupID: string, thunkAPI) => {
+        console.log('thunkAPI ', thunkAPI);
         const response = await axios.delete(`${VITE_SERVER_URL}/group/${groupID}`);
         return response.data;
     }
@@ -104,29 +108,29 @@ const groupSlice = createSlice({
             state.listGroup = groupData;
         }),
         builder.addCase(fetchGroupsByUserID.rejected, (state, action: any) => {
-            console.log('fetch group error', action);
+            console.log('fetch group error', state, action);
         }),
         // handle add new
-        builder.addCase(addNewGroup.fulfilled, (state, action: any) => {
+        builder.addCase(addNewGroup.fulfilled, (state) => {
             state.isAddNewGroupSuccess = true;
 
         }),
         builder.addCase(addNewGroup.rejected, (state, action: any) => {
-            console.log('Add new group error', action);
+            console.log('Add new group error', state, action);
         })
         // delete group by id
-        builder.addCase(deleteGroupByID.fulfilled, (state, action: any) => {
+        builder.addCase(deleteGroupByID.fulfilled, (state) => {
             state.isDeleteGroupSuccess = true;
         }),
-        builder.addCase(deleteGroupByID.rejected, () => {
-            console.log('deleteGroupByID failed');
+        builder.addCase(deleteGroupByID.rejected, (state, action) => {
+            console.log('deleteGroupByID failed', state, action);
         }),
         // edit group by id
-        builder.addCase(editGroupByID.fulfilled, (state, action: any) => {
+        builder.addCase(editGroupByID.fulfilled, (state) => {
             state.isUpdateGroupSuccess = true;
         }),
         builder.addCase(editGroupByID.rejected, (state, action) => {
-            console.log('editGroupByID error', action);
+            console.log('editGroupByID error', state, action);
         })
 
     }

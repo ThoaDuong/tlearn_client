@@ -26,6 +26,7 @@ const initialState: VocaState = {
 export const fetchVocaListByUserID = createAsyncThunk(
     "fetchVocaListByUserID",
     async (userID: string, thunkAPI) => {
+        console.log('thunkAPI ', thunkAPI);
         const response = await axios.get(`${VITE_SERVER_URL}/vocabulary/${userID}`);
         return response.data;
     }
@@ -34,6 +35,7 @@ export const fetchVocaListByUserID = createAsyncThunk(
 export const addNewVoca = createAsyncThunk(
     "addNewVoca",
     async (vocaObject: any, thunkAPI) => {
+        console.log('thunkAPI ', thunkAPI);
         const config = {
             method: "post",
             url: `${VITE_SERVER_URL}/vocabulary`,
@@ -50,6 +52,7 @@ export const addNewVoca = createAsyncThunk(
 export const deleteVoca = createAsyncThunk(
     "deleteVoca",
     async (vocaID: string, thunkAPI) => {
+        console.log('thunkAPI ', thunkAPI);
         const config = {
             method: "delete",
             url: `${VITE_SERVER_URL}/vocabulary/${vocaID}`,
@@ -65,6 +68,7 @@ export const deleteVoca = createAsyncThunk(
 export const editVoca = createAsyncThunk(
     "editVoca",
     async (vocaObject: any, thunkAPI) => {
+        console.log('thunkAPI ', thunkAPI);
         const config = {
             method: "patch",
             url: `${VITE_SERVER_URL}/vocabulary`,
@@ -113,14 +117,14 @@ export const vocaSlice = createSlice({
             }))
         }),
         builder.addCase(fetchVocaListByUserID.rejected, (state, action) => {
-            console.log('fetch Error', action)
+            console.log('fetch Error', state, action)
         }),
         // add new voca
-        builder.addCase(addNewVoca.fulfilled, (state, action) => {
+        builder.addCase(addNewVoca.fulfilled, (state) => {
             state.isAddNewVocaSuccess = true;
         }),
         builder.addCase(addNewVoca.rejected, (state, action) => {
-            console.log('voca reject', action)
+            console.log('voca reject', state, action)
         }),
         // delete voca
         builder.addCase(deleteVoca.fulfilled, (state, action) => {
@@ -129,7 +133,7 @@ export const vocaSlice = createSlice({
             
         }),
         builder.addCase(deleteVoca.rejected, (state, action) => {
-            console.log('del error', action);
+            console.log('del error', state, action);
 
         }),
         // edit voca
@@ -141,7 +145,7 @@ export const vocaSlice = createSlice({
             state.isUpdateVocaSuccess = true;
         }),
         builder.addCase(editVoca.rejected, (state, action) => {
-            console.log('edit voca error', action);
+            console.log('edit voca error', state, action);
         })
     }
 })

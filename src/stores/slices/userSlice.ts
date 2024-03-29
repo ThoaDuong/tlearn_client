@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL; 
@@ -62,15 +62,15 @@ const userSlice = createSlice({
             }
         }),
         builder.addCase(fetchUser.rejected, (state, action: any) => {
-            console.log('Error fetchUser', action.error.message);
-        }),
-        // logout
-        builder.addCase(logoutUser.fulfilled, (state, action: any) => {
-            console.log('Logged out', action);
-        }),
-        builder.addCase(logoutUser.rejected, (state, action: any) => {
-            console.log('logout error', action);
+            console.log('Error fetchUser', state, action.error.message);
         })
+        // logout
+        // builder.addCase(logoutUser.fulfilled, (state, action: any) => {
+        //     console.log('Logged out', action);
+        // }),
+        // builder.addCase(logoutUser.rejected, (state, action: any) => {
+        //     console.log('logout error', action);
+        // })
     }
 });
 

@@ -1,11 +1,11 @@
 import React, { useState, MouseEvent, useRef, useEffect } from "react"
 import { AppBar, Avatar, Box, Button, Container, IconButton, Link, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material"
-import { AutoStories, Draw, ImportContacts, Logout, Login, Person, SportsEsports, Style } from '@mui/icons-material';
+import { AutoStories, Logout, Login, Person, SportsEsports, Style } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu'
 import { Link as RouterLink } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../stores/store";
-import { fetchUser, logoutUser } from "../stores/slices/userSlice";
+import { fetchUser } from "../stores/slices/userSlice";
 
 const navList = [
     { id: 1, title: 'Vocabulary', slug: "/", icon: <Style /> },

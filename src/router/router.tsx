@@ -8,7 +8,6 @@ import { VocaAddNew } from '../pages/Vocabulary/VocaAddNew';
 import { VocaListCard } from '../pages/Vocabulary/VocaListCard';
 import { LoginPage } from '../pages/LoginPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
-import { RootLayout } from '../layouts/RootLayout';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
