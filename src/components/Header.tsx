@@ -1,16 +1,11 @@
-import React, { useState, MouseEvent, useRef, useEffect } from "react"
+import React, { useState, MouseEvent } from "react"
 import { AppBar, Avatar, Box, Button, Container, IconButton, Link, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material"
 import { AutoStories, Logout, Login, Person, SportsEsports, Style } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu'
 import { Link as RouterLink } from 'react-router-dom'
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../stores/store";
-import { fetchUser } from "../stores/slices/userSlice";
 
 const navList = [
     { id: 1, title: 'Vocabulary', slug: "/", icon: <Style /> },
-    // { id: 2, title: 'Writing', slug: "writing", icon: <Draw /> },
-    // { id: 3, title: 'Reading', slug: "reading", icon: <ImportContacts /> },
     { id: 4, title: 'Game', slug: "game", icon: <SportsEsports /> },
 ];
 const settingList = [
@@ -18,16 +13,11 @@ const settingList = [
     { id: 2, title: 'Logout', icon: <Logout /> },
 ]
 
-export const Header = () => {
+export const Header = ( props: any ) => {
     // nav & user menu variable
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-    //initial variable
-    const initial = useRef(true);
-    // redux
-    const userStore = useSelector((state: RootState) => state.user);
-    const dispatch: AppDispatch = useDispatch();
 
 
     //handle click nav & user menu 
@@ -50,20 +40,9 @@ export const Header = () => {
         if (title === 'Logout') {
             const serverUrl = import.meta.env.VITE_SERVER_URL || "";
             window.open(`${serverUrl}/logout`, "_self");
-            // dispatch(logoutUser());
         }
-
-        console.log('click', title)
     }
 
-    // hook
-    useEffect(() => {
-        if (initial.current) {
-            initial.current = false;
-
-            dispatch(fetchUser());
-        }
-    }, []);
 
     return (
         <React.Fragment>
@@ -137,14 +116,14 @@ export const Header = () => {
                         </Box>
 
                         {
-                            userStore.id ?
+                            props.userStore.id ?
                                 // Display user setting 
                                 <Box sx={{ flexGrow: 0 }}>
 
                                     {/* Display user avatar */}
                                     <Tooltip title="Open setting">
                                         <IconButton onClick={handleOpenUserMenu}>
-                                            <Avatar alt="google avatar" src={userStore.photo} />
+                                            <Avatar alt="google avatar" src={props.userStore.photo} />
                                         </IconButton>
                                     </Tooltip>
 
@@ -154,10 +133,10 @@ export const Header = () => {
                                         onClose={handleCloseUserMenu}
                                     >
                                         <MenuItem>
-                                            <Avatar alt="google avatar" src={userStore.photo} />
+                                            <Avatar alt="google avatar" src={props.userStore.photo} />
                                             <Stack sx={{ pl: 3 }}>
-                                                <Typography variant="h6"> {userStore.username} </Typography>
-                                                <Typography> {userStore.email} </Typography>
+                                                <Typography variant="h6"> {props.userStore.username} </Typography>
+                                                <Typography> {props.userStore.email} </Typography>
                                             </Stack>
 
                                         </MenuItem>
@@ -175,7 +154,7 @@ export const Header = () => {
                                 </Box>
                                 :
                                 // Display login button
-                                <MenuItem>
+                                <Box>
                                     <Button startIcon={<Login/>} sx={{
                                         color: 'white',
                                         my: 2,
@@ -185,7 +164,7 @@ export const Header = () => {
                                             Login
                                         </Link>
                                     </Button>
-                                </MenuItem>
+                                </Box>
                         }
 
                     </Toolbar>

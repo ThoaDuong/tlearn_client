@@ -9,7 +9,7 @@ import { addNewVoca, editVoca, setIsAddNewVocaSuccess, setIsUpdateVocaSuccess, u
 import { useNavigate } from "react-router-dom"
 import Group from "../../interfaces/Group"
 import { alertAddNewSuccess, alertConfirmDelete, alertDeleteGroupError, alertDeleteSuccess, alertUpdateSuccess } from "../../utils/SweetAlert"
-import { GroupAddNew } from "../../components/GroupAddNew"
+import { GroupAddNew } from "../group/GroupAddNew"
 import Vocabulary from "../../interfaces/Vocabulary"
 
 
@@ -190,9 +190,10 @@ export const VocaAddNew = () => {
     const callbackConfirmDeleteGroup = (isConfirm: boolean) => {
         if(isConfirm) {
             const groupResult = groupStore.listGroup.filter((g: Group) => g.groupName === groupStore.tempGroupName);
-            dispatch(deleteGroupByID(groupResult[0]?.id));
-            dispatch(setTempGroupName(groupStore.tempGroupName));
-            dispatch(setTempGroupName(""));
+            if(groupResult.length > 0){
+                dispatch(deleteGroupByID(groupResult[0].id));
+                dispatch(setTempGroupName(""));
+            }
         }
     }
     

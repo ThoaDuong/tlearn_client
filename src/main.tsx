@@ -5,12 +5,21 @@ import { store } from './stores/store';
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router/router"
 import './index.css'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+// custom mui theme
+const customTheme = createTheme({
+    typography: {
+        "fontFamily": `"Mali", cursive`,
+    }
+ });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Provider store={store}>
-        <RouterProvider router={router} />
-    </Provider>
+    <ThemeProvider theme={customTheme}>
+        <Provider store={store}>
+            <RouterProvider router={router} />
+        </Provider>
+    </ThemeProvider>
   </React.StrictMode>,
 )

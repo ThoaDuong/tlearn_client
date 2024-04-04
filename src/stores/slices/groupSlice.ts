@@ -23,8 +23,7 @@ const initialState: groupState = {
 // fetch list groups by user ID
 export const fetchGroupsByUserID = createAsyncThunk(
     'fetchGroupsByUserID',
-    async (userID: string, thunkAPI) => {
-        console.log('thunkAPI ', thunkAPI);
+    async (userID: string ) => {
         const response = await axios.get(`${VITE_SERVER_URL}/group/${userID}`);
         return response.data;
     }
@@ -33,8 +32,7 @@ export const fetchGroupsByUserID = createAsyncThunk(
 // add new group
 export const addNewGroup = createAsyncThunk(
     'addNewGroup',
-    async (groupObject: any, thunkAPI) => {
-        console.log('thunkAPI ', thunkAPI);
+    async (groupObject: any ) => {
         const config = {
             method: "post",
             url: `${VITE_SERVER_URL}/group`,
@@ -51,8 +49,7 @@ export const addNewGroup = createAsyncThunk(
 // edit group by id
 export const editGroupByID = createAsyncThunk(
     'editGroupByID',
-    async (groupObject: { groupName:string, groupID: string }, thunkAPI) => {
-        console.log('thunkAPI ', thunkAPI);
+    async (groupObject: { groupName:string, groupID: string } ) => {
         const config = {
             method: "put",
             url: `${VITE_SERVER_URL}/group`,
@@ -69,8 +66,7 @@ export const editGroupByID = createAsyncThunk(
 // delete group by id
 export const deleteGroupByID = createAsyncThunk(
     "deleteGroupByID",
-    async (groupID: string, thunkAPI) => {
-        console.log('thunkAPI ', thunkAPI);
+    async (groupID: string ) => {
         const response = await axios.delete(`${VITE_SERVER_URL}/group/${groupID}`);
         return response.data;
     }

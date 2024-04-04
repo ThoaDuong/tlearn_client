@@ -1,5 +1,4 @@
 import { Box, Button, Stack, Typography } from "@mui/material"
-import { Google } from '@mui/icons-material';
 import React from "react"
 
 
@@ -13,26 +12,49 @@ export const LoginPage = () => {
 
     return (<React.Fragment>
 
-        <Stack
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ width: 1, height: "90vh" }}
-            >
-            <Box sx={{ 
-                bgcolor: '#9195F6', 
-                p: 3,
-                color: 'white',
-            }}>
-                <Typography sx={{mb: 2}} align="center" variant="h5">
-                    Join now
-                </Typography>
-                <Button startIcon={<Google/>} onClick={handleLogin} variant="contained" color="error">
-                    Login with Google
-                </Button>
-                
+        <Box sx={{
+            display: 'flex', flexDirection: 'row', gap: 2
+        }}>
+            {/* Left side */}
+            <Box sx={{ width: '50%' }}>
+                <Stack 
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    sx={{ width: 1, height: "85vh" }}>
+
+                    <img alt="learning" src="https://www.21kschool.com/us/wp-content/uploads/sites/37/2022/09/5-Benefits-of-Personalized-Learning.png" />
+                </Stack>
             </Box>
-        </Stack>
+            {/* Right side */}
+            <Box sx={{ width: '50%',  }}>
+                <Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    sx={{ width: 1, height: "85vh" }}>
+                    {/* Login box */}
+                    <Box sx={{ 
+                        bgcolor: '#EEF5FF', 
+                        px: 5,
+                        py: 8,
+                        color: 'white',
+                        borderRadius: '16px'
+                    }}>
+                        <Typography sx={{mb: 3, color: '#176B87'}} align="center" variant="h6">
+                            Login to continue
+                        </Typography>
+
+                        <Button variant="outlined" sx={{ bgcolor: "white" }} onClick={handleLogin}>
+                            <img width="40" height="40" src="https://img.icons8.com/color/48/google-logo.png" alt="google-logo"/>
+                            <Typography sx={{ ml: 2, textTransform: 'none', fontWeight: 'bold' }}>Sign in with Google</Typography>
+                        </Button>
+                    </Box>
+                </Stack>
+
+            </Box>
+        </Box>
+
 
     </React.Fragment>)
 }

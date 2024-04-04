@@ -40,14 +40,14 @@ export const VocaCard = ({voca }: VocaCardProps) => {
 
     return (
         <React.Fragment>
-            <Card>
+            <Card sx={{ boxShadow: '0 0 6px #008DDA', borderRadius: '20px', px: 1 }}>
 
                 {/* Display vocabulary fields */}
                 <CardContent>
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         Word from {voca?.groupName? '"' + voca.groupName + '" group' : 'All'}
                     </Typography>
-                    <Typography variant="h5" component="div">
+                    <Typography variant="h5">
                         {voca?.word}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">

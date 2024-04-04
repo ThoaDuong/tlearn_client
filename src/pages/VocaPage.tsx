@@ -1,16 +1,16 @@
-import { Box, Button, Grid, IconButton, InputBase, Paper, Toolbar, Typography } from "@mui/material"
+import { Box, Button, IconButton, InputBase, Paper, Toolbar, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { VocaCard } from "./VocaCard"
 import { Add, Search } from "@mui/icons-material"
 import { Link as RouterLink } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { AppDispatch, RootState } from "../../stores/store"
-import { fetchVocaListByUserID, setIsDeleteVocaSuccess } from "../../stores/slices/vocaSlice"
-import { RedirectToLoginPage } from "../RedirectToLoginPage"
-import Vocabulary from "../../interfaces/Vocabulary"
+import { AppDispatch, RootState } from "../stores/store"
+import { fetchVocaListByUserID, setIsDeleteVocaSuccess } from "../stores/slices/vocaSlice"
+import Vocabulary from "../interfaces/Vocabulary"
+import { VocaListCard } from "../components/vocabulary/VocaListCard"
+import { GroupTabs } from "../components/group/GroupTabs"
 
 
-export const VocaListCard = () => {
+export const VocaPage = () => {
     // variable
     const [searchKeyword, setSearchKeyword] = useState("");
     const [listVocaSearch, setListVocaSearch] = useState<Vocabulary[]>([]);
@@ -64,11 +64,11 @@ export const VocaListCard = () => {
 
             {/* Display button add new vocabulary */}
             <Toolbar disableGutters sx={{ flexGrow: 0 }}>
-                <RouterLink to={userStore.id ? "new-voca" : "/"}>
-                    <Button startIcon={<Add/>} variant="contained">
-                        Add new
-                    </Button>
-                </RouterLink>
+                <Button variant="outlined" component={RouterLink} to={userStore.id ? "new-voca" : "/"}
+                startIcon={<Add/>}
+                sx={{ borderRadius: "30px", px: 4 }}>
+                    Add new
+                </Button>
             </Toolbar>
         </Box>
 
@@ -82,17 +82,11 @@ export const VocaListCard = () => {
             </Paper>
         </Toolbar>
 
-        {/* Display list vocabularies */}
-        { userStore.id ?
-            <Grid container spacing={2}>
-                { listVocaSearch.map(voca => 
-                    <Grid key={voca.id} item xs={12} sm={6} md={4} lg={3}>
-                        <VocaCard  voca={voca}/>
-                    </Grid>
-                ) }
-            </Grid>
-            :
-            <RedirectToLoginPage/>
-        }
+        {/* Display list group */}
+        <GroupTabs />
+        
+
+        {/* Display list voca */}
+        <VocaListCard listFilterVoca={listVocaSearch} />
     </React.Fragment>)
 }

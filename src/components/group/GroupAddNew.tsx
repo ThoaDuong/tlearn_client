@@ -2,8 +2,8 @@ import { Add, Cancel, SaveAs } from "@mui/icons-material"
 import { Box, Button, FormControl, TextField, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../stores/store";
-import { addNewGroup, editGroupByID, fetchGroupsByUserID, setTempGroupName } from "../stores/slices/groupSlice";
+import { AppDispatch, RootState } from "../../stores/store";
+import { addNewGroup, editGroupByID, fetchGroupsByUserID, setTempGroupName } from "../../stores/slices/groupSlice";
 
 export const GroupAddNew = ( props: any ) => {
     // variable
