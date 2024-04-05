@@ -7,6 +7,7 @@ const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 export interface groupState{
     listGroup: Group[],
     tempGroupName: string,
+    tempGroup: Group|null,
     isUpdateGroupSuccess: boolean,
     isAddNewGroupSuccess: boolean,
     isDeleteGroupSuccess: boolean
@@ -15,6 +16,7 @@ export interface groupState{
 const initialState: groupState = {
     listGroup: [],
     tempGroupName: "",
+    tempGroup: null,
     isUpdateGroupSuccess: false,
     isAddNewGroupSuccess: false,
     isDeleteGroupSuccess: false
@@ -90,6 +92,9 @@ const groupSlice = createSlice({
         },
         setTempGroupName: (state, action: PayloadAction<string>) => {
             state.tempGroupName = action.payload;
+        },
+        setTempGroup: (state, action: PayloadAction<Group|null>) => {
+            state.tempGroup = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -109,7 +114,6 @@ const groupSlice = createSlice({
         // handle add new
         builder.addCase(addNewGroup.fulfilled, (state) => {
             state.isAddNewGroupSuccess = true;
-
         }),
         builder.addCase(addNewGroup.rejected, (state, action: any) => {
             console.log('Add new group error', state, action);
@@ -122,8 +126,11 @@ const groupSlice = createSlice({
             console.log('deleteGroupByID failed', state, action);
         }),
         // edit group by id
-        builder.addCase(editGroupByID.fulfilled, (state) => {
+        builder.addCase(editGroupByID.fulfilled, (state, action: any) => {
             state.isUpdateGroupSuccess = true;
+            const group = { ...action.payload, groupName: action.meta.arg.groupName };
+
+            console.log('edit', group);
         }),
         builder.addCase(editGroupByID.rejected, (state, action) => {
             console.log('editGroupByID error', state, action);
@@ -137,7 +144,8 @@ export const {
     setIsUpdateGroupSuccess, 
     setIsAddNewGroupSuccess,
     setIsDeleteGroupSuccess,
-    setTempGroupName
+    setTempGroupName,
+    setTempGroup
 } = groupSlice.actions;
 
 export default groupSlice.reducer;

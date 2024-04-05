@@ -48,6 +48,6 @@ export const alertConfirmDelete = (name: string, callback: any) => {
         confirmButtonText: "Yes, delete it!",
         cancelButtonText: "No, cancel please!"
     }).then((result) => {
-        callback(result.isConfirmed)
+        callback(result.isConfirmed, name);
     })
 }

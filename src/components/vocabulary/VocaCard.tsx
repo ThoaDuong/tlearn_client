@@ -46,7 +46,6 @@ export const VocaCard = ({voca }: VocaCardProps) => {
     }
 
     const handleSpeakVoca = () => {
-        console.log('speak')
         const word = voca?.word.toString();
         window.responsiveVoice.speak(word, "US English Female", {volume: 0.8, rate: 0.5});
     }
@@ -65,9 +64,9 @@ export const VocaCard = ({voca }: VocaCardProps) => {
                             {voca?.word}
                         </Typography>
 
-                        <Button onClick={handleSpeakVoca}>
+                        { voca && voca.word && <Button onClick={handleSpeakVoca}>
                             <VolumeUp />
-                        </Button>
+                        </Button> }
                     </Box>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         {voca?.type}

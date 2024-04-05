@@ -5,7 +5,6 @@ import React from "react"
 export const LoginPage = () => {
 
     const handleLogin = () => {
-        console.log('Click login');
         const serverUrl = import.meta.env.VITE_SERVER_URL || "";
         window.open(`${serverUrl}/google/login`, "_self");
     }
@@ -16,7 +15,7 @@ export const LoginPage = () => {
             display: 'flex', flexDirection: 'row', gap: 2
         }}>
             {/* Left side */}
-            <Box sx={{ width: '50%' }}>
+            <Box sx={{ display: {xs: 'none', md: 'block'}, width: '50%' }}>
                 <Stack 
                     direction="row"
                     justifyContent="center"
@@ -27,7 +26,7 @@ export const LoginPage = () => {
                 </Stack>
             </Box>
             {/* Right side */}
-            <Box sx={{ width: '50%',  }}>
+            <Box sx={{ width: {xs: '100%', md: '50%'},  }}>
                 <Stack
                     direction="row"
                     justifyContent="center"

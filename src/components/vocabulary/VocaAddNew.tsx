@@ -127,7 +127,7 @@ export const VocaAddNew = () => {
             dispatch(setIsDeleteGroupSuccess(false));
             alertDeleteSuccess(groupStore.tempGroupName);
             setGroupName("");
-            setTempGroupName("");
+            dispatch(setTempGroupName(""));
         }
     }, [groupStore.isDeleteGroupSuccess]);
 
@@ -180,23 +180,19 @@ export const VocaAddNew = () => {
     }
 
     // GROUP FUNCTION
-    // reset group field after add new | update group success
+    // reset group field in voca after add new | update group success
     const reassignNewGroupField = () => {
         setGroupName(groupStore.tempGroupName);
         dispatch(setTempGroupName(""));
         setIsShowAddGroup(false);
     }
 
-    const callbackConfirmDeleteGroup = (isConfirm: boolean) => {
+    const callbackConfirmDeleteGroup = (isConfirm: boolean, name:string) => {
         if(isConfirm) {
-            const groupResult = groupStore.listGroup.filter((g: Group) => g.groupName === groupStore.tempGroupName);
-            console.log('del', groupResult);
+            const groupResult = groupStore.listGroup.filter((g: Group) => g.groupName === name);
             if(groupResult.length > 0){
                 dispatch(deleteGroupByID(groupResult[0].id));
-                dispatch(setTempGroupName(""));
             }
-        }else{
-            dispatch(setTempGroupName(""));
         }
     }
     
@@ -296,11 +292,11 @@ export const VocaAddNew = () => {
                             {groupStore.listGroup.map((group: any) => (
                                 <MenuItem key={group.id} value={group.groupName}
                                 sx={{ display: 'flex' , justifyContent: 'space-between' }}>
-                                    <Typography onClick={() => setGroupName(group.groupName)}>
+                                    <Typography sx={{ width: '50%' }} onClick={() => setGroupName(group.groupName)}>
                                         {group.groupName}
                                     </Typography>
                                     {groupName !== group.groupName && 
-                                        <Stack >
+                                        <Stack sx={{ width: '50%' }} >
                                             <Toolbar sx={{ display: 'flex' }}>
 
                                                 <IconButton aria-label="delete" size="small"
