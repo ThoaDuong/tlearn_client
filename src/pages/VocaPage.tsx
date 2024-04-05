@@ -1,5 +1,5 @@
 import { Box, Button, IconButton, InputBase, Paper, Toolbar, Typography } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Add, Search } from "@mui/icons-material"
 import { Link as RouterLink } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
@@ -8,12 +8,15 @@ import { fetchVocaListByUserID, setIsDeleteVocaSuccess } from "../stores/slices/
 import Vocabulary from "../interfaces/Vocabulary"
 import { VocaListCard } from "../components/vocabulary/VocaListCard"
 import { GroupTabs } from "../components/group/GroupTabs"
+import { fetchGroupsByUserID } from "../stores/slices/groupSlice"
 
 
 export const VocaPage = () => {
     // variable
     const [searchKeyword, setSearchKeyword] = useState("");
     const [listVocaSearch, setListVocaSearch] = useState<Vocabulary[]>([]);
+    const [activeGroupTab, setActiveGroupTab] = useState("All");
+    const groupTabAll = useRef('All');
 
     // redux
     const vocaStore = useSelector((state: RootState) => state.vocabulary);
@@ -28,19 +31,38 @@ export const VocaPage = () => {
         }
     }, [vocaStore.isDeleteVocaSuccess])
 
-    // watch searchKeyword and listVoca change
+    // watch searchKeyword, activeGroupTab and listVoca change
     useEffect(() => {
-        const list = vocaStore.listVoca.filter(voca => voca.word.includes(searchKeyword));
+        // filter list display vocabularies
+        const list = vocaStore.listVoca.filter((voca) => {
+            // active group: All
+            if(activeGroupTab === groupTabAll.current){
+                return voca.word.includes(searchKeyword) ? true : false;
+            }
+            // active group: custom group name
+            else{
+                return !!(voca.word.includes(searchKeyword) && voca.groupName === activeGroupTab) ? true : false;
+            }
+        });
         setListVocaSearch(list);
 
-    }, [searchKeyword, vocaStore.listVoca])
+    }, [searchKeyword, vocaStore.listVoca, activeGroupTab]);
 
     // watch userStore change
     useEffect(() => {
         if(userStore.id){
+            // fetch list voca and groups
             dispatch(fetchVocaListByUserID(userStore.id));
+            dispatch(fetchGroupsByUserID(userStore.id));
         }
     }, [userStore]);
+
+    // function
+
+    // trigger in child component: GroupTabs
+    const handleChangeGroupName = (groupName: string) => {
+        setActiveGroupTab(groupName);
+    }
 
     return (<React.Fragment>
         <Box sx={{ display: 'flex' }}>
@@ -83,7 +105,7 @@ export const VocaPage = () => {
         </Toolbar>
 
         {/* Display list group */}
-        <GroupTabs />
+        <GroupTabs changeGroupName={handleChangeGroupName} />
         
 
         {/* Display list voca */}

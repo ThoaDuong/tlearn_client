@@ -3,7 +3,7 @@ import { Add, Cancel, Delete, Edit, Save } from "@mui/icons-material"
 import { Box, Button, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Toolbar, Typography } from "@mui/material"
 import { VocaCard } from "./VocaCard"
 import { useSelector, useDispatch } from "react-redux"
-import { deleteGroupByID, fetchGroupsByUserID, setIsAddNewGroupSuccess, setIsDeleteGroupSuccess, setIsUpdateGroupSuccess, setTempGroupName } from "../../stores/slices/groupSlice"
+import { groupState, deleteGroupByID, fetchGroupsByUserID, setIsAddNewGroupSuccess, setIsDeleteGroupSuccess, setIsUpdateGroupSuccess, setTempGroupName } from "../../stores/slices/groupSlice"
 import { AppDispatch, RootState } from "../../stores/store"
 import { addNewVoca, editVoca, setIsAddNewVocaSuccess, setIsUpdateVocaSuccess, updateEditVoca, updateNewVoca } from "../../stores/slices/vocaSlice"
 import { useNavigate } from "react-router-dom"
@@ -22,7 +22,7 @@ export const VocaAddNew = () => {
     // redux store
     const dispatch: AppDispatch = useDispatch();
     const userStore = useSelector((state: RootState) => state.user);
-    const groupStore = useSelector((state: RootState) => state.group);
+    const groupStore: groupState = useSelector((state: RootState) => state.group);
     const vocaStore = useSelector((state: RootState) => state.vocabulary);
 
     //vocabulary fields
@@ -190,10 +190,13 @@ export const VocaAddNew = () => {
     const callbackConfirmDeleteGroup = (isConfirm: boolean) => {
         if(isConfirm) {
             const groupResult = groupStore.listGroup.filter((g: Group) => g.groupName === groupStore.tempGroupName);
+            console.log('del', groupResult);
             if(groupResult.length > 0){
                 dispatch(deleteGroupByID(groupResult[0].id));
                 dispatch(setTempGroupName(""));
             }
+        }else{
+            dispatch(setTempGroupName(""));
         }
     }
     
@@ -205,8 +208,8 @@ export const VocaAddNew = () => {
         if(listVocaGroup.length > 0){
             alertDeleteGroupError(group.groupName, listVocaWordStr.toString());
         }else{
-            alertConfirmDelete(group.groupName, callbackConfirmDeleteGroup);
             dispatch(setTempGroupName(group.groupName));
+            alertConfirmDelete(group.groupName, callbackConfirmDeleteGroup);
         }
 
     }

@@ -1,15 +1,37 @@
-import React from "react"
+import { Box, Tab, Tabs } from "@mui/material";
+import React, { useState } from "react"
+import { useSelector } from "react-redux";
+import { RootState } from "../../stores/store";
 
-export const GroupTabs = () => {
+export const GroupTabs = (props: any) => {
+
+    // variable
+    const [groupTab, setGroupTab] = useState(0);
+
+    // redux
+    const groupStore = useSelector((state: RootState) => state.group);
+
+    // function
+    const handleChangeGroupTab = (event: any, newValue: number) => {
+        const groupName = event.target.innerText;
+        props.changeGroupName(groupName);
+        setGroupTab(newValue);
+    }
+
     return (<React.Fragment>
-        
-
-        {/* <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
-            <Tabs value={groupTab} onChange={(event) => console.log('change', event.target)} aria-label="basic tabs example">
-                <Tab value="one" label="Item One"/>
-                <Tab value="two" label="Item Two" />
-                <Tab value="three" label="Item Three" />
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+            <Tabs
+            value={groupTab}
+            onChange={handleChangeGroupTab}
+            variant="scrollable"
+            scrollButtons="auto"
+            aria-label="scrollable auto tabs example"
+            >
+                <Tab sx={{ textTransform: 'none' }}  label="All" />
+                { groupStore.listGroup.map(group => (
+                    <Tab sx={{ textTransform: 'none' }} key={group.id} label={group.groupName} />
+                )) }
             </Tabs>
-        </Box> */}
+        </Box>
     </React.Fragment>)
 }
