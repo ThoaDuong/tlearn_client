@@ -16,7 +16,7 @@ import Vocabulary from "../../interfaces/Vocabulary"
 export const VocaAddNew = () => {
 
     // variable
-    const listType = useRef(["Noun", "Verb", "Adjective", "Adverb", "Preposition", "Other"]);
+    const listType = useRef(["Noun", "Pronoun", "Verb", "Adjective", "Adverb", "Preposition", "Other"]);
     const navigate = useNavigate();
 
     // redux store
@@ -264,13 +264,16 @@ export const VocaAddNew = () => {
                         />
                     </FormControl>
 
-                    {/* Field: type */}
+                    {/* Field: type | parts of speech */}
                     <FormControl sx={{ mb: 2, width: {xs: '100%', md: '50%'} }}>
-                        <InputLabel id="typeInput">Type</InputLabel>
-                        <Select id="typeSelect" labelId="typeInput" label="Type"
+                        <InputLabel id="typeInput">Parts of speech</InputLabel>
+                        <Select id="typeSelect" labelId="typeInput" label="Parts of speech"
                             value={type}
                             onChange={(event) => setType(event.target.value)}
                         >
+                            <MenuItem aria-label="None" value="">
+                                <em>None</em>
+                            </MenuItem>
                             {listType.current.map((type: string) => (
                                 <MenuItem value={type} key={type}>
                                     {type}

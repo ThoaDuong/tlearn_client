@@ -8,6 +8,7 @@ import { addNewGroup, editGroupByID, fetchGroupsByUserID, setTempGroupName } fro
 export const GroupAddNew = ( props: any ) => {
     // variable
     const [group, setGroup] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     //redux
     const userStore = useSelector((state: RootState) => state.user);
@@ -19,7 +20,7 @@ export const GroupAddNew = ( props: any ) => {
         const groupName = props.editGroup ? props.editGroup.groupName : "";
         setGroup(groupName);
         
-    }, [props.editGroup])
+    }, [props.editGroup]) 
 
     // watch isAddNewGroupSuccess change | true
     useEffect(() => {
@@ -27,6 +28,7 @@ export const GroupAddNew = ( props: any ) => {
             dispatch(setTempGroupName(group));
             dispatch(fetchGroupsByUserID(userStore.id));
             setGroup("");
+            setErrorMessage("");
         }
     }, [groupStore.isAddNewGroupSuccess]);
     
@@ -36,6 +38,7 @@ export const GroupAddNew = ( props: any ) => {
             dispatch(setTempGroupName(group));
             dispatch(fetchGroupsByUserID(userStore.id));
             setGroup("");
+            setErrorMessage("");
         }
     }, [groupStore.isUpdateGroupSuccess]);
 
@@ -43,6 +46,11 @@ export const GroupAddNew = ( props: any ) => {
     // handle function
     const handleSaveAddGroup = (event: any) => {
         event.preventDefault();
+
+        if(!group){
+            setErrorMessage('The group name field cannot be empty.');
+            return;
+        }
 
         const groupObject = {
             groupName: group,
@@ -54,6 +62,15 @@ export const GroupAddNew = ( props: any ) => {
     const handleSaveEditGroup = (event: any) => {
         event.preventDefault();
 
+        if(!group){
+            setErrorMessage('The group name field cannot be empty.');
+            return;
+        }
+        if(group === props.editGroup.groupName){
+            setErrorMessage('The group name field has not changed.');
+            return;
+        }
+
         const groupObject = {
             groupName: group,
             groupID: props.editGroup ? props.editGroup.id : ""
@@ -64,6 +81,7 @@ export const GroupAddNew = ( props: any ) => {
     const handleCancelSave = () => {
         props.onCancelSaveToParent(true);
         setGroup("");
+        setErrorMessage("");
     }
 
     return (<React.Fragment>
@@ -77,6 +95,7 @@ export const GroupAddNew = ( props: any ) => {
                         value={group}
                         onChange={(event) => setGroup(event.target.value)}
                     />
+                    <Typography color="error"> {errorMessage} </Typography>
                 </FormControl>
 
                 <Button type="button" startIcon={<Cancel />} variant="contained" color="error"

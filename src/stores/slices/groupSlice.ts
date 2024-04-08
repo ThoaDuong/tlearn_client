@@ -126,11 +126,9 @@ const groupSlice = createSlice({
             console.log('deleteGroupByID failed', state, action);
         }),
         // edit group by id
-        builder.addCase(editGroupByID.fulfilled, (state, action: any) => {
+        builder.addCase(editGroupByID.fulfilled, (state) => {
             state.isUpdateGroupSuccess = true;
-            const group = { ...action.payload, groupName: action.meta.arg.groupName };
-
-            console.log('edit', group);
+            //const group = { ...action.payload, groupName: action.meta.arg.groupName };
         }),
         builder.addCase(editGroupByID.rejected, (state, action) => {
             console.log('editGroupByID error', state, action);
