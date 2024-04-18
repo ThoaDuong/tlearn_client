@@ -8,7 +8,7 @@ const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export interface VocaState {
     listVoca: Vocabulary[],
-    newVoca: Vocabulary | null;
+    previewVoca: Vocabulary | null;
     editVoca: Vocabulary | null;
     isAddNewVocaSuccess: boolean;
     isDeleteVocaSuccess: boolean;
@@ -16,7 +16,7 @@ export interface VocaState {
 }
 const initialState: VocaState = {
     listVoca: [],
-    newVoca: null,
+    previewVoca: null,
     editVoca: null,
     isAddNewVocaSuccess: false,
     isDeleteVocaSuccess: false,
@@ -83,8 +83,8 @@ export const vocaSlice = createSlice({
     name: 'vocabulary',
     initialState,
     reducers: {
-        updateNewVoca: (state, action: PayloadAction<Vocabulary|null>) => {
-            state.newVoca = action.payload;
+        updatePreviewVoca: (state, action: PayloadAction<Vocabulary|null>) => {
+            state.previewVoca = action.payload;
         },
         updateEditVoca: (state, action: PayloadAction<Vocabulary|null>) => {
             state.editVoca = action.payload;
@@ -134,10 +134,10 @@ export const vocaSlice = createSlice({
         }),
         // edit voca
         builder.addCase(editVoca.fulfilled, (state, action) => {
-            const word = state.newVoca?.word || action.payload.word;
+            const word = state.previewVoca?.word || action.payload.word;
             alertUpdateSuccess(word);
             state.editVoca = null;
-            state.newVoca = null;
+            state.previewVoca = null;
             state.isUpdateVocaSuccess = true;
         }),
         builder.addCase(editVoca.rejected, (state, action) => {
@@ -147,7 +147,7 @@ export const vocaSlice = createSlice({
 })
 
 export const { 
-    updateNewVoca, 
+    updatePreviewVoca, 
     setIsAddNewVocaSuccess, 
     setIsDeleteVocaSuccess,
     setIsUpdateVocaSuccess,

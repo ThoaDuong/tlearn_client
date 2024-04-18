@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, InputBase, Paper, Toolbar, Typography } from "@mui/material"
+import { Box, Button, IconButton, InputBase, Pagination, Paper, Stack, Toolbar, Typography } from "@mui/material"
 import React, { useEffect, useRef, useState } from "react"
 import { Add, Search } from "@mui/icons-material"
 import { Link as RouterLink } from "react-router-dom"
@@ -17,6 +17,10 @@ export const VocaPage = () => {
     const [listVocaSearch, setListVocaSearch] = useState<Vocabulary[]>([]);
     const [activeGroupTab, setActiveGroupTab] = useState("All");
     const groupTabAll = useRef('All');
+
+    // variable pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    // const [vocaPerPage, setVocaPerPage] = useState(12);
 
     // redux
     const vocaStore = useSelector((state: RootState) => state.vocabulary);
@@ -47,6 +51,17 @@ export const VocaPage = () => {
         setListVocaSearch(list);
 
     }, [searchKeyword, vocaStore.listVoca, activeGroupTab]);
+
+    // watch listVocaSearch | still working on this
+    useEffect(() => {
+        let tempList = [ ...listVocaSearch ];
+        if (tempList.length > 0){
+            // while (tempList.length > 0) {
+            //     console.log('test', tempList.splice(0, vocaPerPage));
+            // }
+        }
+
+    }, [listVocaSearch])
 
     // watch userStore change
     useEffect(() => {
@@ -110,5 +125,16 @@ export const VocaPage = () => {
 
         {/* Display list voca */}
         <VocaListCard listFilterVoca={listVocaSearch} />
+
+
+        {/* Display pagiantion for list voca */}
+        <Stack spacing={2} sx={{ display: 'flex', alignItems: 'center', margin: '20px 0' }}>
+            <Pagination 
+                count={6} 
+                page={currentPage}
+                onChange={(event, value) => {event && setCurrentPage(value)}}
+                variant="outlined" 
+                color="primary" />
+        </Stack>
     </React.Fragment>)
 }

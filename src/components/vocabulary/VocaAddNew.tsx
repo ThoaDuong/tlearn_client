@@ -5,7 +5,7 @@ import { VocaCard } from "./VocaCard"
 import { useSelector, useDispatch } from "react-redux"
 import { groupState, deleteGroupByID, fetchGroupsByUserID, setIsAddNewGroupSuccess, setIsDeleteGroupSuccess, setIsUpdateGroupSuccess, setTempGroupName } from "../../stores/slices/groupSlice"
 import { AppDispatch, RootState } from "../../stores/store"
-import { addNewVoca, editVoca, setIsAddNewVocaSuccess, setIsUpdateVocaSuccess, updateEditVoca, updateNewVoca } from "../../stores/slices/vocaSlice"
+import { addNewVoca, editVoca, setIsAddNewVocaSuccess, setIsUpdateVocaSuccess, updateEditVoca, updatePreviewVoca } from "../../stores/slices/vocaSlice"
 import { useNavigate } from "react-router-dom"
 import Group from "../../interfaces/Group"
 import { alertAddNewSuccess, alertConfirmDelete, alertDeleteGroupError, alertDeleteSuccess, alertUpdateSuccess } from "../../utils/SweetAlert"
@@ -18,6 +18,11 @@ export const VocaAddNew = () => {
     // variable
     const listType = useRef(["Noun", "Pronoun", "Verb", "Adjective", "Adverb", "Preposition", "Other"]);
     const navigate = useNavigate();
+    const [errorObject, setErrorObject] = useState({
+        wordMessage: "",
+        meaningMessage: "",
+        exampleMessage: ""
+    })
 
     // redux store
     const dispatch: AppDispatch = useDispatch();
@@ -69,7 +74,7 @@ export const VocaAddNew = () => {
 
     // watch voca field change
     useEffect(() => {
-        const newVocaObject = {
+        const previewVocaObject = {
             id: "",
             word: word,
             type: type,
@@ -78,7 +83,7 @@ export const VocaAddNew = () => {
             groupName: groupName,
             userID: userStore.id
         };
-        dispatch(updateNewVoca(newVocaObject));
+        dispatch(updatePreviewVoca(previewVocaObject));
     }, [word, type, groupName, meaning, example]);
 
     // watch editVoca change
@@ -86,7 +91,7 @@ export const VocaAddNew = () => {
         if(vocaStore.editVoca){
             setWord(vocaStore.editVoca.word);
             setExample(vocaStore.editVoca.example);
-            setType(vocaStore.editVoca.type);
+            setType(vocaStore.editVoca.type || "");
             setMeaning(vocaStore.editVoca.meaning);
         }
     }, [vocaStore.editVoca])
@@ -114,7 +119,7 @@ export const VocaAddNew = () => {
             }
             // Case: edit voca
             if(vocaStore.editVoca){
-                setGroupName(vocaStore.editVoca.groupName);
+                setGroupName(vocaStore.editVoca.groupName || "");
             }
         }
 
@@ -142,39 +147,102 @@ export const VocaAddNew = () => {
         setGroupName("");
     }
 
+    // check validate voca |
+    const checkValidateVoca = () => {
+        if(!word){
+            setErrorObject({
+                ...errorObject,
+                wordMessage: "The word field cannot be empty.",
+            });
+            return false;
+        }
+        if(!meaning){
+            setErrorObject({
+                ...errorObject,
+                wordMessage: "",
+                meaningMessage: "The meaning field cannot be empty.",
+            });
+            return false;
+        }
+        if(!example){
+            setErrorObject({
+                wordMessage: "",
+                meaningMessage: "",
+                exampleMessage: "The meaning field cannot be empty.",
+            });
+            return false;
+        }
+
+        // validate | true
+        setErrorObject({
+            wordMessage: "",
+            meaningMessage: "",
+            exampleMessage: ""
+        })
+        return true;
+    }
+
+
+    // instance for add new voca only
+    type VocaObjectType = {
+        word: string,
+        meaning: string,
+        example: string,
+        userID: string,
+        type?: string,
+        groupID?: string,
+        id?:string
+    }
     const handleAddNewVoca = (event: any) => {
         event.preventDefault();
-        const groupResult= groupStore.listGroup.filter(g => g.groupName === groupName);
-        const vocaObject = {
-            word: vocaStore.newVoca?.word,
-            type: vocaStore.newVoca?.type,
-            meaning: vocaStore.newVoca?.meaning,
-            example: vocaStore.newVoca?.example,
-            userID: vocaStore.newVoca?.userID,
-            groupID: groupResult[0]?.id
+        
+        const isValid = checkValidateVoca();
+        if(isValid){
+            
+            const groupResult = groupStore.listGroup.filter(g => g.groupName === groupName);
+            let vocaObject: VocaObjectType = {
+                word: word,
+                meaning: meaning,
+                example: example,
+                userID: userStore.id,
+            }
+            if(type){
+                vocaObject["type"] = type;
+            }
+            if(groupResult[0]){
+                vocaObject["groupID"] = groupResult[0].id;
+            }
+
+            dispatch(addNewVoca(vocaObject));
         }
-        dispatch(addNewVoca(vocaObject));
     }
 
     const handleSaveEditVoca = (event: any) => {
         event.preventDefault();
 
-        const groupResult= groupStore.listGroup.filter(g => g.groupName === groupName);
-        const vocaObject = {
-            id: vocaStore.editVoca?.id,
-            word: vocaStore.newVoca?.word,
-            type: vocaStore.newVoca?.type,
-            meaning: vocaStore.newVoca?.meaning,
-            example: vocaStore.newVoca?.example,
-            userID: vocaStore.newVoca?.userID,
-            groupID: groupResult[0]?.id
+        const isValid = checkValidateVoca();
+        if(isValid){
+            const groupResult= groupStore.listGroup.filter(g => g.groupName === groupName);
+            let vocaObject: VocaObjectType = {
+                id: vocaStore.editVoca?.id,
+                word: word,
+                meaning: meaning,
+                example: example,
+                userID: userStore.id
+            }
+            if(type){
+                vocaObject["type"] = type;
+            }
+            if(groupResult[0]){
+                vocaObject["groupID"] = groupResult[0].id;
+            }
+            dispatch(editVoca(vocaObject));
         }
-        dispatch(editVoca(vocaObject));
     }
 
     const handleGoBack = () => {
         clearVocaField();
-        dispatch(updateNewVoca(null));
+        dispatch(updatePreviewVoca(null));
         dispatch(updateEditVoca(null));
         navigate(-1);
     }
@@ -262,6 +330,7 @@ export const VocaAddNew = () => {
                             value={word}
                             onChange={(event) => setWord(event.target.value)}
                         />
+                        <Typography color="error"> {errorObject.wordMessage} </Typography>
                     </FormControl>
 
                     {/* Field: type | parts of speech */}
@@ -334,6 +403,7 @@ export const VocaAddNew = () => {
                             value={meaning}
                             onChange={(event) => setMeaning(event.target.value)}
                         />
+                        <Typography color="error"> {errorObject.meaningMessage} </Typography>
                     </FormControl>
 
                     {/* Field: example */}
@@ -342,6 +412,7 @@ export const VocaAddNew = () => {
                             value={example}
                             onChange={(event) => setExample(event.target.value)}
                         />
+                        <Typography color="error"> {errorObject.exampleMessage} </Typography>
                     </FormControl>
                     
                     {/* Display submit button */}
@@ -366,7 +437,7 @@ export const VocaAddNew = () => {
                 <Typography variant="h6" sx={{ my: 2 }}>
                     Preview
                 </Typography>
-                <VocaCard voca={ vocaStore.newVoca } />
+                <VocaCard voca={ vocaStore.previewVoca } />
             </Grid>
         </Grid>
     </React.Fragment>)
