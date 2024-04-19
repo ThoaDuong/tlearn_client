@@ -27,18 +27,18 @@ export const HomeLayout = () => {
     }, []);
 
 
-    return userStore.id ? 
-    (<React.Fragment>
-        <Header userStore={userStore} />
-        <Container>
-            <Outlet />
-        </Container>
-    </React.Fragment>)
-    :
-    (<React.Fragment>
-        <Header userStore={userStore} />
-        <Container>
-            <LoginPage />
-        </Container>
-    </React.Fragment>)
+    return userStore.id ?
+        (<React.Fragment>
+            <Header userStore={userStore} />
+            <Container>
+                <Outlet />
+            </Container>
+        </React.Fragment>)
+        :
+        (<React.Fragment>
+            <Header userStore={userStore} />
+            <Container>
+                <LoginPage />
+            </Container>
+        </React.Fragment>)
 }

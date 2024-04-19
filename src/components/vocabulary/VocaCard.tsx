@@ -47,7 +47,11 @@ export const VocaCard = ({voca }: VocaCardProps) => {
 
     const handleSpeakVoca = () => {
         const word = voca?.word.toString();
-        window.responsiveVoice.speak(word, "US English Female", {volume: 0.8, rate: 0.5});
+
+        const msg = new SpeechSynthesisUtterance(word);
+        msg.rate = 0.5;
+        window.speechSynthesis.speak(msg);
+        //window.responsiveVoice.speak(word, "US English Female", {volume: 0.8, rate: 0.5});
     }
 
     return (

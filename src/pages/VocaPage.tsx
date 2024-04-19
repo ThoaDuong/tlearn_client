@@ -19,8 +19,11 @@ export const VocaPage = () => {
     const groupTabAll = useRef('All');
 
     // variable pagination
+    const vocaPerPage = useRef(12);
     const [currentPage, setCurrentPage] = useState(1);
-    // const [vocaPerPage, setVocaPerPage] = useState(12);
+    const [vocaPagination, setVocaPagination] = useState<Vocabulary[]>([]);
+    const [vocaPaginationList, setVocaPaginationList] = useState<Vocabulary[][]>([]);
+
 
     // redux
     const vocaStore = useSelector((state: RootState) => state.vocabulary);
@@ -56,9 +59,12 @@ export const VocaPage = () => {
     useEffect(() => {
         let tempList = [ ...listVocaSearch ];
         if (tempList.length > 0){
-            // while (tempList.length > 0) {
-            //     console.log('test', tempList.splice(0, vocaPerPage));
-            // }
+            let vocas = [];
+            while (tempList.length > 0) {
+                vocas.push(tempList.splice(0, vocaPerPage.current));
+            }
+            setVocaPaginationList(vocas);
+            setVocaPagination(vocas[currentPage-1] || []);
         }
 
     }, [listVocaSearch])
@@ -77,6 +83,13 @@ export const VocaPage = () => {
     // trigger in child component: GroupTabs
     const handleChangeGroupName = (groupName: string) => {
         setActiveGroupTab(groupName);
+    }
+
+    const handleChangePagination = (event: any, value: number) => {
+        if(event){
+            setCurrentPage(value);
+        }
+        setVocaPagination(vocaPaginationList[value-1] || [])
     }
 
     return (<React.Fragment>
@@ -124,17 +137,17 @@ export const VocaPage = () => {
         
 
         {/* Display list voca */}
-        <VocaListCard listFilterVoca={listVocaSearch} />
+        <VocaListCard listFilterVoca={vocaPagination} />
 
 
         {/* Display pagiantion for list voca */}
-        <Stack spacing={2} sx={{ display: 'flex', alignItems: 'center', margin: '20px 0' }}>
+        { (vocaPagination.length > 0) && <Stack spacing={2} sx={{ display: 'flex', alignItems: 'center', margin: '20px 0' }}>
             <Pagination 
-                count={6} 
+                count={vocaPaginationList.length} 
                 page={currentPage}
-                onChange={(event, value) => {event && setCurrentPage(value)}}
+                onChange={handleChangePagination}
                 variant="outlined" 
                 color="primary" />
-        </Stack>
+        </Stack>}
     </React.Fragment>)
 }

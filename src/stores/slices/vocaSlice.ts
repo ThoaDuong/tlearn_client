@@ -102,7 +102,7 @@ export const vocaSlice = createSlice({
     extraReducers: (builder) => {
         // fetch vocaList by userID
         builder.addCase(fetchVocaListByUserID.fulfilled, (state, action) => {
-            state.listVoca = action.payload.map((data: any) => ({ 
+            let tempList = action.payload.map((data: any) => ({ 
                 id: data._id,
                 word: data.word,
                 type: data.type,
@@ -111,6 +111,7 @@ export const vocaSlice = createSlice({
                 userID: data.userID,
                 groupName: data.groupData[0]?.groupName
             }))
+            state.listVoca = tempList.reverse();
         }),
         builder.addCase(fetchVocaListByUserID.rejected, (state, action) => {
             console.log('fetch Error', state, action)
