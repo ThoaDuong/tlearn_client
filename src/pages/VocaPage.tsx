@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, InputBase, Pagination, Paper, Stack, Toolbar, Typography } from "@mui/material"
+import { Box, Button, IconButton, InputBase, Paper, Toolbar, Typography } from "@mui/material"
 import React, { useEffect, useRef, useState } from "react"
 import { Add, Search } from "@mui/icons-material"
 import { Link as RouterLink } from "react-router-dom"
@@ -9,6 +9,7 @@ import Vocabulary from "../interfaces/Vocabulary"
 import { VocaListCard } from "../components/vocabulary/VocaListCard"
 import { GroupTabs } from "../components/group/GroupTabs"
 import { fetchGroupsByUserID } from "../stores/slices/groupSlice"
+import { PaginationList } from "../components/PaginationList"
 
 
 export const VocaPage = () => {
@@ -141,13 +142,10 @@ export const VocaPage = () => {
 
 
         {/* Display pagiantion for list voca */}
-        { (vocaPagination.length > 0) && <Stack spacing={2} sx={{ display: 'flex', alignItems: 'center', margin: '20px 0' }}>
-            <Pagination 
-                count={vocaPaginationList.length} 
-                page={currentPage}
-                onChange={handleChangePagination}
-                variant="outlined" 
-                color="primary" />
-        </Stack>}
+        { (vocaPagination.length > 0) && <PaginationList 
+            count={vocaPaginationList.length}
+            page={currentPage}
+            onChange={handleChangePagination}
+        />}
     </React.Fragment>)
 }

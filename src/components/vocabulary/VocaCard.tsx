@@ -12,12 +12,6 @@ type VocaCardProps = {
     voca: Vocabulary|null
 }
 
-declare global {
-    interface Window {
-        responsiveVoice?: any;
-    }
-}
-
 export const VocaCard = ({voca }: VocaCardProps) => {
 
     // variable
@@ -51,7 +45,6 @@ export const VocaCard = ({voca }: VocaCardProps) => {
         const msg = new SpeechSynthesisUtterance(word);
         msg.rate = 0.5;
         window.speechSynthesis.speak(msg);
-        //window.responsiveVoice.speak(word, "US English Female", {volume: 0.8, rate: 0.5});
     }
 
     return (

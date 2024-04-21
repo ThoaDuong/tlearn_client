@@ -1,19 +1,38 @@
 import { Add, Cancel, SaveAs } from "@mui/icons-material"
 import { Box, Button, FormControl, TextField, Typography } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../stores/store";
 import { addNewGroup, editGroupByID, fetchGroupsByUserID, setTempGroupName } from "../../stores/slices/groupSlice";
+import Group from "../../interfaces/Group";
 
-export const GroupAddNew = ( props: any ) => {
+type GroupAddNewProps = {
+    editGroup: Group|null,
+    onCancelSaveToParent: (value: boolean) => void
+
+}
+
+export const GroupAddNew = ( props: GroupAddNewProps ) => {
     // variable
     const [group, setGroup] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const initial = useRef(true);
+    const groupRef = useRef<HTMLInputElement|null>(null);
 
     //redux
     const userStore = useSelector((state: RootState) => state.user);
     const groupStore: any = useSelector((state: RootState) => state.group);
     const dispatch: AppDispatch = useDispatch();
+
+    useEffect(() => {
+        if(initial.current){
+            // run one time when rendered
+            initial.current = false;
+            
+            // focus on group name field
+            groupRef.current?.focus();
+        }
+    }, [])
 
     // watch editGroup object change
     useEffect(() => {
@@ -66,7 +85,7 @@ export const GroupAddNew = ( props: any ) => {
             setErrorMessage('The group name field cannot be empty.');
             return;
         }
-        if(group === props.editGroup.groupName){
+        if(group === props.editGroup?.groupName){
             setErrorMessage('The group name field has not changed.');
             return;
         }
@@ -92,6 +111,7 @@ export const GroupAddNew = ( props: any ) => {
             <Box component="form" onSubmit={props.editGroup ? handleSaveEditGroup : handleSaveAddGroup}>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <TextField variant="outlined" id="new" label="New group"
+                        inputRef={groupRef}
                         value={group}
                         onChange={(event) => setGroup(event.target.value)}
                     />

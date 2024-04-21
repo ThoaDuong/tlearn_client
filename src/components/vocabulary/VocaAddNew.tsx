@@ -285,14 +285,6 @@ export const VocaAddNew = () => {
 
     const handleShowAddGroup = () => {
         setIsShowAddGroup(true);
-
-        // fix here | focus
-        // const timeout = setTimeout(() => {
-        //     groupRef.current?.focus();
-        //     console.log('current', groupRef.current);
-
-        //     clearTimeout(timeout);
-        // }, 200);
     }
 
     // trigger on child component: GroupAddNew

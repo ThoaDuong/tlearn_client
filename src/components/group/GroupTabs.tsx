@@ -3,7 +3,11 @@ import React, { useState } from "react"
 import { useSelector } from "react-redux";
 import { RootState } from "../../stores/store";
 
-export const GroupTabs = (props: any) => {
+type GroupTabsProps = {
+    changeGroupName: (groupName: string) => void
+}
+
+export const GroupTabs = (props: GroupTabsProps) => {
 
     // variable
     const [groupTab, setGroupTab] = useState(0);

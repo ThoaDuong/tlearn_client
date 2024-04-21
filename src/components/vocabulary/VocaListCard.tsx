@@ -3,8 +3,11 @@ import { VocaCard } from "./VocaCard"
 import { Grid } from "@mui/material"
 import Vocabulary from "../../interfaces/Vocabulary"
 
+type VocaListCardProps = {
+    listFilterVoca: Vocabulary[]
+}
 
-export const VocaListCard = (props: any) => {
+export const VocaListCard = (props: VocaListCardProps) => {
     return (<React.Fragment>
         <Grid container spacing={2}>
             { props.listFilterVoca.map((voca: Vocabulary) => 
