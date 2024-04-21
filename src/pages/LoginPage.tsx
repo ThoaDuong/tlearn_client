@@ -1,4 +1,5 @@
 import { Box, Button, Stack, Typography } from "@mui/material"
+import learningImg from './../assets/Learning.png'
 import React from "react"
 
 
@@ -22,7 +23,7 @@ export const LoginPage = () => {
                     alignItems="center"
                     sx={{ width: 1, height: "85vh" }}>
 
-                    <img alt="learning" src="https://www.21kschool.com/us/wp-content/uploads/sites/37/2022/09/5-Benefits-of-Personalized-Learning.png" />
+                    <img alt="learning" src={learningImg} />
                 </Stack>
             </Box>
             {/* Right side */}

@@ -7,6 +7,7 @@ import { deleteVoca, updateEditVoca } from "../../stores/slices/vocaSlice"
 import { useNavigate } from "react-router-dom"
 import { alertConfirmDelete } from "../../utils/SweetAlert"
 import { VolumeUp } from "@mui/icons-material"
+import { SpeechSynthesis } from "../../utils/SpeechSynthesis"
 
 type VocaCardProps = {
     voca: Vocabulary|null
@@ -40,11 +41,9 @@ export const VocaCard = ({voca }: VocaCardProps) => {
     }
 
     const handleSpeakVoca = () => {
-        const word = voca?.word.toString();
+        const word = voca?.word.toString() || "";
 
-        const msg = new SpeechSynthesisUtterance(word);
-        msg.rate = 0.5;
-        window.speechSynthesis.speak(msg);
+        SpeechSynthesis(word);
     }
 
     return (
