@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActions, CardContent, Tooltip, TooltipProps, Typography, styled, tooltipClasses } from "@mui/material"
+import { Box, Button, Card, CardActions, CardContent, Tooltip, Typography } from "@mui/material"
 import React from "react"
 import Vocabulary from "../../interfaces/Vocabulary"
 import { AppDispatch } from "../../stores/store"
