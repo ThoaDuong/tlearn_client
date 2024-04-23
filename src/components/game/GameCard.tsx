@@ -13,9 +13,10 @@ export const GameCard = ({ title, imgSource }: GameCardProps) => {
             <Card sx={{ boxShadow: '0 0 6px #41B06E', borderRadius: '20px', px: 1 }}>
                 <CardMedia
                     component="img"
-                    height="100%"
+                    height="90%"
                     image={imgSource}
                     alt={title}
+                    sx={{ mt: '8px', borderRadius: '10px 10px 0 0' }}
                 />
                 <CardContent sx={{ textAlign: 'center' }}>
                     <Typography variant="h6"> {title} </Typography>

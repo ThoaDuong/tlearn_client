@@ -1,13 +1,15 @@
-import { Box, Button, Card, CardContent, Grid, Typography } from "@mui/material"
+import { Box, Button, Card, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../stores/store";
 import Vocabulary from "../../interfaces/Vocabulary";
 import { fetchVocaListByUserID } from "../../stores/slices/vocaSlice";
 import { SpeechSynthesis } from "../../utils/SpeechSynthesis";
-import dingAudio from '../../assets/Ding_SoundEffect.mp3';
-import { CheckCircleOutline, Close, HighlightOff } from "@mui/icons-material";
+import correctAudio from '../../assets/Correct_SoundEffect.mp3';
+import incorrectAudio from '../../assets/Incorrect_SoundEffect.mp3';
+import { ArrowForwardIos, CheckCircleOutline, Close, HighlightOff } from "@mui/icons-material";
 import { Link as RouterLink } from 'react-router-dom';
+import { fetchGroupsByUserID } from "../../stores/slices/groupSlice";
 
 
 export const GameCorrectAnswer = () => {
@@ -16,26 +18,50 @@ export const GameCorrectAnswer = () => {
     const [questionVoca, setQuestionVoca] = useState<Vocabulary>();
     const [answerWords, setAnswerWords] = useState<string[]>([]);
     const [selectedWord, setSelectedWord] = useState<string>("");
+    const [groupName, setGroupName] = useState<string>("All");
 
 
     // redux
     const vocaStore = useSelector((state: RootState) => state.vocabulary);
     const userStore = useSelector((state: RootState) => state.user);
+    const groupStore = useSelector((state: RootState) => state.group);
     const dispatch: AppDispatch = useDispatch();
 
+
+    // watch user change
     useEffect(() => {
         if(userStore.id){
             dispatch(fetchVocaListByUserID(userStore.id));
+            dispatch(fetchGroupsByUserID(userStore.id));
         }
     }, [userStore]);
 
     // watch list voca change
     useEffect(() => {
+        // init question with All group when renderd
         if(vocaStore.listVoca?.length >= 4){
             setSelectedWord("");
             initialQuestion(vocaStore.listVoca);
         }
     },[vocaStore.listVoca])
+
+    // watch group name change
+    useEffect(() => {
+        initialQuestionFilterByGroupName();
+    }, [groupName, vocaStore.listVoca])
+
+    
+    // FUNCTION
+
+    const initialQuestionFilterByGroupName = () => {
+        setSelectedWord("");
+        if(groupName === 'All'){
+            initialQuestion(vocaStore.listVoca);
+        }else {
+            const vocaFilterByGroup: Vocabulary[] = vocaStore.listVoca.filter((voca: Vocabulary) => voca.groupName === groupName);
+            initialQuestion(vocaFilterByGroup);
+        }
+    }
 
     // shuffle array randomly
     const shuffle = (vocaList: Vocabulary[]) => {
@@ -55,7 +81,7 @@ export const GameCorrectAnswer = () => {
         return tempVocaList;
     }
 
-    // initial a question information | questionObject
+    // initial a question information
     const initialQuestion = (vocaList: any) => {
         const shuffledVoca = shuffle(vocaList).splice(0, 4); 
         let tempAnswerWords = shuffledVoca.map((voca: any) => voca.word);
@@ -64,27 +90,22 @@ export const GameCorrectAnswer = () => {
         setAnswerWords(tempAnswerWords.sort());
     }
 
+    // callback: trigger at the end of the speaking
+    const callbackOnEnd = (word: string) => {
+        const audio = questionVoca?.word === word ? new Audio(correctAudio) : new Audio(incorrectAudio);
+        audio.volume = 0.1;
+        audio.play();
+    }
+
+    // click answer
     const handleChooseAnswer = (word: string) => {
-        SpeechSynthesis(word);
         setSelectedWord(word);
-        
-        if(questionVoca?.word === word){
-            // correct
-            const timerShort = setTimeout(() => {
-                const audio = new Audio(dingAudio);
-                audio.play();
+        SpeechSynthesis(word, callbackOnEnd(word));
+    }
 
-                clearTimeout(timerShort);
-            }, 300)
-            const timerLong = setTimeout(() => {
-                setSelectedWord("");
-                initialQuestion(vocaStore.listVoca);
-
-                clearTimeout(timerLong);
-            }, 1200)
-        }else{
-            // incorrect
-        }
+    // click next question
+    const handleNextQuestion = () => {
+        initialQuestionFilterByGroupName();
     }
 
 
@@ -94,7 +115,7 @@ export const GameCorrectAnswer = () => {
         {/* Display close button */}
         <Button component={RouterLink} to="/game"
             sx={{ float: 'right', mt: 3, borderRadius: '30px', px: 2 }} 
-            startIcon={<Close/>} 
+            endIcon={<Close/>} 
             size="small" 
             variant="contained" 
             color="error">
@@ -106,28 +127,57 @@ export const GameCorrectAnswer = () => {
             Choose the correct answer
         </Typography>
 
+        {/* Display filter by group name */}
+        <Box sx={{ mb: 2 }}>
+            {/* Display group name title */}
+            <Typography sx={{ fontWeight: 'semibold', width: 'fit-content', py: 1 }} variant="body1">
+                Vocabularies from group: 
+            </Typography>
+            {/* Field: group name */}
+            <FormControl size="small" sx={{ mb: 2, width: {xs: '100%', md: '30%'} }}>
+                <InputLabel id="groupInput">Group</InputLabel>
+                <Select id="groupSelect" labelId="groupInput" label="Group"
+                    value={groupName}
+                    onChange={(event) => setGroupName(event.target.value)}
+                >
+                    <MenuItem aria-label="None" value="All">
+                        <Typography>All</Typography>
+                    </MenuItem>
+
+                    {groupStore.listGroup.map((group: any) => (
+                        <MenuItem key={group.id} value={group.groupName}>
+                            <Typography>
+                                {group.groupName}
+                            </Typography>
+                                
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        </Box>
 
         {/* Display questiong: meaning */}
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Card sx={{ boxShadow: '0 0 10px #90D26D', borderRadius: '20px', px: 1, width: '50%' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Card sx={{ boxShadow: '0 0 10px #90D26D', borderRadius: '20px', px: 1, width: '60%' }}>
                 <CardContent sx={{ textAlign: 'center' }}>
                     <Typography variant="h6"> {questionVoca?.meaning} </Typography>
+                    { selectedWord === questionVoca?.word &&  <Typography variant="subtitle1"> {questionVoca?.example} </Typography>}
                 </CardContent>
             </Card>
 
             {/* Display correct and incorrect icons */}
             { selectedWord === questionVoca?.word && 
-                <CheckCircleOutline sx={{ mt: 3, ml: 2, fontSize: '30px' }} color="success" />} 
+                <CheckCircleOutline sx={{ ml: 2, fontSize: '30px' }} color="success" />} 
 
             { selectedWord.length > 0 && selectedWord !== questionVoca?.word && 
-                <HighlightOff sx={{ mt: 3, ml: 2, fontSize: '30px' }} color="error" />}
+                <HighlightOff sx={{ ml: 2, fontSize: '30px' }} color="error" />}
         </Box>
 
 
         {/* Display list answers: word */}
         <Grid container spacing={3} sx={{ py: 3 }}>
             { answerWords.map(word => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={word}>
+                <Grid item xs={12} sm={6} lg={3} key={word}>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Button 
                             variant={ selectedWord === word ? 'contained' : 'outlined' } 
@@ -144,6 +194,17 @@ export const GameCorrectAnswer = () => {
                 </Grid>
             )) }
         </Grid>
+        
+        {/* Display next question button */}
+        <Button onClick={handleNextQuestion}
+            sx={{ float: 'right', mt: 3, borderRadius: '30px', px: 2 }} 
+            endIcon={<ArrowForwardIos />} 
+            size="small" 
+            variant="contained" 
+            color="success"
+            disabled={selectedWord !== questionVoca?.word}>
+            Next Question
+        </Button>
 
     </React.Fragment>
 }

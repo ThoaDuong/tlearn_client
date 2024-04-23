@@ -1,5 +1,10 @@
-export const SpeechSynthesis = ( word: string) => {
-    const msg = new SpeechSynthesisUtterance(word);
-    msg.rate = 0.5;
-    window.speechSynthesis.speak(msg);
+export const SpeechSynthesis = ( word: string, callbackOnEnd: void) => {
+    const utterMsg = new SpeechSynthesisUtterance(word);
+    utterMsg.rate = 0.8;
+    window.speechSynthesis.speak(utterMsg);
+
+    // trigger at the end of the speaking
+    utterMsg.onend = () => {
+        callbackOnEnd
+    };
 }
