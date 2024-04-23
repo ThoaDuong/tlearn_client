@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActions, CardContent, Typography } from "@mui/material"
+import { Box, Button, Card, CardActions, CardContent, Tooltip, TooltipProps, Typography, styled, tooltipClasses } from "@mui/material"
 import React from "react"
 import Vocabulary from "../../interfaces/Vocabulary"
 import { AppDispatch } from "../../stores/store"
@@ -12,6 +12,14 @@ import { SpeechSynthesis } from "../../utils/SpeechSynthesis"
 type VocaCardProps = {
     voca: Vocabulary|null
 }
+
+// const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
+//     <Tooltip {...props} classes={{ popper: className }} />
+//   ))({
+//     [`& .${tooltipClasses.tooltip}`]: {
+//       maxWidth: 300,
+//     },
+//   });
 
 export const VocaCard = ({voca }: VocaCardProps) => {
 
@@ -48,13 +56,23 @@ export const VocaCard = ({voca }: VocaCardProps) => {
 
     return (
         <React.Fragment>
-            <Card sx={{ boxShadow: '0 0 6px #008DDA', borderRadius: '20px', px: 1 }}>
+            <Card sx={{ boxShadow: '0 0 6px #008DDA', borderRadius: '20px', px: 1, height: '250px' }}>
 
                 {/* Display vocabulary fields */}
                 <CardContent>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        Word from {voca?.groupName? '"' + voca.groupName + '" group' : 'All'}
-                    </Typography>
+                    <Tooltip title={voca?.groupName ? voca.groupName : 'All'} 
+                        placement="top-end"
+                        slotProps={{ 
+                            popper: { modifiers: [{
+                                name: 'offset',
+                                options: {offset: [0, -14]}
+                            }]},
+                        }}
+                    >
+                        <Typography noWrap={true} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            Word from {voca?.groupName? '"' + voca.groupName + '" group' : 'All'}
+                        </Typography>
+                    </Tooltip>
                     <Box sx={{ display: 'flex' }}>
                         <Typography variant="h5">
                             {voca?.word}
@@ -67,12 +85,22 @@ export const VocaCard = ({voca }: VocaCardProps) => {
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         {voca?.type}
                     </Typography>
-                    <Typography variant="body2">
+                    <Typography variant="body2" component="div">
                         <b>Meaning: </b>
                         {voca?.meaning}
                         <br />
                         <b>Example: </b>
-                        {voca?.example}
+                        <Tooltip title={voca?.example} 
+                            placement="bottom-start"
+                            slotProps={{ 
+                                popper: { modifiers: [{
+                                    name: 'offset',
+                                    options: {offset: [0, -14]}
+                                }]},
+                            }}
+                        >
+                            <Typography variant="body2" noWrap={true}>{voca?.example}</Typography>
+                        </Tooltip>
                     </Typography>
                 </CardContent>
 

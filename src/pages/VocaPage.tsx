@@ -84,6 +84,7 @@ export const VocaPage = () => {
     // trigger in child component: GroupTabs
     const handleChangeGroupName = (groupName: string) => {
         setActiveGroupTab(groupName);
+        setCurrentPage(1);
     }
 
     const handleChangePagination = (event: any, value: number) => {

@@ -9,6 +9,7 @@ import { LoginPage } from '../pages/LoginPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { VocaPage } from '../pages/VocaPage';
 import { GameCorrectAnswer } from '../components/game/GameCorrectAnswer';
+import { GameOutOfTime } from '../components/game/GameOutOfTime';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -19,6 +20,7 @@ export const router = createBrowserRouter(
             <Route path="game" >
                 <Route index element={<GamePage/>}/>
                 <Route path="correct-answer" element={<GameCorrectAnswer/>} />
+                <Route path="out-of-time" element={<GameOutOfTime/>} />
             </Route>
 
             <Route path="*" element={<NotFoundPage/>} />
