@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../stores/store";
 import Vocabulary from "../../interfaces/Vocabulary";
 import { fetchVocaListByUserID } from "../../stores/slices/vocaSlice";
-import { SpeechSynthesis } from "../../utils/SpeechSynthesis";
+import { speechSynthesis } from "../../utils/SpeechSynthesis";
 import correctAudio from '../../assets/Correct_SoundEffect.mp3';
 import incorrectAudio from '../../assets/Incorrect_SoundEffect.mp3';
 import { ArrowForwardIos, CheckCircleOutline, Close, HighlightOff } from "@mui/icons-material";
 import { Link as RouterLink } from 'react-router-dom';
 import { fetchGroupsByUserID } from "../../stores/slices/groupSlice";
+import { shuffle } from "../../utils/Shuffle";
 
 
 export const GameCorrectAnswer = () => {
@@ -63,24 +64,6 @@ export const GameCorrectAnswer = () => {
         }
     }
 
-    // shuffle array randomly
-    const shuffle = (vocaList: Vocabulary[]) => {
-        let currentIndex = vocaList.length;
-        let tempVocaList = [ ...vocaList ];
-
-        // While there remain elements to shuffle...
-        while (currentIndex != 0) {
-
-            // Pick a remaining element...
-            let randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-
-            // And swap it with the current element.
-            [tempVocaList[currentIndex], tempVocaList[randomIndex]] = [tempVocaList[randomIndex], tempVocaList[currentIndex]];
-        }
-        return tempVocaList;
-    }
-
     // initial a question information
     const initialQuestion = (vocaList: any) => {
         const shuffledVoca = shuffle(vocaList).splice(0, 4); 
@@ -100,7 +83,7 @@ export const GameCorrectAnswer = () => {
     // click answer
     const handleChooseAnswer = (word: string) => {
         setSelectedWord(word);
-        SpeechSynthesis(word, callbackOnEnd(word));
+        speechSynthesis(word, callbackOnEnd(word));
     }
 
     // click next question
@@ -131,7 +114,7 @@ export const GameCorrectAnswer = () => {
         <Box sx={{ mb: 2 }}>
             {/* Display group name title */}
             <Typography sx={{ fontWeight: 'semibold', width: 'fit-content', py: 1 }} variant="body1">
-                Vocabularies from group: 
+                Choose a group for vocabulary focus:
             </Typography>
             {/* Field: group name */}
             <FormControl size="small" sx={{ mb: 2, width: {xs: '100%', md: '30%'} }}>
@@ -156,7 +139,7 @@ export const GameCorrectAnswer = () => {
             </FormControl>
         </Box>
 
-        {/* Display questiong: meaning */}
+        {/* Display question: meaning */}
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Card sx={{ boxShadow: '0 0 10px #90D26D', borderRadius: '20px', px: 1, width: '60%' }}>
                 <CardContent sx={{ textAlign: 'center' }}>
@@ -197,7 +180,7 @@ export const GameCorrectAnswer = () => {
         
         {/* Display next question button */}
         <Button onClick={handleNextQuestion}
-            sx={{ float: 'right', mt: 3, borderRadius: '30px', px: 2 }} 
+            sx={{ float: 'right', my: 3, borderRadius: '30px', px: 2 }} 
             endIcon={<ArrowForwardIos />} 
             size="small" 
             variant="contained" 

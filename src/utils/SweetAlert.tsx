@@ -51,3 +51,11 @@ export const alertConfirmDelete = (name: string, callback: any) => {
         callback(result.isConfirmed, name);
     })
 }
+
+export const alertLoseGame = (point: number) => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Opps! You lose.',
+        html: ` Your final score is <strong>${point}</strong> points.`
+    })
+}
