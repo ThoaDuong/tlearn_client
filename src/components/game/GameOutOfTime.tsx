@@ -199,7 +199,12 @@ export const GameOutOfTime = () => {
 
             {/* Display question: meaning */}
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Card sx={{ boxShadow: '0 0 10px #90D26D', borderRadius: '20px', px: 1, width: '50%' }}>
+                <Card sx={{ 
+                    boxShadow: '0 0 10px #90D26D', 
+                    borderRadius: '20px', 
+                    px: 1, 
+                    width: { xs: '100%', md: '60%' }
+                }}>
                     <CardContent sx={{ textAlign: 'center' }}>
                         <Typography variant="h6"> {questionVoca?.meaning} </Typography>
                         {selectedWord === questionVoca?.word && <Typography variant="subtitle1"> {questionVoca?.example} </Typography>}

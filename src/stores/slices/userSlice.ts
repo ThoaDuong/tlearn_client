@@ -9,6 +9,7 @@ export interface userState{
     photo: string | any;
     email: string | any;
     id: string | any;
+    isLoading: boolean
 }
 
 const initialState: userState = {
@@ -17,6 +18,7 @@ const initialState: userState = {
     photo: '',
     email: '',
     id: '',
+    isLoading: false
 }
 
 export const fetchUser = createAsyncThunk(
@@ -52,6 +54,9 @@ const userSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         // fetchUser | login
+        builder.addCase(fetchUser.pending, (state) => {
+            state.isLoading = true;
+        }),
         builder.addCase(fetchUser.fulfilled, (state, action: any) => {
             if(action.payload && action.payload.success){
                 state.username = action.payload.user.username;
@@ -59,10 +64,12 @@ const userSlice = createSlice({
                 state.photo = action.payload.user.photo;
                 state.email = action.payload.user.email;
                 state.id = action.payload.user._id;
+                state.isLoading = false;
             }
         }),
         builder.addCase(fetchUser.rejected, (state, action: any) => {
-            console.log('Error fetchUser', state, action.error.message);
+            console.log('Error fetchUser', action.error.message);
+            state.isLoading = false;
         })
         // logout
         // builder.addCase(logoutUser.fulfilled, (state, action: any) => {
