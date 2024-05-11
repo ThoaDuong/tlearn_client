@@ -1,5 +1,5 @@
 import { Box, Button, Card, CardActions, CardContent, Typography } from "@mui/material"
-import React from "react"
+import React, { useRef } from "react"
 import Vocabulary from "../../interfaces/Vocabulary"
 import { AppDispatch } from "../../stores/store"
 import { useDispatch } from "react-redux"
@@ -11,14 +11,19 @@ import { speechSynthesis } from "../../utils/SpeechSynthesis"
 import { CustomTooltip } from "../../utils/CustomMUI"
 
 type VocaCardProps = {
-    voca: Vocabulary|null
+    voca: Vocabulary|null,
+    index: number
 }
 
 
-export const VocaCard = ({voca }: VocaCardProps) => {
+export const VocaCard = ({voca, index }: VocaCardProps) => {
 
     // variable
     const navigate = useNavigate();
+    
+    // blue, green, pink, purple, red, orange, green cold, light brown, gray, dark pink, light orange, dark blue
+    const colors = useRef(['#008DDA', '#41B06E', '#FF76CE', '#7469B6', '#C40C0C', 
+    '#FFC100', '#135D66', '#AF8260', '#607274', '#C23373', '#FFAF45', '#387ADF']);
 
     //redux
     const dispatch: AppDispatch = useDispatch();
@@ -50,7 +55,7 @@ export const VocaCard = ({voca }: VocaCardProps) => {
 
     return (
         <React.Fragment>
-            <Card sx={{ boxShadow: '0 0 6px #008DDA', borderRadius: '20px', height: '255px' }}>
+            <Card sx={{ boxShadow: `0 0 9px ${colors.current[index]}`, borderRadius: '20px', height: '255px' }}>
 
                 {/* Display vocabulary fields */}
                 <CardContent>

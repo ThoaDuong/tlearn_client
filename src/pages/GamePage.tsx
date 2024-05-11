@@ -9,7 +9,7 @@ export const GamePage = () => {
     <React.Fragment>
         {/* Display title */}
         <Typography sx={{ py:2, flexGrow: 1 }} variant="h5">
-            Play game to learn vocabulary
+            Do exercise to memorize vocabulary
         </Typography>
 
         {/* Display list game */}

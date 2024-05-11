@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, InputBase, Paper, Toolbar, Typography } from "@mui/material"
+import { Box, Button, Grid, IconButton, InputBase, Paper, Toolbar, Typography } from "@mui/material"
 import React, { useEffect, useRef, useState } from "react"
 import { Add, Search } from "@mui/icons-material"
 import { Link as RouterLink } from "react-router-dom"
@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../stores/store"
 import { fetchVocaListByUserID, setIsDeleteVocaSuccess } from "../stores/slices/vocaSlice"
 import Vocabulary from "../interfaces/Vocabulary"
-import { VocaListCard } from "../components/vocabulary/VocaListCard"
 import { GroupTabs } from "../components/group/GroupTabs"
 import { fetchGroupsByUserID } from "../stores/slices/groupSlice"
 import { PaginationList } from "../components/PaginationList"
+import { VocaCard } from "../components/vocabulary/VocaCard"
 
 
 export const VocaPage = () => {
@@ -139,7 +139,13 @@ export const VocaPage = () => {
         
 
         {/* Display list voca */}
-        <VocaListCard listFilterVoca={vocaPagination} />
+        <Grid container spacing={2}>
+            { vocaPagination.map((voca: Vocabulary, index: number) => 
+                <Grid key={voca.id} item xs={12} sm={6} md={4} lg={3}>
+                    <VocaCard  voca={voca} index={index}/>
+                </Grid>
+            ) }
+        </Grid>
 
 
         {/* Display pagiantion for list voca */}

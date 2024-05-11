@@ -138,9 +138,6 @@ export const GameOutOfTime = () => {
     return <React.Fragment>
         {/* Display start block */}
         { !isShowQuestion && <Paper elevation={3} sx={{ textAlign: 'center', mt: 3, p: 3 }}>
-            <Typography> Each question will be timed, allowing 3 seconds for your response.</Typography>
-            <Typography>A correct answer will be awarded 1 point.</Typography>
-            <br/>
             <Typography> Choose a group for vocabulary focus:  </Typography>
 
             {/* Field: group name */}
@@ -165,6 +162,7 @@ export const GameOutOfTime = () => {
                 </Select>
             </FormControl>
 
+            <Typography> You need to answer the question in 3 seconds.</Typography>
             <br />
 
             {/* Display cancel button */}

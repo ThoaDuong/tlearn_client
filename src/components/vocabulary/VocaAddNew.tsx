@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Add, Cancel, Delete, Edit, Save } from "@mui/icons-material"
-import { Box, Button, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Toolbar, Typography } from "@mui/material"
+import { Box, Button, CircularProgress, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Toolbar, Typography } from "@mui/material"
 import { VocaCard } from "./VocaCard"
 import { useSelector, useDispatch } from "react-redux"
 import { groupState, deleteGroupByID, fetchGroupsByUserID, setIsAddNewGroupSuccess, setIsDeleteGroupSuccess, setIsUpdateGroupSuccess, setTempGroupName } from "../../stores/slices/groupSlice"
@@ -406,20 +406,29 @@ export const VocaAddNew = () => {
                         />
                         <Typography color="error"> {errorObject.exampleMessage} </Typography>
                     </FormControl>
-                    
+
                     {/* Display submit button */}
-                    <Button type="button" startIcon={<Cancel />} variant="contained" color="error"
-                        onClick={ handleGoBack }>
-                        Go Back
-                    </Button>
-                    { !vocaStore.editVoca ?
-                    <Button type="submit" startIcon={<Add />} variant="contained" sx={{ml:1}}>
-                        Add
-                    </Button>
-                    :
-                    <Button type="submit" startIcon={<Save />} variant="contained" sx={{ml:1}}>
-                        Save
-                    </Button> }
+                    <Box sx={{ display: 'flex' }}>
+
+                        {/* Display button */}
+                        <Button type="button" startIcon={<Cancel />} variant="contained" color="error"
+                            onClick={ handleGoBack }>
+                            Go Back
+                        </Button>
+
+                        { !vocaStore.editVoca ?
+                        <Button type="submit" startIcon={<Add />} variant="contained" sx={{ml:1}}>
+                            Add
+                        </Button>
+                        :
+                        <Button type="submit" startIcon={<Save />} variant="contained" sx={{ml:1}}>
+                            Save
+                        </Button> }
+
+                        {/* Display loading */}
+                        { vocaStore.isLoading && <CircularProgress sx={{ ml:1 }} />}
+                    </Box>
+                    
                 </Box>
 
             </Grid>
@@ -429,7 +438,7 @@ export const VocaAddNew = () => {
                 <Typography variant="h6" sx={{ my: 2 }}>
                     Preview
                 </Typography>
-                <VocaCard voca={ vocaStore.previewVoca } />
+                <VocaCard voca={ vocaStore.previewVoca } index={1} />
             </Grid>
         </Grid>
     </React.Fragment>)

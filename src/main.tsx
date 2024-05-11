@@ -10,7 +10,8 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 // custom mui theme
 const customTheme = createTheme({
     typography: {
-        "fontFamily": `"Mali", cursive`,
+        // "fontFamily": `"Mali", cursive`,
+        "fontFamily": `"Reddit Sans", sans-serif`
     }
  });
 

@@ -6,7 +6,7 @@ import { Link as RouterLink } from 'react-router-dom'
 
 const navList = [
     { id: 1, title: 'Vocabulary', slug: "/", icon: <Style /> },
-    { id: 4, title: 'Game To Learn', slug: "game", icon: <SportsEsports /> },
+    { id: 4, title: 'Memorize Vocabulary', slug: "game", icon: <SportsEsports /> },
 ];
 const settingList = [
     { id: 1, title: 'My Profile', icon: <Person /> },

@@ -13,6 +13,7 @@ export interface VocaState {
     isAddNewVocaSuccess: boolean;
     isDeleteVocaSuccess: boolean;
     isUpdateVocaSuccess: boolean;
+    isLoading: boolean;
 }
 const initialState: VocaState = {
     listVoca: [],
@@ -21,6 +22,7 @@ const initialState: VocaState = {
     isAddNewVocaSuccess: false,
     isDeleteVocaSuccess: false,
     isUpdateVocaSuccess: false,
+    isLoading: false
 }
 
 export const fetchVocaListByUserID = createAsyncThunk(
@@ -117,11 +119,16 @@ export const vocaSlice = createSlice({
             console.log('fetch Error', state, action)
         }),
         // add new voca
+        builder.addCase(addNewVoca.pending, (state) => {
+            state.isLoading = true;
+        }),
         builder.addCase(addNewVoca.fulfilled, (state) => {
             state.isAddNewVocaSuccess = true;
+            state.isLoading = false;
         }),
         builder.addCase(addNewVoca.rejected, (state, action) => {
-            console.log('voca reject', state, action)
+            state.isLoading = false;
+            console.log('voca reject', action);
         }),
         // delete voca
         builder.addCase(deleteVoca.fulfilled, (state, action) => {
@@ -134,15 +141,20 @@ export const vocaSlice = createSlice({
 
         }),
         // edit voca
+        builder.addCase(editVoca.pending, (state) => {
+            state.isLoading = true;
+        }),
         builder.addCase(editVoca.fulfilled, (state, action) => {
             const word = state.previewVoca?.word || action.payload.word;
             alertUpdateSuccess(word);
             state.editVoca = null;
             state.previewVoca = null;
             state.isUpdateVocaSuccess = true;
+            state.isLoading = false;
         }),
         builder.addCase(editVoca.rejected, (state, action) => {
-            console.log('edit voca error', state, action);
+            state.isLoading = true;
+            console.log('edit voca error', action);
         })
     }
 })
