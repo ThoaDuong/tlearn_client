@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux"
 import { deleteVoca, updateEditVoca } from "../../stores/slices/vocaSlice"
 import { useNavigate } from "react-router-dom"
 import { alertConfirmDelete } from "../../utils/SweetAlert"
-import { VolumeUp } from "@mui/icons-material"
+import { Delete, Edit, VolumeUp } from "@mui/icons-material"
 import { speechSynthesis } from "../../utils/SpeechSynthesis"
 import { CustomTooltip } from "../../utils/CustomMUI"
 
@@ -55,10 +55,17 @@ export const VocaCard = ({voca, index }: VocaCardProps) => {
 
     return (
         <React.Fragment>
-            <Card sx={{ boxShadow: `0 0 9px ${colors.current[index]}`, borderRadius: '20px', height: '255px' }}>
+            <Card sx={{ 
+                boxShadow: `0 0 9px ${colors.current[index]}`, 
+                borderRadius: '20px', 
+                height: '270px',
+                position: 'relative',
+                borderTop: '10px solid #008DDA',
+            }}>
 
                 {/* Display vocabulary fields */}
-                <CardContent>
+                <CardContent sx={{ 
+                }}>
                     <Typography noWrap={true} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         Word from {voca?.groupName? '"' + voca.groupName + '" group' : 'All'}
                     </Typography>
@@ -89,17 +96,54 @@ export const VocaCard = ({voca, index }: VocaCardProps) => {
                         </CustomTooltip>
 
                     </Typography>
-                </CardContent>
+                </CardContent> 
 
                 {/* Display Delete & Edit button */}
-                { voca?.id && <CardActions>
-                    <Button onClick={handleDeleteVoca} size="small">
-                        Delete
+                { voca?.id && <CardActions sx={{ 
+                    position: 'absolute', 
+                    bottom: -25, 
+                    zIndex: 2, 
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)' 
+                }}>
+                    <Button onClick={handleDeleteVoca} size="small" sx={{ 
+                        borderRadius: '50%', 
+                        p: 1,
+                        minWidth: '50px',
+                        border: '3px solid #008DDA',
+                        bgcolor: 'white',
+                        '&:hover': {
+                            backgroundColor: '#F1F1F1',
+                            color: '#4D869C',
+                        }
+                    }}>
+                        <Delete/>
                     </Button>
-                    <Button onClick={handleEditVoca} size="small">
-                        Edit
+                    <Button onClick={handleEditVoca} size="small" sx={{ 
+                        borderRadius: '50%', 
+                        p: 1,
+                        minWidth: '50px',
+                        border: '3px solid #008DDA',
+                        bgcolor: 'white',
+                        '&:hover': {
+                            backgroundColor: '#F1F1F1',
+                            color: '#4D869C',
+                        }
+                    }}>
+                        <Edit/>
                     </Button>
                 </CardActions>}
+
+                {/* Display bottom UI */}
+                <Typography variant="body1" sx={{ 
+                    width: '100%', 
+                    height: '40px',
+                    bgcolor: '#008DDA' , 
+                    position: 'absolute',
+                    bottom: 0,
+                    borderRadius: '300px 300px 0 0',
+                    zIndex: 1
+                }}></Typography>
             </Card>
         </React.Fragment>
     )
