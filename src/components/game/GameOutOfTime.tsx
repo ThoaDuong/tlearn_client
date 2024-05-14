@@ -136,6 +136,7 @@ export const GameOutOfTime = () => {
 
 
     return <React.Fragment>
+
         {/* Display start block */}
         { !isShowQuestion && <Paper elevation={3} sx={{ textAlign: 'center', mt: 3, p: 3 }}>
             <Typography> Choose a group for vocabulary focus:  </Typography>
@@ -185,7 +186,7 @@ export const GameOutOfTime = () => {
 
         {/* Display question and anwers */}
         { isShowQuestion && <Paper elevation={3} sx={{ mt: 3, p: 3 }}>
- 
+
             {/* Display point */}
             <Avatar sx={{ float: 'right', mt: 3,  bgcolor: '#E72929' }}> {point} </Avatar>
 
@@ -238,5 +239,7 @@ export const GameOutOfTime = () => {
                 ))}
             </Grid>
         </Paper>}
+            
+
     </React.Fragment>
 }

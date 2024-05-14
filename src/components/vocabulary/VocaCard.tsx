@@ -58,9 +58,9 @@ export const VocaCard = ({voca, index }: VocaCardProps) => {
             <Card sx={{ 
                 boxShadow: `0 0 9px ${colors.current[index]}`, 
                 borderRadius: '20px', 
-                height: '270px',
+                height: '285px',
                 position: 'relative',
-                borderTop: '10px solid #008DDA',
+                borderTop: '10px solid #03AED2',
             }}>
 
                 {/* Display vocabulary fields */}
@@ -110,11 +110,11 @@ export const VocaCard = ({voca, index }: VocaCardProps) => {
                         borderRadius: '50%', 
                         p: 1,
                         minWidth: '50px',
-                        border: '3px solid #008DDA',
+                        border: '3px solid #03AED2',
                         bgcolor: 'white',
                         '&:hover': {
-                            backgroundColor: '#F1F1F1',
-                            color: '#4D869C',
+                            backgroundColor: '#CAF4FF',
+                            color: '#074173',
                         }
                     }}>
                         <Delete/>
@@ -123,11 +123,11 @@ export const VocaCard = ({voca, index }: VocaCardProps) => {
                         borderRadius: '50%', 
                         p: 1,
                         minWidth: '50px',
-                        border: '3px solid #008DDA',
+                        border: '3px solid #03AED2',
                         bgcolor: 'white',
                         '&:hover': {
-                            backgroundColor: '#F1F1F1',
-                            color: '#4D869C',
+                            backgroundColor: '#CAF4FF',
+                            color: '#074173',
                         }
                     }}>
                         <Edit/>
@@ -138,7 +138,7 @@ export const VocaCard = ({voca, index }: VocaCardProps) => {
                 <Typography variant="body1" sx={{ 
                     width: '100%', 
                     height: '40px',
-                    bgcolor: '#008DDA' , 
+                    bgcolor: '#03AED2' , 
                     position: 'absolute',
                     bottom: 0,
                     borderRadius: '300px 300px 0 0',
