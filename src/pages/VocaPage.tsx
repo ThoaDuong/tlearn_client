@@ -29,6 +29,7 @@ export const VocaPage = () => {
     // redux
     const vocaStore = useSelector((state: RootState) => state.vocabulary);
     const userStore = useSelector((state: RootState) => state.user);
+    const groupStore = useSelector((state: RootState) => state.group);
     const dispatch: AppDispatch = useDispatch();
 
     // watcch isDeleteVocaSuccess change
@@ -135,7 +136,11 @@ export const VocaPage = () => {
         </Toolbar>
 
         {/* Display list group */}
-        <GroupTabs changeGroupName={handleChangeGroupName} />
+        <GroupTabs 
+            changeGroupName={handleChangeGroupName} 
+            groupStore={groupStore} 
+            vocaStore={vocaStore} 
+        />
         
 
         {/* Display list voca */}

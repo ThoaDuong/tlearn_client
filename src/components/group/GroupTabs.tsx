@@ -1,19 +1,36 @@
 import { Box, Tab, Tabs } from "@mui/material";
-import React, { useState } from "react"
-import { useSelector } from "react-redux";
-import { RootState } from "../../stores/store";
+import React, { useEffect, useState } from "react"
+import { VocaState } from "../../stores/slices/vocaSlice";
+import { groupState } from "../../stores/slices/groupSlice";
 
 type GroupTabsProps = {
-    changeGroupName: (groupName: string) => void
+    changeGroupName: (groupName: string) => void,
+    vocaStore: VocaState,
+    groupStore: groupState
 }
 
 export const GroupTabs = (props: GroupTabsProps) => {
 
     // variable
     const [groupTab, setGroupTab] = useState(0);
+    const [vocaAmount, setVocaAmount] = useState<any>({'all': 0});
 
-    // redux
-    const groupStore = useSelector((state: RootState) => state.group);
+    // watch
+    useEffect(() => {
+        const tempVocas = props.vocaStore.listVoca;
+        const tempGroups = props.groupStore.listGroup;
+        let tempAmount: any = {
+            'all': tempVocas.length
+        };
+
+        tempGroups.forEach((group) => {
+            const filter = tempVocas.filter(voca => voca.groupName === group.groupName);
+            tempAmount[group.groupName] = filter.length;
+        })
+
+        setVocaAmount(tempAmount);
+        
+    }, [props.vocaStore.listVoca, props.groupStore.listGroup])
 
     // function
     const handleChangeGroupTab = (event: any, newValue: number) => {
@@ -31,9 +48,31 @@ export const GroupTabs = (props: GroupTabsProps) => {
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
             >
-                <Tab sx={{ textTransform: 'none' }}  label="All" />
-                { groupStore.listGroup.map(group => (
-                    <Tab sx={{ textTransform: 'none' }} key={group.id} label={group.groupName} />
+                <Tab sx={{ textTransform: 'none' }}  label={
+                    <Box sx={{display: 'flex', gap: 1}}>
+                        <span>All</span>
+                        <span style={{ 
+                            fontSize: "10px", 
+                            borderRadius: '50%', 
+                            backgroundColor: '#75A47F', 
+                            color: 'white', 
+                            padding: '3px 4px' 
+                        }}> {vocaAmount['all']} </span>
+                    </Box>
+                } />
+                { props.groupStore.listGroup.map(group => (
+                    <Tab sx={{ textTransform: 'none' }} key={group.id} label={
+                        <Box sx={{display: 'flex', gap: 1}}>
+                            <span> {group.groupName} </span>
+                            <span style={{ 
+                                fontSize: "10px", 
+                                borderRadius: '50%', 
+                                backgroundColor: '#75A47F', 
+                                color: 'white', 
+                                padding: '3px 4px' 
+                            }}> {vocaAmount[group.groupName]} </span>
+                        </Box>
+                    }/>
                 )) }
             </Tabs>
         </Box>

@@ -139,6 +139,12 @@ export const GameOutOfTime = () => {
 
         {/* Display start block */}
         { !isShowQuestion && <Paper elevation={3} sx={{ textAlign: 'center', mt: 3, p: 3 }}>
+
+            {/* Display title */}
+            <Typography sx={{ pt: {xs: ' 40px', md: '0'}, pb: 1, flexGrow: 1, fontWeight: 'semibold' }} variant="h5">
+                Running out of time
+            </Typography>
+
             <Typography> Choose a group for vocabulary focus:  </Typography>
 
             {/* Field: group name */}

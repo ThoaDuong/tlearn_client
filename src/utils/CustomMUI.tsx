@@ -41,3 +41,14 @@ export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
       maxWidth: 240,
     },
   });
+
+
+
+// blue, green, pink, purple, 
+// red, orange, green cold, light brown, 
+// gray, dark pink, light orange, dark blue
+export const colors = [
+    '#008DDA', '#41B06E', '#FF76CE', '#7469B6', 
+    '#C40C0C', '#FFC100', '#135D66', '#AF8260', 
+    '#607274', '#C23373', '#FFAF45', '#387ADF'
+];

@@ -1,6 +1,7 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material"
 import React from "react"
 import { Link as RouterLink } from "react-router-dom"
+import { colors } from "../../utils/CustomMUI"
 
 type GameCardProps = {
     title: string,
@@ -11,7 +12,12 @@ type GameCardProps = {
 export const GameCard = ({ title, imgSource, targetPathname }: GameCardProps) => {
     return <React.Fragment>
         <RouterLink to={targetPathname} style={{ textDecoration: 'none' }}>
-            <Card sx={{ boxShadow: '0 0 6px #41B06E', borderRadius: '20px', px: 1 }}>
+            <Card sx={{ 
+                boxShadow: `0 0 6px ${colors[2]}`, 
+                borderRadius: '20px', 
+                px: 1, 
+                borderTop: '10px solid pink' 
+            }}>
                 <CardMedia
                     component="img"
                     height="120px"

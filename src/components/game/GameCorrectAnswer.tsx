@@ -162,6 +162,7 @@ export const GameCorrectAnswer = () => {
                         
                         {/* Meaning text  */}
                         <Typography variant="h6"> {questionVoca?.meaning} </Typography>
+                        { selectedWord === questionVoca?.word &&  <Typography variant="subtitle1"> / {questionVoca?.type} / </Typography>}
                         { selectedWord === questionVoca?.word &&  <Typography variant="subtitle1"> {questionVoca?.example} </Typography>}
                     </Box>
                    
