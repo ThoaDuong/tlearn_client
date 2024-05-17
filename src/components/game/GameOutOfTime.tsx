@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, CardContent, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material"
+import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import Vocabulary from "../../interfaces/Vocabulary";
 import { shuffle } from "../../utils/Shuffle";
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../stores/store";
 import { fetchVocaListByUserID } from "../../stores/slices/vocaSlice";
 import { fetchGroupsByUserID } from "../../stores/slices/groupSlice";
-import { CheckCircleOutline, HighlightOff } from "@mui/icons-material";
+import { ImportContacts, KeyboardArrowLeft } from "@mui/icons-material";
 import { speechSynthesis } from "../../utils/SpeechSynthesis";
 import correctAudio from '../../assets/Correct_SoundEffect.mp3';
 import incorrectAudio from '../../assets/Incorrect_SoundEffect.mp3';
@@ -87,6 +87,7 @@ export const GameOutOfTime = () => {
         if(word === questionVoca?.word){
             handleChooseCorrect();
         }else{
+            alertLoseGame(point);
             handleLoseGame();
         }
     }
@@ -113,7 +114,6 @@ export const GameOutOfTime = () => {
 
     // show alert and clear variables when losing
     const handleLoseGame = () => {
-        alertLoseGame(point);
         clearTimeout(timer);
         setStartCountDown(false);
         setIsShowQuestion(false);
@@ -128,6 +128,7 @@ export const GameOutOfTime = () => {
         setStartCountDown(true);
         setTimer(setTimeout(() => {
             if (!selectedWord) {
+                alertLoseGame(point);
                 handleLoseGame();
             }
         }, 3100));
@@ -138,7 +139,13 @@ export const GameOutOfTime = () => {
     return <React.Fragment>
 
         {/* Display start block */}
-        { !isShowQuestion && <Paper elevation={3} sx={{ textAlign: 'center', mt: 3, p: 3 }}>
+        { !isShowQuestion && <Paper elevation={3} sx={{ 
+            textAlign: 'center',
+            mt: 3, p: 3,
+            mx: 'auto',
+            bgcolor: '#FFFFF0', 
+            width: { xs: '100%', md: '600px' }
+        }}>
 
             {/* Display title */}
             <Typography sx={{ pt: {xs: ' 40px', md: '0'}, pb: 1, flexGrow: 1, fontWeight: 'semibold' }} variant="h5">
@@ -146,9 +153,10 @@ export const GameOutOfTime = () => {
             </Typography>
 
             <Typography> Choose a group for vocabulary focus:  </Typography>
+            <br/>
 
             {/* Field: group name */}
-            <FormControl size="small" sx={{ mb: 2, width: { xs: '100%', md: '30%' } }}>
+            <FormControl size="small" sx={{ mb: 2, width: { xs: '100%', md: '50%' } }}>
                 <InputLabel id="groupInput">Group</InputLabel>
                 <Select id="groupSelect" labelId="groupInput" label="Group"
                     value={groupName}
@@ -191,58 +199,74 @@ export const GameOutOfTime = () => {
         </Paper>}
 
         {/* Display question and anwers */}
-        { isShowQuestion && <Paper elevation={3} sx={{ mt: 3, p: 3 }}>
+        { isShowQuestion && <Paper elevation={3} sx={{ 
+            textAlign: 'center',
+            mt: 3, p: 2,
+            mx: 'auto',
+            bgcolor: '#FFFFF0', 
+            width: { xs: '100%', md: '600px' }
+        }}>
 
-            {/* Display point */}
-            <Avatar sx={{ float: 'right', mt: 3,  bgcolor: '#E72929' }}> {point} </Avatar>
+            <Box sx={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
+                color: '#ffffff',
+                bgcolor: '#75A47F',
+                mb: 3
+            }}>
+                <Button size="small" onClick={handleLoseGame}>
+                    <KeyboardArrowLeft fontSize="small" sx={{ color: 'white' }} />
+                </Button>
+                <Typography sx={{ px: 3, fontSize: '15px' }}>
+                    {point} 
+                    <ImportContacts sx={{ pt: "8px" }} fontSize="small" />
+                </Typography>
+            </Box>
 
             {/* Display timer progress bar */}
-            {startCountDown && <Box sx={{ width: '100%', mb: 3 }}>
+            {startCountDown && <Box sx={{ width: '100%', clear: 'both' }}>
                 <StyledLinearProgress variant="indeterminate" />
             </Box>}
 
+            {/* Display point */}
+            {/* <Typography sx={{
+                float: 'right',
+                mt: 1, p: '6px 15px',
+                color: '#ffffff',
+                bgcolor: '#75A47F',
+                clipPath: 'polygon(0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 100% 15%, 100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%)'
+            }}> {point} </Typography> */}
 
             {/* Display question: meaning */}
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Card sx={{ 
-                    boxShadow: '0 0 10px #90D26D', 
-                    borderRadius: '20px', 
-                    px: 1, 
-                    width: { xs: '100%', md: '60%' }
-                }}>
-                    <CardContent sx={{ textAlign: 'center' }}>
-                        <Typography variant="h6"> {questionVoca?.meaning} </Typography>
-                        {selectedWord === questionVoca?.word && <Typography variant="subtitle1"> {questionVoca?.example} </Typography>}
-                    </CardContent>
-                </Card>
-
-                {/* Display correct and incorrect icons */}
-                {selectedWord === questionVoca?.word &&
-                    <CheckCircleOutline sx={{ ml: 2, fontSize: '30px' }} color="success" />}
-
-                {selectedWord.length > 0 && selectedWord !== questionVoca?.word &&
-                    <HighlightOff sx={{ ml: 2, fontSize: '30px' }} color="error" />}
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', clear: 'both', mt: 3 }}>
+                <Typography variant="h6"> {questionVoca?.meaning} </Typography> 
             </Box>
 
             {/* Display list answers: word */}
             <Grid container spacing={3} sx={{ py: 3 }}>
-                {answerWords.map(word => (
-                    <Grid item xs={12} key={word}>
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Button
-                                variant={selectedWord === word ? 'contained' : 'outlined'}
-                                onClick={() => handleChooseAnswer(word)}
-                                sx={{
-                                    textTransform: 'none',
-                                    fontSize: '18px',
-                                    borderRadius: '30px',
-                                    px: 4
-                                }}>
+            { answerWords.map(word => (
+                <Grid item xs={12} md={6} key={word} >
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }} >
+                        <Button 
+                            onClick={() => handleChooseAnswer(word)}
+                            sx={{ 
+                                textTransform: 'none', 
+                                fontSize: '18px', 
+                                width: '100%',
+                                mx: { xs: '20px', md: '0px' },
+                                textAlign: 'center',
+                                bgcolor: '#C9D7DD',
+                                color: 'black',
+                                '&:hover': {
+                                    bgcolor: '#9AC8CD',
+                                }
+                            }}>
                                 {word}
-                            </Button>
-                        </Box>
-                    </Grid>
-                ))}
+                        </Button>
+                    </Box>
+                </Grid>
+            )) }
             </Grid>
         </Paper>}
             

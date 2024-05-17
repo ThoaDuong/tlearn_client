@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react"
 import { VocaState } from "../../stores/slices/vocaSlice";
 import { groupState } from "../../stores/slices/groupSlice";
@@ -34,9 +34,13 @@ export const GroupTabs = (props: GroupTabsProps) => {
 
     // function
     const handleChangeGroupTab = (event: any, newValue: number) => {
-        const groupName = event.target.innerText;
+        if(event){
+            setGroupTab(newValue);
+        }
+    }
+
+    const handleClickTab = (groupName: string) => {
         props.changeGroupName(groupName);
-        setGroupTab(newValue);
     }
 
     return (<React.Fragment>
@@ -49,28 +53,28 @@ export const GroupTabs = (props: GroupTabsProps) => {
             aria-label="scrollable auto tabs example"
             >
                 <Tab sx={{ textTransform: 'none' }}  label={
-                    <Box sx={{display: 'flex', gap: 1}}>
-                        <span>All</span>
-                        <span style={{ 
+                    <Box sx={{display: 'flex', gap: 1}} onClick={() => handleClickTab('All')}>
+                        <Typography component="span">All</Typography>
+                        <Typography component="span" sx={{ 
                             fontSize: "10px", 
                             borderRadius: '50%', 
                             backgroundColor: '#75A47F', 
                             color: 'white', 
-                            padding: '3px 4px' 
-                        }}> {vocaAmount['all']} </span>
+                            padding: '5px 6px' 
+                        }}> {vocaAmount['all']} </Typography>
                     </Box>
                 } />
                 { props.groupStore.listGroup.map(group => (
                     <Tab sx={{ textTransform: 'none' }} key={group.id} label={
-                        <Box sx={{display: 'flex', gap: 1}}>
-                            <span> {group.groupName} </span>
-                            <span style={{ 
+                        <Box sx={{display: 'flex', gap: 1}} onClick={() => handleClickTab(group.groupName)}>
+                            <Typography component="span"> {group.groupName} </Typography>
+                            <Typography component="span" sx={{ 
                                 fontSize: "10px", 
                                 borderRadius: '50%', 
                                 backgroundColor: '#75A47F', 
                                 color: 'white', 
-                                padding: '3px 4px' 
-                            }}> {vocaAmount[group.groupName]} </span>
+                                padding: '5px 6px' 
+                            }}> {vocaAmount[group.groupName]} </Typography>
                         </Box>
                     }/>
                 )) }
