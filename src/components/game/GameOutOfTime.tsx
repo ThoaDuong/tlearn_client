@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import Vocabulary from "../../interfaces/Vocabulary";
 import { shuffle } from "../../utils/Shuffle";
@@ -13,6 +13,7 @@ import incorrectAudio from '../../assets/Incorrect_SoundEffect.mp3';
 import { alertLoseGame } from "../../utils/SweetAlert";
 import { StyledLinearProgress } from "../../utils/CustomMUI";
 import { useNavigate } from "react-router-dom";
+import { TitleAndChooseGroup } from "./TitleAndChooseGroup";
 
 
 export const GameOutOfTime = () => {
@@ -31,7 +32,6 @@ export const GameOutOfTime = () => {
     // redux
     const vocaStore = useSelector((state: RootState) => state.vocabulary);
     const userStore = useSelector((state: RootState) => state.user);
-    const groupStore = useSelector((state: RootState) => state.group);
     const dispatch: AppDispatch = useDispatch();
 
     // watch user change
@@ -95,7 +95,8 @@ export const GameOutOfTime = () => {
     // handle chosse correct answer
     const handleChooseCorrect = () => {
         // increase point
-        setPoint(point+1);
+        const temp = point + 1;
+        setPoint(temp);
 
         // clear countdown timer of previous question
         clearTimeout(timer);
@@ -128,7 +129,8 @@ export const GameOutOfTime = () => {
         setStartCountDown(true);
         setTimer(setTimeout(() => {
             if (!selectedWord) {
-                alertLoseGame(point);
+                // not updated last point yet
+                alertLoseGame(point+1);
                 handleLoseGame();
             }
         }, 3100));
@@ -147,51 +149,32 @@ export const GameOutOfTime = () => {
             width: { xs: '100%', md: '600px' }
         }}>
 
-            {/* Display title */}
-            <Typography sx={{ pt: {xs: ' 40px', md: '0'}, pb: 1, flexGrow: 1, fontWeight: 'semibold' }} variant="h5">
-                Running out of time
-            </Typography>
-
-            <Typography> Choose a group for vocabulary focus:  </Typography>
-            <br/>
-
-            {/* Field: group name */}
-            <FormControl size="small" sx={{ mb: 2, width: { xs: '100%', md: '50%' } }}>
-                <InputLabel id="groupInput">Group</InputLabel>
-                <Select id="groupSelect" labelId="groupInput" label="Group"
-                    value={groupName}
-                    onChange={(event) => setGroupName(event.target.value)}
-                >
-                    <MenuItem aria-label="None" value="All">
-                        <Typography>All</Typography>
-                    </MenuItem>
-
-                    {groupStore.listGroup.map((group: any) => (
-                        <MenuItem key={group.id} value={group.groupName}>
-                            <Typography>
-                                {group.groupName}
-                            </Typography>
-
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+            {/* Display title and choose group name */}
+            <Box sx={{ mx: 'auto', mb: 2, width: { xs: '100%', md: '70%' } }}>
+                <TitleAndChooseGroup
+                    title="Choose the correct answer"
+                    groupName={groupName}
+                    setGroupName={setGroupName}
+                />
+            </Box>
 
             <Typography> You need to answer the question in 3 seconds.</Typography>
             <br />
 
-            {/* Display cancel button */}
+            {/* Display quit button */}
             <Button
                 onClick={() => (navigator(-1))}
                 variant="contained"
                 color="error"
+                size="small" 
                 sx={{ borderRadius: '30px', px: 2, mr: 1 }}
-            > Cancel </Button>
+            > Quit </Button>
             {/* Display start button */}
             <Button
                 onClick={handleStart}
                 disabled={isShowQuestion}
                 variant="contained"
+                size="small" 
                 sx={{ borderRadius: '30px', px: 2 }}
             >
                 Start

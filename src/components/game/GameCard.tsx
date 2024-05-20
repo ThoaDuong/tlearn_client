@@ -6,14 +6,15 @@ import { colors } from "../../utils/CustomMUI"
 type GameCardProps = {
     title: string,
     imgSource: string,
-    targetPathname: string
+    targetPathname: string,
+    index: number
 }
 
-export const GameCard = ({ title, imgSource, targetPathname }: GameCardProps) => {
+export const GameCard = ({ title, imgSource, targetPathname, index }: GameCardProps) => {
     return <React.Fragment>
         <RouterLink to={targetPathname} style={{ textDecoration: 'none' }}>
             <Card sx={{ 
-                boxShadow: `0 0 6px ${colors[2]}`, 
+                boxShadow: `0 0 6px ${colors[index]}`, 
                 borderRadius: '20px', 
                 px: 1, 
                 borderTop: '10px solid pink' 

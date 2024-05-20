@@ -10,6 +10,7 @@ import { NotFoundPage } from '../pages/NotFoundPage';
 import { VocaPage } from '../pages/VocaPage';
 import { GameCorrectAnswer } from '../components/game/GameCorrectAnswer';
 import { GameOutOfTime } from '../components/game/GameOutOfTime';
+import { GameMeaningMaster } from '../components/game/GameMeaningMaster';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -21,6 +22,7 @@ export const router = createBrowserRouter(
                 <Route index element={<GamePage/>}/>
                 <Route path="correct-answer" element={<GameCorrectAnswer/>} />
                 <Route path="out-of-time" element={<GameOutOfTime/>} />
+                <Route path="meaning-master" element={<GameMeaningMaster />} />
             </Route>
 
             <Route path="*" element={<NotFoundPage/>} />

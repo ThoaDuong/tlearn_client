@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../stores/store";
@@ -7,10 +7,11 @@ import { fetchVocaListByUserID } from "../../stores/slices/vocaSlice";
 import { speechSynthesis } from "../../utils/SpeechSynthesis";
 import correctAudio from '../../assets/Correct_SoundEffect.mp3';
 import incorrectAudio from '../../assets/Incorrect_SoundEffect.mp3';
-import { CheckCircleOutline, Close, HighlightOff } from "@mui/icons-material";
-import { Link as RouterLink } from 'react-router-dom';
+import { CheckCircleOutline, HighlightOff } from "@mui/icons-material";
 import { fetchGroupsByUserID } from "../../stores/slices/groupSlice";
 import { shuffle } from "../../utils/Shuffle";
+import { useNavigate } from "react-router-dom";
+import { TitleAndChooseGroup } from "./TitleAndChooseGroup";
 
 
 export const GameCorrectAnswer = () => {
@@ -20,12 +21,12 @@ export const GameCorrectAnswer = () => {
     const [answerWords, setAnswerWords] = useState<string[]>([]);
     const [selectedWord, setSelectedWord] = useState<string>("");
     const [groupName, setGroupName] = useState<string>("All");
+    const navigator = useNavigate();
 
 
     // redux
     const vocaStore = useSelector((state: RootState) => state.vocabulary);
     const userStore = useSelector((state: RootState) => state.user);
-    const groupStore = useSelector((state: RootState) => state.group);
     const dispatch: AppDispatch = useDispatch();
 
 
@@ -96,47 +97,14 @@ export const GameCorrectAnswer = () => {
 
     return <React.Fragment>
         <Box sx={{ p: 3, textAlign: 'center' }} >
-            {/* Display close button */}
-            <Button component={RouterLink} to="/game"
-                sx={{ borderRadius: '50%', minWidth: '20px', p: 1, position: 'absolute', right: '48px' }} 
-                size="small" 
-                variant="contained" 
-                color="error">
-                    <Close sx={{ fontSize: '18px', fontWeight: 'bold' }} />
-            </Button>
 
-            {/* Display title */}
-            <Typography sx={{ pt: {xs: ' 40px', md: '0'}, pb: 1, flexGrow: 1, fontWeight: 'semibold' }} variant="h5">
-                Choose the correct answer
-            </Typography>
-
-            {/* Display filter by group name */}
-            <Box sx={{ mb: 2 }}>
-                {/* Display group name title */}
-                <Typography sx={{ fontWeight: 'semibold', py: 1 }} variant="body1">
-                    Choose a group for vocabulary focus:
-                </Typography>
-                {/* Field: group name */}
-                <FormControl size="small" sx={{ mb: 2, width: {xs: '100%', md: '30%'} }}>
-                    <InputLabel id="groupInput">Group</InputLabel>
-                    <Select id="groupSelect" labelId="groupInput" label="Group"
-                        value={groupName}
-                        onChange={(event) => setGroupName(event.target.value)}
-                    >
-                        <MenuItem aria-label="None" value="All">
-                            <Typography>All</Typography>
-                        </MenuItem>
-
-                        {groupStore.listGroup.map((group: any) => (
-                            <MenuItem key={group.id} value={group.groupName}>
-                                <Typography>
-                                    {group.groupName}
-                                </Typography>
-                                    
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+            {/* Display title and choose group name */}
+            <Box sx={{ mx: 'auto', mb: 2, width: { xs: '100%', md: '50%' } }}>
+                <TitleAndChooseGroup
+                    title="Choose the correct answer"
+                    groupName={groupName}
+                    setGroupName={setGroupName}
+                />
             </Box>
 
             <Paper elevation={3} sx={{ 
@@ -196,6 +164,16 @@ export const GameCorrectAnswer = () => {
                     )) }
                 </Grid>
             </Paper>
+
+
+            {/* Display quit button */}
+            <Button
+                onClick={() => (navigator(-1))}
+                variant="contained"
+                color="error"
+                size="small" 
+                sx={{ borderRadius: '30px', px: 2, mr: 1 }}
+            > Quit </Button>
             
             {/* Display next question button */}
             <Button onClick={handleNextQuestion}
