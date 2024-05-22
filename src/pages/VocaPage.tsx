@@ -1,4 +1,4 @@
-import { Box, Button, Grid, IconButton, InputBase, Paper, Toolbar, Typography } from "@mui/material"
+import { Box, Button, Grid, IconButton, InputBase, Paper, Stack, Toolbar, Typography } from "@mui/material"
 import React, { useEffect, useRef, useState } from "react"
 import { Add, Search } from "@mui/icons-material"
 import { Link as RouterLink } from "react-router-dom"
@@ -45,11 +45,11 @@ export const VocaPage = () => {
         // filter list display vocabularies
         const list = vocaStore.listVoca.filter((voca) => {
             // active group: All
-            if(activeGroupTab === groupTabAll.current){
+            if (activeGroupTab === groupTabAll.current) {
                 return voca.word.includes(searchKeyword) ? true : false;
             }
             // active group: custom group name
-            else{
+            else {
                 return !!(voca.word.includes(searchKeyword) && voca.groupName === activeGroupTab) ? true : false;
             }
         });
@@ -57,7 +57,7 @@ export const VocaPage = () => {
 
     }, [searchKeyword, vocaStore.listVoca, activeGroupTab]);
 
-    // watch listVocaSearch | still working on this
+    // watch listVocaSearch
     useEffect(() => {
         let tempList = [ ...listVocaSearch ];
         if (tempList.length > 0){
@@ -89,23 +89,23 @@ export const VocaPage = () => {
     }
 
     const handleChangePagination = (event: any, value: number) => {
-        if(event){
+        if (event) {
             setCurrentPage(value);
         }
-        setVocaPagination(vocaPaginationList[value-1] || [])
+        setVocaPagination(vocaPaginationList[value - 1] || [])
     }
 
     return (<React.Fragment>
         <Box sx={{ display: 'flex' }}>
             {/* Display title */}
-            <Typography sx={{ py:2, flexGrow: 1 }} variant="h5">
+            <Typography sx={{ py: 2, flexGrow: 1 }} variant="h5">
                 Vocabulary
             </Typography>
 
             {/* Display search vocabulary | laptop */}
-            <Toolbar sx={{ flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+            <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 <Paper>
-                    <InputBase sx={{ ml: 2, width: {md: 250, lg: 350}}} placeholder="Search vocabulary"
+                    <InputBase sx={{ ml: 2, width: { md: 250, lg: 350 } }} placeholder="Search vocabulary"
                         value={searchKeyword}
                         onChange={(event) => setSearchKeyword(event.target.value)}
                     />
@@ -118,17 +118,17 @@ export const VocaPage = () => {
             {/* Display button add new vocabulary */}
             <Toolbar disableGutters sx={{ flexGrow: 0 }}>
                 <Button variant="outlined" component={RouterLink} to={userStore.id ? "new-voca" : "/"}
-                startIcon={<Add/>}
-                sx={{ borderRadius: "30px", px: 4 }}>
+                    startIcon={<Add />}
+                    sx={{ borderRadius: "30px", px: 4 }}>
                     Add new
                 </Button>
             </Toolbar>
         </Box>
 
         {/* Display search vocabulary | mobile */}
-        <Toolbar disableGutters sx={{ display: {xs: 'block', md: 'none'}}}>
+        <Toolbar disableGutters sx={{ display: { xs: 'block', md: 'none' } }}>
             <Paper sx={{ display: 'flex' }}>
-                <InputBase sx={{ ml: 2, width: '100%'}} placeholder="Search vocabulary"/>
+                <InputBase sx={{ ml: 2, width: '100%' }} placeholder="Search vocabulary" />
                 <IconButton type="button">
                     <Search />
                 </IconButton>
@@ -141,7 +141,17 @@ export const VocaPage = () => {
             groupStore={groupStore} 
             vocaStore={vocaStore} 
         />
-        
+
+        {/* Display empty message when have no vocabulary */}
+        {vocaPagination.length <= 0 && <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ width: 1, height: '50vh' }}
+        >
+            <Typography>You have no vocabulary. Let's create some to start your journey!</Typography>
+        </Stack>}
+
 
         {/* Display list voca */}
         <Grid container spacing={2}>
@@ -158,6 +168,7 @@ export const VocaPage = () => {
             count={vocaPaginationList.length}
             page={currentPage}
             onChange={handleChangePagination}
+            lengthOfList={vocaPagination.length}
         />}
     </React.Fragment>)
 }

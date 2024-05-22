@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../stores/store"
 import { fetchUser } from "../stores/slices/userSlice"
 import { LoginPage } from "../pages/LoginPage"
+import { Footer } from "../components/Footer"
 
 export const HomeLayout = () => {
 
@@ -28,7 +29,8 @@ export const HomeLayout = () => {
 
     return  (<React.Fragment>
         <Header userStore={userStore} />
-        <Container>
+
+        <Container sx={{ mb: 10 }}>
 
             {/* fetchUser pending | show loading UI */}
             {userStore.isLoading &&
@@ -52,5 +54,7 @@ export const HomeLayout = () => {
 
            
         </Container>
+
+        <Footer/>
     </React.Fragment>)
 }

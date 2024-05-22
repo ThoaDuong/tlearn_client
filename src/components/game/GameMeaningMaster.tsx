@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import correctAudio from '../../assets/Correct_SoundEffect.mp3';
 import incorrectAudio from '../../assets/Incorrect_SoundEffect.mp3';
 import { speechSynthesis } from "../../utils/SpeechSynthesis";
+import { alertNoEnoughVocabulary } from "../../utils/SweetAlert";
 
 
 export const GameMeaningMaster = () => {
@@ -41,9 +42,11 @@ export const GameMeaningMaster = () => {
     // watch list voca change
     useEffect(() => {
         // init question with All group when renderd
-        if (vocaStore.listVoca?.length >= 4) {
+        if (vocaStore.listVoca?.length >= 5) {
             setAnswerMeaning("");
             initialQuestion(vocaStore.listVoca);
+        }else{
+            alertNoEnoughVocabulary(handleCallbackAlert);
         }
     }, [vocaStore.listVoca])
 
@@ -54,6 +57,12 @@ export const GameMeaningMaster = () => {
 
 
     // FUNCTION
+
+    const handleCallbackAlert = (result: any) => {
+        if(result.isConfirmed || result.dismiss === "backdrop"){
+            navigator(-1);
+        }
+    }
 
     const initialQuestionFilterByGroupName = () => {
         setAnswerMeaning("");

@@ -10,7 +10,7 @@ import { ImportContacts, KeyboardArrowLeft } from "@mui/icons-material";
 import { speechSynthesis } from "../../utils/SpeechSynthesis";
 import correctAudio from '../../assets/Correct_SoundEffect.mp3';
 import incorrectAudio from '../../assets/Incorrect_SoundEffect.mp3';
-import { alertLoseGame } from "../../utils/SweetAlert";
+import { alertLoseGame, alertNoEnoughVocabulary } from "../../utils/SweetAlert";
 import { StyledLinearProgress } from "../../utils/CustomMUI";
 import { useNavigate } from "react-router-dom";
 import { TitleAndChooseGroup } from "./TitleAndChooseGroup";
@@ -42,7 +42,19 @@ export const GameOutOfTime = () => {
         }
     }, [userStore]);
 
+    useEffect(() => {
+        if(vocaStore.listVoca.length < 5){
+            alertNoEnoughVocabulary(handleCallbackAlert);
+        }
+    }, [vocaStore.listVoca])
+
     // FUNCTION 
+
+    const handleCallbackAlert = (result: any) => {
+        if(result.isConfirmed || result.dismiss === "backdrop"){
+            navigator(-1);
+        }
+    }
 
     // initial each question information
     const initialQuestion = (vocaList: any) => {

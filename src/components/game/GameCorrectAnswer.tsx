@@ -12,6 +12,7 @@ import { fetchGroupsByUserID } from "../../stores/slices/groupSlice";
 import { shuffle } from "../../utils/Shuffle";
 import { useNavigate } from "react-router-dom";
 import { TitleAndChooseGroup } from "./TitleAndChooseGroup";
+import { alertNoEnoughVocabulary } from "../../utils/SweetAlert";
 
 
 export const GameCorrectAnswer = () => {
@@ -41,9 +42,11 @@ export const GameCorrectAnswer = () => {
     // watch list voca change
     useEffect(() => {
         // init question with All group when renderd
-        if(vocaStore.listVoca?.length >= 4){
+        if(vocaStore.listVoca?.length >= 5){
             setSelectedWord("");
             initialQuestion(vocaStore.listVoca);
+        }else{
+            alertNoEnoughVocabulary(handleCallbackAlert);
         }
     },[vocaStore.listVoca])
 
@@ -54,6 +57,12 @@ export const GameCorrectAnswer = () => {
 
     
     // FUNCTION
+
+    const handleCallbackAlert = (result: any) => {
+        if(result.isConfirmed || result.dismiss === "backdrop"){
+            navigator(-1);
+        }
+    }
 
     const initialQuestionFilterByGroupName = () => {
         setSelectedWord("");

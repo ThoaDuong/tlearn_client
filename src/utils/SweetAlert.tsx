@@ -59,3 +59,12 @@ export const alertLoseGame = (point: number) => {
         html: ` Your final score is <strong>${point}</strong> points.`
     })
 }
+
+export const alertNoEnoughVocabulary = (callback: any) => {
+    Swal.fire({
+        icon: 'warning',
+        html: `<strong>Opps! You need at least 5 vocabularies to start!</strong>`
+    }).then((result) => {
+        callback(result);
+    })
+}
