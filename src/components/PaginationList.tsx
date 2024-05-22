@@ -1,4 +1,4 @@
-import { Box, Pagination, Stack } from "@mui/material"
+import { Pagination, Stack } from "@mui/material"
 import React from "react"
 
 type PaginationListProps = {
