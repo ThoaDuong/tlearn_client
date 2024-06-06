@@ -46,11 +46,11 @@ export const VocaPage = () => {
         const list = vocaStore.listVoca.filter((voca) => {
             // active group: All
             if (activeGroupTab === groupTabAll.current) {
-                return voca.word.includes(searchKeyword) ? true : false;
+                return voca.word.toLowerCase().includes(searchKeyword.toLowerCase()) ? true : false;
             }
             // active group: custom group name
             else {
-                return !!(voca.word.includes(searchKeyword) && voca.groupName === activeGroupTab) ? true : false;
+                return !!(voca.word.toLowerCase().includes(searchKeyword.toLowerCase()) && voca.groupName === activeGroupTab) ? true : false;
             }
         });
         setListVocaSearch(list);
@@ -128,7 +128,10 @@ export const VocaPage = () => {
         {/* Display search vocabulary | mobile */}
         <Toolbar disableGutters sx={{ display: { xs: 'block', md: 'none' } }}>
             <Paper sx={{ display: 'flex' }}>
-                <InputBase sx={{ ml: 2, width: '100%' }} placeholder="Search vocabulary" />
+                <InputBase sx={{ ml: 2, width: '100%' }} placeholder="Search vocabulary"
+                    value={searchKeyword}
+                    onChange={(event) => setSearchKeyword(event.target.value)}
+                />
                 <IconButton type="button">
                     <Search />
                 </IconButton>

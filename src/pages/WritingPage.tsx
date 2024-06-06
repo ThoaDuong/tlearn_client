@@ -31,7 +31,10 @@ export const WritingPage = () => {
     // watch writing list
     useEffect(() => {
         const list = writingStore.listWriting.filter((item: Writing) => 
-            (item.title.includes(searchKeyword) || item.content.includes(searchKeyword))
+            (
+                item.title.toLowerCase().includes(searchKeyword.toLowerCase()) || 
+                item.content.toLowerCase().includes(searchKeyword.toLowerCase())
+            )
         );
         setWritingListSearch(list);
     }, [searchKeyword, writingStore.listWriting])
@@ -73,6 +76,20 @@ export const WritingPage = () => {
                 </Button>
             </Toolbar>
         </Box>
+
+
+         {/* Display search vocabulary | mobile */}
+         <Toolbar disableGutters sx={{ display: { xs: 'block', md: 'none' } }}>
+            <Paper sx={{ display: 'flex' }}>
+                <InputBase sx={{ ml: 2, width: '100%' }} placeholder="Search vocabulary"
+                    value={searchKeyword}
+                    onChange={(event) => setSearchKeyword(event.target.value)}
+                />
+                <IconButton type="button">
+                    <Search />
+                </IconButton>
+            </Paper>
+        </Toolbar>
 
 
         {/* Display list writing */}
