@@ -1,19 +1,25 @@
 import React, { useState, MouseEvent } from "react"
 import { AppBar, Avatar, Box, Button, Container, IconButton, Link, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material"
-import { AutoStories, Logout, Login, Person, SportsEsports, Style } from '@mui/icons-material';
+import { AutoStories, Logout, Login, Person, SportsEsports, Style, DriveFileRenameOutline } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu'
 import { Link as RouterLink } from 'react-router-dom'
+import { userState } from "../stores/slices/userSlice";
 
 const navList = [
     { id: 1, title: 'Vocabulary', slug: "/", icon: <Style /> },
-    { id: 4, title: 'Memorize Vocabulary', slug: "game", icon: <SportsEsports /> },
+    { id: 2, title: 'Memorize Vocabulary', slug: "game", icon: <SportsEsports /> },
+    { id: 3, title: 'Writing', slug: "writing", icon: <DriveFileRenameOutline /> },
 ];
 const settingList = [
     { id: 1, title: 'My Profile', icon: <Person /> },
     { id: 2, title: 'Logout', icon: <Logout /> },
 ]
 
-export const Header = ( props: any ) => {
+type HeaderProps = {
+    userStore: userState
+}
+
+export const Header = ( props: HeaderProps ) => {
     // nav & user menu variable
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);

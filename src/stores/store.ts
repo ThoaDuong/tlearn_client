@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import vocabularyReducer from './slices/vocaSlice';
 import groupReducer from './slices/groupSlice';
 import userReducer from './slices/userSlice';
+import writingReducer from "./slices/writingSlice";
 
 export const store = configureStore({
     reducer: {
         vocabulary: vocabularyReducer,
         group: groupReducer,
         user: userReducer,
+        writing: writingReducer
     }
 })
 

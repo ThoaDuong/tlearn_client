@@ -11,6 +11,8 @@ import { VocaPage } from '../pages/VocaPage';
 import { GameCorrectAnswer } from '../components/game/GameCorrectAnswer';
 import { GameOutOfTime } from '../components/game/GameOutOfTime';
 import { GameMeaningMaster } from '../components/game/GameMeaningMaster';
+import { WritingPage } from '../pages/WritingPage';
+import { WritingAddNew } from '../components/writing/WritingAddNew';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -18,6 +20,10 @@ export const router = createBrowserRouter(
             <Route index element={<VocaPage/>} />
             <Route path="login" element={<LoginPage/>} />
             <Route path="new-voca" element={<VocaAddNew/>} />
+            <Route path="writing" >
+                <Route index element={<WritingPage/>} />
+                <Route path="new" element={<WritingAddNew/>} />
+            </Route>
             <Route path="game" >
                 <Route index element={<GamePage/>}/>
                 <Route path="correct-answer" element={<GameCorrectAnswer/>} />
