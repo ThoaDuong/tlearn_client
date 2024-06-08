@@ -1,5 +1,5 @@
 import { Add, Search } from "@mui/icons-material"
-import { Box, Button, Grid, IconButton, InputBase, Paper, Toolbar, Typography } from "@mui/material"
+import { Box, Button, Grid, IconButton, InputBase, Paper, Stack, Toolbar, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link as RouterLink } from "react-router-dom"
@@ -7,12 +7,16 @@ import { AppDispatch, RootState } from "../stores/store"
 import { WritingCard } from "../components/writing/WritingCard"
 import { fetchWritingListByUserID, setIsDeleteWritingSuccess } from "../stores/slices/writingSlice"
 import { Writing } from "../interfaces/Writing"
+import { PaginationList } from "../components/PaginationList"
 
 export const WritingPage = () => {
 
     // variable
     const [searchKeyword, setSearchKeyword] = useState("");
     const [writingListSearch, setWritingListSearch] = useState<Writing[]>([]);
+
+    // variable pagination
+    const [writingPagination, setWritingPagination] = useState<any>([]); 
 
     // redux
     const userStore = useSelector((state: RootState) => state.user);
@@ -91,14 +95,31 @@ export const WritingPage = () => {
             </Paper>
         </Toolbar>
 
+        {/* Display empty message when have no vocabulary */}
+        {writingPagination.length <= 0 && <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ width: 1, height: '50vh' }}
+        >
+            <Typography>You have no writing. Let's create some to start your journey!</Typography>
+        </Stack>}
 
         {/* Display list writing */}
         <Grid key="container" container spacing={2}>
-            { writingListSearch.map((writingItem: Writing) => (
+            { writingPagination.map((writingItem: Writing) => (
                 <Grid key={writingItem.id} item xs={12} sm={6} md={4} lg={3}>
                     <WritingCard writingItem={writingItem}/>
                 </Grid>
             )) }
         </Grid>
+
+        {/* Display pagiantion for list writing */}
+        <PaginationList 
+            arrayFullItems={writingListSearch}
+            itemPerPage={12}
+            itemPaginationFromParent={writingPagination}
+            setItemPaginationFromParent={setWritingPagination}
+        />
     </React.Fragment>)
 }

@@ -8,7 +8,7 @@ import { fetchVocaListByUserID, setIsDeleteVocaSuccess } from "../stores/slices/
 import Vocabulary from "../interfaces/Vocabulary"
 import { GroupTabs } from "../components/group/GroupTabs"
 import { fetchGroupsByUserID } from "../stores/slices/groupSlice"
-import { PaginationList } from "../components/PaginationList"
+import { PaginationList, PaginationListRefType } from "../components/PaginationList"
 import { VocaCard } from "../components/vocabulary/VocaCard"
 
 
@@ -20,11 +20,8 @@ export const VocaPage = () => {
     const groupTabAll = useRef('All');
 
     // variable pagination
-    const vocaPerPage = useRef(12);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [vocaPagination, setVocaPagination] = useState<Vocabulary[]>([]);
-    const [vocaPaginationList, setVocaPaginationList] = useState<Vocabulary[][]>([]);
-
+    const [vocaPagination, setVocaPagination] = useState<any>([]);
+    const paginationListChildRef = useRef<PaginationListRefType>(null);
 
     // redux
     const vocaStore = useSelector((state: RootState) => state.vocabulary);
@@ -57,20 +54,6 @@ export const VocaPage = () => {
 
     }, [searchKeyword, vocaStore.listVoca, activeGroupTab]);
 
-    // watch listVocaSearch
-    useEffect(() => {
-        let tempList = [ ...listVocaSearch ];
-        if (tempList.length > 0){
-            let vocas = [];
-            while (tempList.length > 0) {
-                vocas.push(tempList.splice(0, vocaPerPage.current));
-            }
-            setVocaPaginationList(vocas);
-            setVocaPagination(vocas[currentPage-1] || []);
-        }
-
-    }, [listVocaSearch])
-
     // watch userStore change
     useEffect(() => {
         if(userStore.id){
@@ -80,20 +63,17 @@ export const VocaPage = () => {
         }
     }, [userStore]);
 
+
     // function
 
     // trigger in child component: GroupTabs
     const handleChangeGroupName = (groupName: string) => {
         setActiveGroupTab(groupName);
-        setCurrentPage(1);
+
+        // trigger function in child: PaginationList
+        paginationListChildRef.current?.setCurrentPageToDefault();
     }
 
-    const handleChangePagination = (event: any, value: number) => {
-        if (event) {
-            setCurrentPage(value);
-        }
-        setVocaPagination(vocaPaginationList[value - 1] || [])
-    }
 
     return (<React.Fragment>
         <Box sx={{ display: 'flex' }}>
@@ -167,11 +147,12 @@ export const VocaPage = () => {
 
 
         {/* Display pagiantion for list voca */}
-        { (vocaPagination.length > 0) && <PaginationList 
-            count={vocaPaginationList.length}
-            page={currentPage}
-            onChange={handleChangePagination}
-            lengthOfList={vocaPagination.length}
-        />}
+        <PaginationList 
+            ref={paginationListChildRef}
+            arrayFullItems={listVocaSearch}
+            itemPerPage={12}
+            itemPaginationFromParent={vocaPagination}
+            setItemPaginationFromParent={setVocaPagination}
+        />
     </React.Fragment>)
 }
