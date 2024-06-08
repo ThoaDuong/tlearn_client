@@ -2,7 +2,7 @@ import { Box, Button, FormControl, Paper, TextField, Typography } from "@mui/mat
 import React, { useEffect, useRef, useState } from "react"
 import { TitleAndChooseGroup } from "./TitleAndChooseGroup"
 import Vocabulary from "../../interfaces/Vocabulary";
-import { CheckCircleOutline, HighlightOff } from "@mui/icons-material";
+import { CheckCircleOutline, HighlightOff, VolumeUp } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../stores/store";
 import { fetchVocaListByUserID } from "../../stores/slices/vocaSlice";
@@ -93,11 +93,15 @@ export const GameMeaningMaster = () => {
         // press enter
         if (event.key === 'Enter') {
             setIsPressEnter(true);
-            speechSynthesis(answerMeaning, callbackOnEnd(answerMeaning));
-
+            
             // correct meaning
             if(answerMeaning.toLocaleLowerCase() === questionVoca?.word.toLocaleLowerCase()){
                 setIsCorrectAnswer(true);
+                // speak word and correct sound
+                speechSynthesis(answerMeaning, callbackOnEnd(answerMeaning));
+            }else{
+                // not speak the word if the result is not correct | speak wrong sound only
+                callbackOnEnd(answerMeaning);
             }
         }
     }
@@ -111,8 +115,14 @@ export const GameMeaningMaster = () => {
 
     // give up
     const handleGiveUp = () => {
+        const word = questionVoca?.word || "";
+        speechSynthesis(word, callbackOnEnd(word));
         setIsCorrectAnswer(true);
         setIsPressEnter(false);
+    }
+
+    const handleSpeakExampleSentence = () => {
+        speechSynthesis(questionVoca?.example || "");
     }
 
     return (<React.Fragment>
@@ -156,7 +166,12 @@ export const GameMeaningMaster = () => {
                         { isCorrectAnswer && <Box>
                             <Typography variant="h5"> {questionVoca?.word} </Typography>
                             <Typography variant="subtitle1"> / {questionVoca?.type} / </Typography>
-                            <Typography variant="subtitle1"> {questionVoca?.example} </Typography>
+                            <Box sx={{ display: 'flex' }}>
+                                <Typography variant="subtitle1"> {questionVoca?.example} </Typography> 
+                                <Button size="small" onClick={handleSpeakExampleSentence}>
+                                    <VolumeUp fontSize="small"/>
+                                </Button> 
+                            </Box>
                         </Box> }
                     </Box>
                 </Box>

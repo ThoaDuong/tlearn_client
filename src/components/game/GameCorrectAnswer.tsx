@@ -7,7 +7,7 @@ import { fetchVocaListByUserID } from "../../stores/slices/vocaSlice";
 import { speechSynthesis } from "../../utils/SpeechSynthesis";
 import correctAudio from '../../assets/Correct_SoundEffect.mp3';
 import incorrectAudio from '../../assets/Incorrect_SoundEffect.mp3';
-import { CheckCircleOutline, HighlightOff } from "@mui/icons-material";
+import { CheckCircleOutline, HighlightOff, VolumeUp } from "@mui/icons-material";
 import { fetchGroupsByUserID } from "../../stores/slices/groupSlice";
 import { shuffle } from "../../utils/Shuffle";
 import { useNavigate } from "react-router-dom";
@@ -101,6 +101,10 @@ export const GameCorrectAnswer = () => {
         initialQuestionFilterByGroupName();
     }
 
+    const handleSpeakExampleSentence = () => {
+        speechSynthesis(questionVoca?.example || "");
+    }
+
 
 
 
@@ -140,7 +144,14 @@ export const GameCorrectAnswer = () => {
                         {/* Meaning text  */}
                         <Typography variant="h6"> {questionVoca?.meaning} </Typography>
                         { selectedWord === questionVoca?.word &&  <Typography variant="subtitle1"> / {questionVoca?.type} / </Typography>}
-                        { selectedWord === questionVoca?.word &&  <Typography variant="subtitle1"> {questionVoca?.example} </Typography>}
+                        { selectedWord === questionVoca?.word &&  
+                            <Box sx={{ display: 'flex' }}>
+                                <Typography variant="subtitle1"> {questionVoca?.example} </Typography> 
+                                <Button size="small" onClick={handleSpeakExampleSentence}>
+                                    <VolumeUp fontSize="small"/>
+                                </Button> 
+                            </Box>
+                        }
                     </Box>
                    
 
