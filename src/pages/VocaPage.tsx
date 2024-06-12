@@ -138,9 +138,9 @@ export const VocaPage = () => {
 
         {/* Display list voca */}
         <Grid container spacing={2}>
-            { vocaPagination.map((voca: Vocabulary, index: number) => 
+            { vocaPagination.map((voca: Vocabulary) => 
                 <Grid key={voca.id} item xs={12} sm={6} md={4} lg={3}>
-                    <VocaCard  voca={voca} index={index}/>
+                    <VocaCard  voca={voca}/>
                 </Grid>
             ) }
         </Grid>

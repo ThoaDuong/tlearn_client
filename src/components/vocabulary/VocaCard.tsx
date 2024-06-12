@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Button, Card, CardActions, CardContent, Typography } from "@mui/material"
+import { Box, Button, Divider, Typography } from "@mui/material"
 import Vocabulary from "../../interfaces/Vocabulary"
 import { AppDispatch } from "../../stores/store"
 import { useDispatch } from "react-redux"
@@ -8,17 +8,14 @@ import { useNavigate } from "react-router-dom"
 import { alertConfirmDelete } from "../../utils/SweetAlert"
 import { Delete, Edit, VolumeUp } from "@mui/icons-material"
 import { speechSynthesis } from "../../utils/SpeechSynthesis"
-import { CustomTooltip } from "../../utils/CustomMUI"
-import { colors } from "../../utils/CustomMUI"
 
 
 type VocaCardProps = {
-    voca: Vocabulary|null,
-    index: number
+    voca: Vocabulary|null
 }
 
 
-export const VocaCard = ({voca, index }: VocaCardProps) => {
+export const VocaCard = ({voca }: VocaCardProps) => {
 
     // variable
     const navigate = useNavigate();
@@ -54,96 +51,141 @@ export const VocaCard = ({voca, index }: VocaCardProps) => {
 
     return (
         <React.Fragment>
-            <Card sx={{ 
-                boxShadow: `0 0 9px ${colors[index]}`, 
+            {/* Parent Container */}
+            <Box sx={{
+                border: '1px solid #373A40',
+                height: '300px',
                 borderRadius: '20px', 
-                height: '285px',
                 position: 'relative',
-                borderTop: '10px solid #03AED2',
+                overflow: 'hidden',
+                bgcolor: '#e7f4f4',
             }}>
-
-                {/* Display vocabulary fields */}
-                <CardContent sx={{ 
+                {/* Top | Voca Content */}
+                <Box sx={{
+                    position: 'absolute',
+                    top: 0,
+                    zIndex: 1,
+                    padding: '18px 18px 18px 0',
+                    borderRadius: '20px',
+                    height: '100%',
+                    width: '100%',
+                    overflowY: 'scroll',
+                    right: '-18px', /* to hidden scrollbar | 18px */
                 }}>
-                    <Typography noWrap={true} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        Word from {voca?.groupName? '"' + voca.groupName + '" group' : 'All'}
+
+                    {/* Display group name */}
+                    <Typography component="span" sx={{
+                        bgcolor: '#49afa9',
+                        color: 'white',
+                        border: '1px solid #373A40',
+                        fontSize: 10,
+                        px: 1.5, py: 0.5,
+                        borderRadius: '20px'
+                    }}>
+                        {voca?.groupName? voca.groupName : 'All'}
                     </Typography>
-                    <Box sx={{ display: 'flex' }}>
-                        <Typography variant="h5">
+
+                    {/* Display voca word + speak volumn */}
+                    <Box sx={{ display: 'flex', mt: 1}}>
+                        <Typography component="h3" sx={{
+                            fontWeight: '600',
+                            fontSize: 26,
+                        }}>
                             {voca?.word}
                         </Typography>
 
-                        { voca && voca.word && <Button onClick={handleSpeakVoca}>
+                        { voca && voca.word && <Button 
+                            sx={{ mt: 0.25, color: '#49afa9' }}
+                            onClick={handleSpeakVoca}
+                        >
                             <VolumeUp />
                         </Button> }
+
                     </Box>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        {voca?.type}
+
+                    {/* Display type */}
+                    <Typography sx={{ fontSize: 14, mt: 0 }}>
+                        / {voca?.type} /
                     </Typography>
-                    <Typography variant="body2" component="div">
 
-                        {/* Display meaning field */}
-                        <b>Meaning: </b>
-                        <CustomTooltip title={voca?.meaning}>
-                            <Typography variant="body2" noWrap={true}>{voca?.meaning}</Typography>
-                        </CustomTooltip>
-                        
-                        {/* Display example field */}
-                        <b>Example: </b>
-                        <CustomTooltip title={voca?.example}>
-                            <Typography variant="body2" noWrap={true}>{voca?.example}</Typography>
-                        </CustomTooltip>
-
+                    {/* Display meaning */}
+                    <Typography sx={{ fontWeight: '500', mt: 1 }}>
+                        {voca?.meaning}
                     </Typography>
-                </CardContent> 
 
-                {/* Display Delete & Edit button */}
-                { voca?.id && <CardActions sx={{ 
-                    position: 'absolute', 
-                    bottom: -25, 
-                    zIndex: 2, 
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)' 
-                }}>
-                    <Button onClick={handleDeleteVoca} size="small" sx={{ 
-                        borderRadius: '50%', 
-                        p: 1,
-                        minWidth: '50px',
-                        border: '3px solid #03AED2',
-                        bgcolor: 'white',
-                        '&:hover': {
-                            backgroundColor: '#CAF4FF',
-                            color: '#074173',
-                        }
-                    }}>
-                        <Delete/>
-                    </Button>
-                    <Button onClick={handleEditVoca} size="small" sx={{ 
-                        borderRadius: '50%', 
-                        p: 1,
-                        minWidth: '50px',
-                        border: '3px solid #03AED2',
-                        bgcolor: 'white',
-                        '&:hover': {
-                            backgroundColor: '#CAF4FF',
-                            color: '#074173',
-                        }
-                    }}>
-                        <Edit/>
-                    </Button>
-                </CardActions>}
+                    {/* Display example */}
+                    <Typography sx={{ fontSize: 14, fontStyle: 'italic', mt: 1 }}>
+                        Ex: {voca?.example}
+                    </Typography>
 
-                {/* Display bottom UI */}
-                <Typography variant="body1" sx={{ 
-                    width: '100%', 
-                    height: '40px',
-                    bgcolor: '#03AED2' , 
+                    {/* Hidden block */}
+                    <Typography sx={{ mb: 7, visibility: 'hidden' }}></Typography>
+                </Box>
+
+                {/* Bottom | Divider White Background */}
+                <Box sx={{
                     position: 'absolute',
-                    bottom: 0,
-                    borderRadius: '300px 300px 0 0',
-                    zIndex: 1
-                }}></Typography>
-            </Card>
+                    top: '85%',
+                    // top: '80%',
+                    zIndex: 2,
+                    width: '100%',
+                    height: '60px',
+                    bgcolor: 'white',
+                    borderBottomLeftRadius: '20px',
+                    borderBottomRightRadius: '20px',
+                }}>
+                    <Divider sx={{ bgcolor: '#373A40' }}/>
+                </Box>
+
+                {/* Bottom | Edit + Delete Button */}
+                { voca?.id && <Box sx={{
+                    position: 'absolute',
+                    top: '85%',
+                    // top: '90%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 3
+                    }}>
+                        <Box>
+                            <Typography component="button" sx={{ 
+                                bgcolor: '#fa8b8b',
+                                color: 'white',
+                                border: '1px solid #373A40', 
+                                borderRadius: '50%',
+                                p: '5px 10px',
+                                fontSize: 16,
+                                mr: 0.5,
+                                '&:hover': {
+                                    bgcolor: '#ccc',
+                                    cursor: 'pointer'
+                                }
+                            }}
+                                onClick={handleDeleteVoca}
+                            >
+                                <Delete sx={{ mt: 0.6, fontSize: 'inherit' }}/>
+                            </Typography>
+                            <Typography component="button" sx={{ 
+                                bgcolor: '#fa8b8b',
+                                color: 'white',
+                                border: '1px solid #373A40', 
+                                borderRadius: '50%',
+                                p: '5px 10px',
+                                fontSize: 16,
+                                ml: 0.5,
+                                '&:hover': {
+                                    bgcolor: '#ccc',
+                                    cursor: 'pointer'
+                                }
+                            }}
+                                onClick={handleEditVoca}
+                            >
+                                <Edit sx={{ mt: 0.6, fontSize: 'inherit' }}/>
+                            </Typography>
+                        </Box>
+                </Box>}
+            </Box>
+
+
         </React.Fragment>
     )
 }
