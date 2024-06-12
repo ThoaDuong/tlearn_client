@@ -12,6 +12,14 @@ const customTheme = createTheme({
     typography: {
         // "fontFamily": `"Mali", cursive`,
         "fontFamily": `"Reddit Sans", sans-serif`
+    },
+    palette: {
+        primary: {
+            light: '#e7f4f4',
+            main: '#49afa9',
+            dark: '#49afa9',
+            contrastText: '#fff',
+        }
     }
  });
 

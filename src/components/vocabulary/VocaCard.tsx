@@ -53,19 +53,19 @@ export const VocaCard = ({voca }: VocaCardProps) => {
         <React.Fragment>
             {/* Parent Container */}
             <Box sx={{
-                border: '1px solid #373A40',
+                border: '1px solid var(--black)',
                 height: '300px',
                 borderRadius: '20px', 
                 position: 'relative',
                 overflow: 'hidden',
-                bgcolor: '#e7f4f4',
+                bgcolor: 'var(--light-green)',
             }}>
                 {/* Top | Voca Content */}
                 <Box sx={{
                     position: 'absolute',
                     top: 0,
                     zIndex: 1,
-                    padding: '18px 18px 18px 0',
+                    padding: '18px 18px 18px 0', /* to balance with hidden scrollbar | 18px */
                     borderRadius: '20px',
                     height: '100%',
                     width: '100%',
@@ -75,9 +75,9 @@ export const VocaCard = ({voca }: VocaCardProps) => {
 
                     {/* Display group name */}
                     <Typography component="span" sx={{
-                        bgcolor: '#49afa9',
+                        bgcolor: 'var(--green)',
                         color: 'white',
-                        border: '1px solid #373A40',
+                        border: '1px solid var(--black)',
                         fontSize: 10,
                         px: 1.5, py: 0.5,
                         borderRadius: '20px'
@@ -95,7 +95,7 @@ export const VocaCard = ({voca }: VocaCardProps) => {
                         </Typography>
 
                         { voca && voca.word && <Button 
-                            sx={{ mt: 0.25, color: '#49afa9' }}
+                            sx={{ mt: 0.25, color: 'var(--green)' }}
                             onClick={handleSpeakVoca}
                         >
                             <VolumeUp />
@@ -104,9 +104,9 @@ export const VocaCard = ({voca }: VocaCardProps) => {
                     </Box>
 
                     {/* Display type */}
-                    <Typography sx={{ fontSize: 14, mt: 0 }}>
-                        / {voca?.type} /
-                    </Typography>
+                    { voca && voca.type && <Typography sx={{ fontSize: 14, mt: 0 }}>
+                        / {voca.type} /
+                    </Typography>}
 
                     {/* Display meaning */}
                     <Typography sx={{ fontWeight: '500', mt: 1 }}>
@@ -122,61 +122,35 @@ export const VocaCard = ({voca }: VocaCardProps) => {
                     <Typography sx={{ mb: 7, visibility: 'hidden' }}></Typography>
                 </Box>
 
-                {/* Bottom | Divider White Background */}
+                {/* Bottom | Divider and Background */}
                 <Box sx={{
                     position: 'absolute',
                     top: '85%',
-                    // top: '80%',
                     zIndex: 2,
                     width: '100%',
                     height: '60px',
-                    bgcolor: 'white',
+                    bgcolor: 'var(--light-pink)',
                     borderBottomLeftRadius: '20px',
                     borderBottomRightRadius: '20px',
                 }}>
-                    <Divider sx={{ bgcolor: '#373A40' }}/>
+                    <Divider sx={{ bgcolor: 'var(--black)' }}/>
                 </Box>
 
                 {/* Bottom | Edit + Delete Button */}
                 { voca?.id && <Box sx={{
                     position: 'absolute',
                     top: '85%',
-                    // top: '90%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     zIndex: 3
                     }}>
                         <Box>
-                            <Typography component="button" sx={{ 
-                                bgcolor: '#fa8b8b',
-                                color: 'white',
-                                border: '1px solid #373A40', 
-                                borderRadius: '50%',
-                                p: '5px 10px',
-                                fontSize: 16,
-                                mr: 0.5,
-                                '&:hover': {
-                                    bgcolor: '#ccc',
-                                    cursor: 'pointer'
-                                }
-                            }}
+                            <Typography component="button" className="voca-action-btn" sx={{ mr: 0.5 }}
                                 onClick={handleDeleteVoca}
                             >
                                 <Delete sx={{ mt: 0.6, fontSize: 'inherit' }}/>
                             </Typography>
-                            <Typography component="button" sx={{ 
-                                bgcolor: '#fa8b8b',
-                                color: 'white',
-                                border: '1px solid #373A40', 
-                                borderRadius: '50%',
-                                p: '5px 10px',
-                                fontSize: 16,
-                                ml: 0.5,
-                                '&:hover': {
-                                    bgcolor: '#ccc',
-                                    cursor: 'pointer'
-                                }
-                            }}
+                            <Typography component="button" className="voca-action-btn" sx={{ ml: 0.5 }}
                                 onClick={handleEditVoca}
                             >
                                 <Edit sx={{ mt: 0.6, fontSize: 'inherit' }}/>
@@ -184,7 +158,6 @@ export const VocaCard = ({voca }: VocaCardProps) => {
                         </Box>
                 </Box>}
             </Box>
-
 
         </React.Fragment>
     )

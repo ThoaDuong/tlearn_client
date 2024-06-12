@@ -1,4 +1,14 @@
 
+/* All custom colors */
+:root {
+    --black: #373A40;
+    --green: #49afa9;
+    --light-green: #e7f4f4;
+    --pink: #fa8b8b;
+    --light-pink: #feeeee;
+    --yellow: #FFE500
+  }
+
 
 * {
     box-sizing: border-box;
@@ -22,4 +32,19 @@
 }
 .swal2-actions {
     margin-bottom: 20px;
+}
+
+/* Voca card */
+.voca-action-btn{
+    background-color: var(--pink);
+    color: white;
+    border: 1px solid var(--black);
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 16;
+    &:hover {
+        background-color: var(--light-pink);
+        color: var(--pink);
+        cursor: pointer
+    }
 }
