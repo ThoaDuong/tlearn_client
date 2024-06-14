@@ -438,7 +438,7 @@ export const VocaAddNew = () => {
                 <Typography variant="h6" sx={{ my: 2 }}>
                     Preview
                 </Typography>
-                <VocaCard voca={ vocaStore.previewVoca } index={1} />
+                <VocaCard voca={ vocaStore.previewVoca } />
             </Grid>
         </Grid>
     </React.Fragment>)

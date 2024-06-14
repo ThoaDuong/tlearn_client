@@ -78,14 +78,14 @@ export const VocaPage = () => {
     return (<React.Fragment>
         <Box sx={{ display: 'flex' }}>
             {/* Display title */}
-            <Typography sx={{ py: 2, flexGrow: 1 }} variant="h5">
+            <Typography sx={{ py: 2, flexGrow: 1, color: 'var(--black)' }} variant="h5">
                 Vocabulary
             </Typography>
 
             {/* Display search vocabulary | laptop */}
             <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                <Paper>
-                    <InputBase sx={{ ml: 2, width: { md: 250, lg: 350 } }} placeholder="Search vocabulary"
+                <Paper sx={{ borderRadius: '40px', px: 2 }}>
+                    <InputBase sx={{ ml: 2, width: { md: 250, lg: 350 },  }} placeholder="Search vocabulary"
                         value={searchKeyword}
                         onChange={(event) => setSearchKeyword(event.target.value)}
                     />
@@ -99,7 +99,14 @@ export const VocaPage = () => {
             <Toolbar disableGutters sx={{ flexGrow: 0 }}>
                 <Button variant="outlined" component={RouterLink} to={userStore.id ? "new-voca" : "/"}
                     startIcon={<Add />}
-                    sx={{ borderRadius: "30px", px: 4 }}>
+                    sx={{ 
+                        borderRadius: "30px", 
+                        px: 4,
+                        bgcolor: 'var(--yellow)',
+                        color: 'var(--black)',
+                        border: '1px solid var(--black)',
+                        fontWeight: '600'
+                    }}>
                     Add new
                 </Button>
             </Toolbar>
@@ -107,7 +114,7 @@ export const VocaPage = () => {
 
         {/* Display search vocabulary | mobile */}
         <Toolbar disableGutters sx={{ display: { xs: 'block', md: 'none' } }}>
-            <Paper sx={{ display: 'flex' }}>
+            <Paper sx={{ display: 'flex',  borderRadius: '40px', px: 2 }}>
                 <InputBase sx={{ ml: 2, width: '100%' }} placeholder="Search vocabulary"
                     value={searchKeyword}
                     onChange={(event) => setSearchKeyword(event.target.value)}

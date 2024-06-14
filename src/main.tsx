@@ -15,9 +15,9 @@ const customTheme = createTheme({
     },
     palette: {
         primary: {
-            light: '#e7f4f4',
-            main: '#49afa9',
-            dark: '#49afa9',
+            light: '#e7f4f4', /* light green */
+            main: '#49afa9', /* green */
+            dark: '#49afa9', /* green */
             contrastText: '#fff',
         }
     }

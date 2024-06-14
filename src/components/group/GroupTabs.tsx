@@ -57,10 +57,11 @@ export const GroupTabs = (props: GroupTabsProps) => {
                         <Typography component="span">All</Typography>
                         <Typography component="span" sx={{ 
                             fontSize: "10px", 
-                            borderRadius: '50%', 
-                            backgroundColor: '#75A47F', 
+                            borderRadius: '20px', 
+                            backgroundColor: 'var(--pink)', 
+                            border: '1px solid var(--black)',
                             color: 'white', 
-                            padding: '5px 6px' 
+                            padding: '3px 8px' 
                         }}> {vocaAmount['all']} </Typography>
                     </Box>
                 } />
@@ -70,10 +71,11 @@ export const GroupTabs = (props: GroupTabsProps) => {
                             <Typography component="span"> {group.groupName} </Typography>
                             <Typography component="span" sx={{ 
                                 fontSize: "10px", 
-                                borderRadius: '50%', 
-                                backgroundColor: '#75A47F', 
+                                borderRadius: '20px', 
+                                backgroundColor: 'var(--pink)', 
+                                border: '1px solid var(--black)',
                                 color: 'white', 
-                                padding: '5px 6px' 
+                                padding: '3px 8px' 
                             }}> {vocaAmount[group.groupName]} </Typography>
                         </Box>
                     }/>

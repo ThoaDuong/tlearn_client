@@ -65,6 +65,7 @@ export const VocaCard = ({voca }: VocaCardProps) => {
                     position: 'absolute',
                     top: 0,
                     zIndex: 1,
+                    color: 'var(--black)',
                     padding: '18px 18px 18px 0', /* to balance with hidden scrollbar | 18px */
                     borderRadius: '20px',
                     height: '100%',
