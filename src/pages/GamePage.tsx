@@ -23,7 +23,6 @@ export const GamePage = () => {
                     title="Choose the correct answer"
                     imgSource={gameChoose}  
                     targetPathname="correct-answer"
-                    index={0}
                 />
             </Grid>
             
@@ -33,7 +32,6 @@ export const GamePage = () => {
                     title="Running out of time"
                     imgSource={gameOutOfTime}
                     targetPathname="out-of-time"
-                    index={1}
                 />
             </Grid>
 
@@ -43,7 +41,6 @@ export const GamePage = () => {
                     title="Meaning master"
                     imgSource={gameMeaningMaster}
                     targetPathname="meaning-master"
-                    index={3}
                 />
             </Grid>
         </Grid>
