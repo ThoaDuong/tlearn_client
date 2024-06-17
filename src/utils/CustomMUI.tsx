@@ -1,4 +1,4 @@
-import { LinearProgress, Tooltip, TooltipProps, keyframes, styled, tooltipClasses } from "@mui/material";
+import { Box, LinearProgress, Tooltip, TooltipProps, Typography, keyframes, styled, tooltipClasses } from "@mui/material";
 
 
 const indeterminate1Keyframes = keyframes({
@@ -41,6 +41,30 @@ export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
       maxWidth: 240,
     },
   });
+
+
+// custom CSS ellipsis when reach "line"
+type MultilineTruncateType = {
+    text: string,
+    line: number
+}
+export const MultilineTruncate = ({ text, line }: MultilineTruncateType) => {
+    return (
+        <Box sx={{
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            WebkitLineClamp: 2,
+            lineClamp: line,
+            maxHeight: '3em', // Adjust based on the line height
+        }}>
+            <Typography variant="body1" sx={{ fontSize: 14 }}>
+                {text}
+            </Typography>
+        </Box>
+    );
+};
 
 
 

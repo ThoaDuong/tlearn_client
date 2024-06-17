@@ -160,16 +160,19 @@ export const WritingAddNew = () => {
 
                         {/* Display button */}
                         <Button type="button" startIcon={<Cancel />} variant="contained" color="error"
+                            sx={{ borderRadius: "30px", px: 3 }}
                             onClick={handleGoBack}>
                             Go Back
                         </Button>
 
                         { !writingStore.editWritingObject ?
-                        <Button type="submit" startIcon={<Add />} variant="contained" sx={{ml:1}}>
+                        <Button type="submit" startIcon={<Add />} variant="contained" 
+                            sx={{ ml:1,borderRadius: "30px", px: 3 }}>
                             Add
                         </Button>
                         :
-                        <Button type="submit" startIcon={<Save />} variant="contained" sx={{ml:1}}>
+                        <Button type="submit" startIcon={<Save />} variant="contained" 
+                            sx={{ ml:1, borderRadius: "30px", px: 3 }}>
                             Save
                         </Button> }
 

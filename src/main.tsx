@@ -19,6 +19,12 @@ const customTheme = createTheme({
             main: '#49afa9', /* green */
             dark: '#49afa9', /* green */
             contrastText: '#fff',
+        },
+        error: {
+            light: '#feeeee', /* light pink */
+            main: '#F78989', /* dark pink */
+            dark: '#F78989', /* dark pink */
+            contrastText: '#fff',
         }
     }
  });

@@ -60,7 +60,7 @@ export const WritingPage = () => {
 
             {/* Display search writing | laptop */}
             <Toolbar sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                <Paper>
+                <Paper sx={{ borderRadius: '40px', px: 2 }}>
                     <InputBase sx={{ ml: 2, width: { md: 250, lg: 350 } }} placeholder="Search writing"
                         value={searchKeyword}
                         onChange={(event) => setSearchKeyword(event.target.value)}
@@ -74,9 +74,15 @@ export const WritingPage = () => {
             {/* Display button add new writing */}
             <Toolbar disableGutters sx={{ flexGrow: 0 }}>
                 <Button variant="outlined" component={RouterLink} to={userStore.id ? "new" : "/"}
-                    startIcon={<Add />}
-                    sx={{ borderRadius: "30px", px: 4 }}>
-                    Add new
+                    startIcon={<Add />} sx={{ 
+                        borderRadius: "30px", 
+                        px: 4,
+                        bgcolor: 'var(--yellow)',
+                        color: 'var(--black)',
+                        border: '1px solid var(--black)',
+                        fontWeight: '600'
+                    }}>
+                        Add new
                 </Button>
             </Toolbar>
         </Box>
@@ -84,7 +90,7 @@ export const WritingPage = () => {
 
          {/* Display search vocabulary | mobile */}
          <Toolbar disableGutters sx={{ display: { xs: 'block', md: 'none' } }}>
-            <Paper sx={{ display: 'flex' }}>
+            <Paper sx={{ display: 'flex', borderRadius: '40px', px: 2 }}>
                 <InputBase sx={{ ml: 2, width: '100%' }} placeholder="Search vocabulary"
                     value={searchKeyword}
                     onChange={(event) => setSearchKeyword(event.target.value)}
