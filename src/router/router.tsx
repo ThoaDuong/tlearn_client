@@ -13,13 +13,18 @@ import { GameOutOfTime } from '../components/game/GameOutOfTime';
 import { GameMeaningMaster } from '../components/game/GameMeaningMaster';
 import { WritingPage } from '../pages/WritingPage';
 import { WritingAddNew } from '../components/writing/WritingAddNew';
+import { HomePage } from '../pages/HomePage';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<HomeLayout/>}>
-            <Route index element={<VocaPage/>} />
+            <Route index element={<HomePage/>} />
             <Route path="login" element={<LoginPage/>} />
-            <Route path="new-voca" element={<VocaAddNew/>} />
+            <Route path="voca">
+                <Route index element={<VocaPage/>} />
+                <Route path="new" element={<VocaAddNew/>} />\
+            </Route>
+            <Route path="home" element={<HomePage/> } />
             <Route path="writing" >
                 <Route index element={<WritingPage/>} />
                 <Route path="new" element={<WritingAddNew/>} />

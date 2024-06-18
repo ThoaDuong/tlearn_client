@@ -40,7 +40,7 @@ export const VocaCard = ({voca }: VocaCardProps) => {
 
     const handleEditVoca = () => {
         dispatch(updateEditVoca(voca));
-        navigate('new-voca');
+        navigate('new');
     }
 
     const handleSpeakVoca = () => {

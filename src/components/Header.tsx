@@ -6,7 +6,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import { userState } from "../stores/slices/userSlice";
 
 const navList = [
-    { id: 1, title: 'Vocabulary', slug: "/", icon: <Style /> },
+    { id: 1, title: 'Vocabulary', slug: "voca", icon: <Style /> },
     { id: 2, title: 'Memorize Vocabulary', slug: "game", icon: <SportsEsports /> },
     { id: 3, title: 'Writing', slug: "writing", icon: <DriveFileRenameOutline /> },
 ];

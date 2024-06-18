@@ -97,7 +97,7 @@ export const VocaPage = () => {
 
             {/* Display button add new vocabulary */}
             <Toolbar disableGutters sx={{ flexGrow: 0 }}>
-                <Button variant="outlined" component={RouterLink} to={userStore.id ? "new-voca" : "/"}
+                <Button variant="outlined" component={RouterLink} to={userStore.id ? "new" : "/"}
                     startIcon={<Add />}
                     sx={{ 
                         borderRadius: "30px", 

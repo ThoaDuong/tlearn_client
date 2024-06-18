@@ -56,7 +56,6 @@ export const VocaAddNew = () => {
     // watch voca isAddNewVocaSuccess change | true
     useEffect(() => {        
         if(vocaStore.isAddNewVocaSuccess){
-            // navigate("/");
             alertAddNewSuccess(word);
             clearVocaField();
             dispatch(setIsAddNewVocaSuccess(false));
@@ -68,7 +67,7 @@ export const VocaAddNew = () => {
         if(vocaStore.isUpdateVocaSuccess){
             dispatch(setIsUpdateVocaSuccess(false));
             clearVocaField();
-            navigate("/");
+            navigate(-1);
         }
     }, [vocaStore.isUpdateVocaSuccess])
 
