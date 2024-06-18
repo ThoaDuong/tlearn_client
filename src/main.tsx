@@ -6,6 +6,13 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router/router"
 import './index.css'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import TagManager from 'react-gtm-module'
+ 
+// google tag manager
+const tagManagerArgs = {
+    gtmId: 'GTM-T3P79B49'
+}
+TagManager.initialize(tagManagerArgs)
 
 // custom mui theme
 const customTheme = createTheme({
