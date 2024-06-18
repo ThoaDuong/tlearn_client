@@ -1,5 +1,5 @@
 import { Delete, Edit } from "@mui/icons-material"
-import { Box, Button, Card, CardActions, CardContent, Divider, Typography } from "@mui/material"
+import { Box, Divider, Typography } from "@mui/material"
 import React from "react"
 import { Writing } from "../../interfaces/Writing"
 import { useDispatch } from "react-redux"
