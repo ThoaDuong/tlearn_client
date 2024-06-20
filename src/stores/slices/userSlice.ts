@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { configHeader } from "../../utils/config";
 
-const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL; 
 
 export interface userState{
     username: string | any;
@@ -24,12 +24,8 @@ const initialState: userState = {
 export const fetchUser = createAsyncThunk(
     'fetchUser', 
     async () => {
-        const config = {
-            method: "get",
-            url: `${VITE_SERVER_URL}/login/success`,
-            headers: {"Content-type": "application/json; charset=UTF-8"},
-            withCredentials: true
-        }
+        const config = configHeader('get', '/login/success');
+
         const response = await axios(config);
         return response.data;
     }
@@ -38,11 +34,8 @@ export const fetchUser = createAsyncThunk(
 export const logoutUser = createAsyncThunk(
     'logoutUser', 
     async () => {
-        const config = {
-            method: "get",
-            url: `${VITE_SERVER_URL}/logout`,
-            headers: {"Content-Type": "application/json; charset=UTF-8"},
-        }
+        const config = configHeader('get', '/logout');
+
         const response = await axios(config);
         return response.data;
     }

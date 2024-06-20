@@ -1,8 +1,8 @@
 import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Group from "../../interfaces/Group";
+import { configHeader } from "../../utils/config";
 
-const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export interface groupState{
     listGroup: Group[],
@@ -26,7 +26,9 @@ const initialState: groupState = {
 export const fetchGroupsByUserID = createAsyncThunk(
     'fetchGroupsByUserID',
     async (userID: string ) => {
-        const response = await axios.get(`${VITE_SERVER_URL}/group/${userID}`);
+        const config = configHeader('get', `/group/${userID}`);
+
+        const response = await axios(config);
         return response.data;
     }
 )
@@ -35,14 +37,8 @@ export const fetchGroupsByUserID = createAsyncThunk(
 export const addNewGroup = createAsyncThunk(
     'addNewGroup',
     async (groupObject: any ) => {
-        const config = {
-            method: "post",
-            url: `${VITE_SERVER_URL}/group`,
-            data: JSON.stringify(groupObject),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            },
-        }
+        const config = configHeader('post', '/group', groupObject);
+        
         const response = await axios(config);
         return response.data;
     }
@@ -52,14 +48,8 @@ export const addNewGroup = createAsyncThunk(
 export const editGroupByID = createAsyncThunk(
     'editGroupByID',
     async (groupObject: { groupName:string, groupID: string } ) => {
-        const config = {
-            method: "put",
-            url: `${VITE_SERVER_URL}/group`,
-            data: JSON.stringify(groupObject),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            }
-        }
+        const config = configHeader('patch', '/group', groupObject);
+
         const response = await axios(config);
         return response.data;
     }
@@ -69,7 +59,9 @@ export const editGroupByID = createAsyncThunk(
 export const deleteGroupByID = createAsyncThunk(
     "deleteGroupByID",
     async (groupID: string ) => {
-        const response = await axios.delete(`${VITE_SERVER_URL}/group/${groupID}`);
+        const config = configHeader('delete', `/group/${groupID}`);
+
+        const response = await axios(config);
         return response.data;
     }
 )

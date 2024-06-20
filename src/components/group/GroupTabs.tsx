@@ -61,7 +61,7 @@ export const GroupTabs = (props: GroupTabsProps) => {
                             backgroundColor: 'var(--pink)', 
                             border: '1px solid var(--black)',
                             color: 'white', 
-                            padding: '3px 8px' 
+                            padding: '5px 8px' 
                         }}> {vocaAmount['all']} </Typography>
                     </Box>
                 } />

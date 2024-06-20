@@ -2,9 +2,8 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Writing } from "../../interfaces/Writing";
 import axios from "axios";
 import { alertDeleteSuccess, alertUpdateSuccess } from "../../utils/SweetAlert";
+import { configHeader } from "../../utils/config";
 
-
-const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export interface WritingState {
     listWriting: Writing[],
@@ -28,7 +27,9 @@ const initialState: WritingState = {
 export const fetchWritingListByUserID = createAsyncThunk(
     "fetchWritingListByUserID",
     async (userID: string) => {
-        const response = await axios.get(`${VITE_SERVER_URL}/writing/${userID}`);
+        const config = configHeader('get', `/writing/${userID}`);
+
+        const response = await axios(config);
         return response.data;
     }
 )
@@ -37,14 +38,8 @@ export const fetchWritingListByUserID = createAsyncThunk(
 export const addNewWriting = createAsyncThunk(
     "addNewWriting",
     async (writingObject: any) => {
-        const config = {
-            method: "post",
-            url: `${VITE_SERVER_URL}/writing`,
-            headers: {
-                "Content-Type": "application/json; charset=UTF-8",
-            },
-            data: JSON.stringify(writingObject)
-        }
+        const config = configHeader('post', '/writing', writingObject);
+
         const response = await axios(config);
         return response.data;
     }
@@ -54,7 +49,9 @@ export const addNewWriting = createAsyncThunk(
 export const deleteWritingByID = createAsyncThunk(
     "deleteWriting",
     async (writingID: string) => {
-        const response = await axios.delete(`${VITE_SERVER_URL}/writing/${writingID}`);
+        const config = configHeader('delete', `/writing/${writingID}`);
+
+        const response = await axios(config);
         return response.data;
     }
 )
@@ -63,14 +60,8 @@ export const deleteWritingByID = createAsyncThunk(
 export const updateWriting = createAsyncThunk(
     "updateWriting",
     async (editWritingObject: any) => {
-        const config = {
-            method: "put", 
-            url: `${VITE_SERVER_URL}/writing`,
-            headers: {
-                "Content-Type": "application/json; charset=UTF-8",
-            },
-            data: JSON.stringify(editWritingObject)
-        }
+        const config = configHeader('patch', '/writing', editWritingObject);
+
         const response = await axios(config);
         return response.data;
     }

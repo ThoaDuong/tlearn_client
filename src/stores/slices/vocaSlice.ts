@@ -3,8 +3,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import Vocabulary from "../../interfaces/Vocabulary";
 import axios from "axios";
 import { alertUpdateSuccess, alertDeleteSuccess } from "../../utils/SweetAlert";
+import { configHeader } from "../../utils/config";
 
-const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export interface VocaState {
     listVoca: Vocabulary[],
@@ -28,7 +28,8 @@ const initialState: VocaState = {
 export const fetchVocaListByUserID = createAsyncThunk(
     "fetchVocaListByUserID",
     async (userID: string) => {
-        const response = await axios.get(`${VITE_SERVER_URL}/vocabulary/${userID}`);
+        const config = configHeader('get', `/vocabulary/${userID}`);
+        const response = await axios(config);
         return response.data;
     }
 )
@@ -36,14 +37,8 @@ export const fetchVocaListByUserID = createAsyncThunk(
 export const addNewVoca = createAsyncThunk(
     "addNewVoca",
     async (vocaObject: any) => {
-        const config = {
-            method: "post",
-            url: `${VITE_SERVER_URL}/vocabulary`,
-            headers: {
-                "Content-Type": "application/json; charset=UTF-8",
-            },
-            data: JSON.stringify(vocaObject)
-        }
+        const config = configHeader('post', '/vocabulary', vocaObject);
+
         const response = await axios(config);
         return response.data;
     }
@@ -52,13 +47,8 @@ export const addNewVoca = createAsyncThunk(
 export const deleteVoca = createAsyncThunk(
     "deleteVoca",
     async (vocaID: string) => {
-        const config = {
-            method: "delete",
-            url: `${VITE_SERVER_URL}/vocabulary/${vocaID}`,
-            headers: {
-                "Content-Type": "application/json; charset:UTF-8"
-            }
-        }
+        const config = configHeader('delete', `/vocabulary/${vocaID}`);
+
         const response = await axios(config);
         return response.data;
     }
@@ -67,14 +57,8 @@ export const deleteVoca = createAsyncThunk(
 export const editVoca = createAsyncThunk(
     "editVoca",
     async (vocaObject: any ) => {
-        const config = {
-            method: "patch",
-            url: `${VITE_SERVER_URL}/vocabulary`,
-            headers: {
-                "Content-Type": "application/json; charset=UTF-8",
-            },
-            data: JSON.stringify(vocaObject)
-        }
+        const config = configHeader('patch', '/vocabulary', vocaObject);
+
         const response = await axios(config);
         return response.data;
     }
