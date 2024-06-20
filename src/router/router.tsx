@@ -14,6 +14,7 @@ import { GameMeaningMaster } from '../components/game/GameMeaningMaster';
 import { WritingPage } from '../pages/WritingPage';
 import { WritingAddNew } from '../components/writing/WritingAddNew';
 import { HomePage } from '../pages/HomePage';
+import { AboutPage } from '../pages/AboutPage';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -22,9 +23,8 @@ export const router = createBrowserRouter(
             <Route path="login" element={<LoginPage/>} />
             <Route path="voca">
                 <Route index element={<VocaPage/>} />
-                <Route path="new" element={<VocaAddNew/>} />\
+                <Route path="new" element={<VocaAddNew/>} />
             </Route>
-            <Route path="home" element={<HomePage/> } />
             <Route path="writing" >
                 <Route index element={<WritingPage/>} />
                 <Route path="new" element={<WritingAddNew/>} />
@@ -35,6 +35,7 @@ export const router = createBrowserRouter(
                 <Route path="out-of-time" element={<GameOutOfTime/>} />
                 <Route path="meaning-master" element={<GameMeaningMaster />} />
             </Route>
+            <Route path="about" element={<AboutPage/> } />
 
             <Route path="*" element={<NotFoundPage/>} />
         </Route>

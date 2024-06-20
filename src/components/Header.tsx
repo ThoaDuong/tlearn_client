@@ -1,6 +1,6 @@
 import React, { useState, MouseEvent } from "react"
 import { AppBar, Avatar, Box, Button, Container, IconButton, Link, Menu, MenuItem, Stack, Toolbar, Tooltip, Typography } from "@mui/material"
-import { AutoStories, Logout, Login, Person, SportsEsports, Style, DriveFileRenameOutline } from '@mui/icons-material';
+import { AutoStories, Logout, Login, Person, SportsEsports, Style, DriveFileRenameOutline, Info } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu'
 import { Link as RouterLink } from 'react-router-dom'
 import { userState } from "../stores/slices/userSlice";
@@ -9,6 +9,7 @@ const navList = [
     { id: 1, title: 'Vocabulary', slug: "voca", icon: <Style /> },
     { id: 2, title: 'Memorize Vocabulary', slug: "game", icon: <SportsEsports /> },
     { id: 3, title: 'Writing', slug: "writing", icon: <DriveFileRenameOutline /> },
+    { id: 4, title: 'About', slug: "about", icon: <Info /> },
 ];
 const settingList = [
     { id: 1, title: 'My Profile', icon: <Person /> },

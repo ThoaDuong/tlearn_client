@@ -1,10 +1,9 @@
-
 /* All custom colors */
 :root {
     --black: #373A40;
     --green: #49afa9;
     --light-green: #e7f4f4;
-    --pink: #fa8b8b; 
+    --pink: #fa8b8b;
     --dark-pink: #F78989;
     --light-pink: #feeeee;
     --yellow: #FFE500;
@@ -12,7 +11,8 @@
     --purple: #c1bffa;
     --light-beige: #FFF8EB;
     --blue: #82CFF0;
-  }
+    --shadow-color: rgba(0, 0, 0, 0.2);
+}
 
 
 * {
@@ -49,4 +49,19 @@
         color: var(--pink);
         cursor: pointer
     }
+}
+
+/* about page */
+.flap>.envelope:before {
+    transform: rotateX(180deg);
+    z-index: 0;
+}
+.flap>.envelope>.letter {
+    bottom: 200px;
+    transform: scale(1.5);
+    transition-delay: 1s;
+}
+.flap>.heart {
+    transform: rotate(90deg);
+    transition-delay: 0.4s;
 }
