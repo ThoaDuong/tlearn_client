@@ -30,7 +30,7 @@
     margin: 15px 0;
 }
 .swal2-icon {
-    margin: 20px auto 0px auto;
+    margin: 20px auto 0 auto;
 }
 .swal2-actions {
     margin-bottom: 20px;
@@ -43,7 +43,7 @@
     border: 1px solid var(--black);
     border-radius: 50%;
     padding: 5px 10px;
-    font-size: 16;
+    font-size: 16px;
     &:hover {
         background-color: var(--light-pink);
         color: var(--pink);

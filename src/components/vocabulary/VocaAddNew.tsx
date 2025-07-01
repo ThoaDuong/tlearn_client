@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Add, Cancel, Delete, Edit, Save } from "@mui/icons-material"
 import { Box, Button, CircularProgress, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Toolbar, Typography } from "@mui/material"
-import { VocaCard } from "./VocaCard"
+import VocaCard from "./VocaCard"
 import { useSelector, useDispatch } from "react-redux"
 import { groupState, deleteGroupByID, fetchGroupsByUserID, setIsAddNewGroupSuccess, setIsDeleteGroupSuccess, setIsUpdateGroupSuccess, setTempGroupName } from "../../stores/slices/groupSlice"
 import { AppDispatch, RootState } from "../../stores/store"
@@ -101,7 +101,7 @@ export const VocaAddNew = () => {
     useEffect(() => {
         // fetch listGroup success
         if(groupStore.listGroup.length > 0){
-            const data = groupStore.listGroup.filter(g => g.groupName === groupStore.tempGroupName);
+            const data = groupStore.listGroup.filter(g => g.group.groupName === groupStore.tempGroupName);
             
             // Case: add new group success 
             if(groupStore.isAddNewGroupSuccess && data){
@@ -198,7 +198,7 @@ export const VocaAddNew = () => {
         const isValid = checkValidateVoca();
         if(isValid){
             
-            const groupResult = groupStore.listGroup.filter(g => g.groupName === groupName);
+            const groupResult = groupStore.listGroup.filter(g => g.group.groupName === groupName);
             let vocaObject: VocaObjectType = {
                 word: word,
                 meaning: meaning,
@@ -209,7 +209,7 @@ export const VocaAddNew = () => {
                 vocaObject["type"] = type;
             }
             if(groupResult[0]){
-                vocaObject["groupID"] = groupResult[0].id;
+                vocaObject["groupID"] = groupResult[0].group.id;
             }
 
             dispatch(addNewVoca(vocaObject));
@@ -221,7 +221,7 @@ export const VocaAddNew = () => {
 
         const isValid = checkValidateVoca();
         if(isValid){
-            const groupResult= groupStore.listGroup.filter(g => g.groupName === groupName);
+            const groupResult= groupStore.listGroup.filter(g => g.group.groupName === groupName);
             let vocaObject: VocaObjectType = {
                 id: vocaStore.editVoca?.id,
                 word: word,
@@ -233,7 +233,7 @@ export const VocaAddNew = () => {
                 vocaObject["type"] = type;
             }
             if(groupResult[0]){
-                vocaObject["groupID"] = groupResult[0].id;
+                vocaObject["groupID"] = groupResult[0].group.id;
             }
             dispatch(editVoca(vocaObject));
         }
@@ -256,9 +256,9 @@ export const VocaAddNew = () => {
 
     const callbackConfirmDeleteGroup = (isConfirm: boolean, name:string) => {
         if(isConfirm) {
-            const groupResult = groupStore.listGroup.filter((g: Group) => g.groupName === name);
+            const groupResult = groupStore.listGroup.filter(g => g.group.groupName === name);
             if(groupResult.length > 0){
-                dispatch(deleteGroupByID(groupResult[0].id));
+                dispatch(deleteGroupByID(groupResult[0].group.id));
             }
         }
     }
@@ -352,23 +352,23 @@ export const VocaAddNew = () => {
                                 <em>None</em>
                             </MenuItem>
 
-                            {groupStore.listGroup.map((group: any) => (
-                                <MenuItem key={group.id} value={group.groupName}
+                            {groupStore.listGroup.map((item: { group: Group, totalVoca: number }) => (
+                                <MenuItem key={item.group.id} value={item.group.groupName}
                                 sx={{ display: 'flex' , justifyContent: 'space-between' }}>
-                                    <Typography sx={{ width: '50%' }} onClick={() => setGroupName(group.groupName)}>
-                                        {group.groupName}
+                                    <Typography sx={{ width: '50%' }} onClick={() => setGroupName(item.group.groupName)}>
+                                        {item.group.groupName}
                                     </Typography>
-                                    {groupName !== group.groupName && 
+                                    {groupName !== item.group.groupName &&
                                         <Stack sx={{ width: '50%' }} >
                                             <Toolbar sx={{ display: 'flex' }}>
 
                                                 <IconButton aria-label="delete" size="small"
-                                                    onClick={() => handleDeleteGroupItem(group)}
+                                                    onClick={() => handleDeleteGroupItem(item.group)}
                                                 >
                                                     <Delete fontSize="inherit" />
                                                 </IconButton>
                                                 <IconButton aria-label="edit" size="small"
-                                                    onClick={() => handleEditGroupItem(group)}
+                                                    onClick={() => handleEditGroupItem(item.group)}
                                                 >
                                                     <Edit fontSize="inherit" />
                                                 </IconButton>

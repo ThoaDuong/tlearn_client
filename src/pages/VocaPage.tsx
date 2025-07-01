@@ -1,27 +1,31 @@
 import { Box, Button, Grid, IconButton, InputBase, Paper, Stack, Toolbar, Typography } from "@mui/material"
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useState, Suspense, lazy } from "react"
 import { Add, Search } from "@mui/icons-material"
 import { Link as RouterLink } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../stores/store"
-import { fetchVocaListByUserID, setIsDeleteVocaSuccess } from "../stores/slices/vocaSlice"
+import {
+    fetchVocaListByPage,
+    fetchVocaListByUserID,
+    setKeyword,
+    setIsDeleteVocaSuccess,
+    setCurrentPage
+} from "../stores/slices/vocaSlice"
 import Vocabulary from "../interfaces/Vocabulary"
 import { GroupTabs } from "../components/group/GroupTabs"
-import { fetchGroupsByUserID } from "../stores/slices/groupSlice"
-import { PaginationList, PaginationListRefType } from "../components/PaginationList"
-import { VocaCard } from "../components/vocabulary/VocaCard"
+import {fetchGroupsByUserID, setActiveGroupTab} from "../stores/slices/groupSlice"
+import { PaginationList } from "../components/PaginationList"
+import VocaCardSkeleton from "../components/vocabulary/VocaCardSkeleton.tsx";
+import useDebounce from "../utils/UseDebounce.tsx"
+
+// component
+const VocaCard = lazy(() => import("../components/vocabulary/VocaCard"));
 
 
 export const VocaPage = () => {
     // variable
     const [searchKeyword, setSearchKeyword] = useState("");
-    const [listVocaSearch, setListVocaSearch] = useState<Vocabulary[]>([]);
-    const [activeGroupTab, setActiveGroupTab] = useState("All");
-    const groupTabAll = useRef('All');
-
-    // variable pagination
-    const [vocaPagination, setVocaPagination] = useState<any>([]);
-    const paginationListChildRef = useRef<PaginationListRefType>(null);
+    const debouncedSearch: string = useDebounce({value: searchKeyword, delayTime: 400});
 
     // redux
     const vocaStore = useSelector((state: RootState) => state.vocabulary);
@@ -37,45 +41,39 @@ export const VocaPage = () => {
         }
     }, [vocaStore.isDeleteVocaSuccess])
 
-    // watch searchKeyword, activeGroupTab and listVoca change
     useEffect(() => {
-        // filter list display vocabularies
-        const list = vocaStore.listVoca.filter((voca) => {
-            // active group: All
-            if (activeGroupTab === groupTabAll.current) {
-                return voca.word.toLowerCase().includes(searchKeyword.toLowerCase()) ? true : false;
-            }
-            // active group: custom group name
-            else {
-                return !!(voca.word.toLowerCase().includes(searchKeyword.toLowerCase()) && voca.groupName === activeGroupTab) ? true : false;
-            }
-        });
-        setListVocaSearch(list);
-
-    }, [searchKeyword, vocaStore.listVoca, activeGroupTab]);
+        dispatch(setKeyword(debouncedSearch));
+        dispatch(fetchVocaListByPage({
+            userID: userStore.id,
+            page:1,
+            limit: 12,
+            groupID: groupStore.activeGroupTab?.id,
+            keyword: debouncedSearch || ""
+        }))
+    }, [debouncedSearch]);
 
     // watch userStore change
     useEffect(() => {
         if(userStore.id){
-            // fetch list voca and groups
-            dispatch(fetchVocaListByUserID(userStore.id));
             dispatch(fetchGroupsByUserID(userStore.id));
+            dispatch(fetchVocaListByPage({
+                userID: userStore.id,
+                page:1,
+                limit: 12,
+                groupID: undefined,
+                keyword: "",
+            }))
+        }
+
+        // clear value before unmount
+        return () => {
+            dispatch(setActiveGroupTab(null));
+            dispatch(setCurrentPage(1));
         }
     }, [userStore]);
 
 
-    // function
-
-    // trigger in child component: GroupTabs
-    const handleChangeGroupName = (groupName: string) => {
-        setActiveGroupTab(groupName);
-
-        // trigger function in child: PaginationList
-        paginationListChildRef.current?.setCurrentPageToDefault();
-    }
-
-
-    return (<React.Fragment>
+    return (<>
         <Box sx={{ display: 'flex' }}>
             {/* Display title */}
             <Typography sx={{ py: 2, flexGrow: 1, color: 'var(--black)' }} variant="h5">
@@ -127,39 +125,52 @@ export const VocaPage = () => {
 
         {/* Display list group */}
         <GroupTabs 
-            changeGroupName={handleChangeGroupName} 
-            groupStore={groupStore} 
-            vocaStore={vocaStore} 
+            groupStore={groupStore}
+            vocaStore={vocaStore}
+            userID={userStore.id}
         />
 
-        {/* Display empty message when have no vocabulary */}
-        {vocaPagination.length <= 0 && <Stack
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ width: 1, height: '50vh' }}
-        >
-            <Typography>You have no vocabulary. Let's create some to start your journey!</Typography>
-        </Stack>}
+        {/* Check loading voca list */}
+        <Suspense fallback={
+            <Grid container spacing={2}>
+                { Array(8).fill(null).map((_, index) =>
+                    <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                        <VocaCardSkeleton />
+                    </Grid>
+                ) }
+            </Grid>
+        }>
+            <Grid container spacing={2}>
+                {vocaStore.listVocaByPage.length > 0 ?
+                    // Display voca list
+                    vocaStore.listVocaByPage.map((voca: Vocabulary) =>
+                        <Grid key={voca.id} item xs={12} sm={6} md={4} lg={3}>
+                            <VocaCard  voca={voca}/>
+                        </Grid>
+                    )
+                    :
+                    // Display empty message when have no vocabulary
+                    <Stack
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        sx={{ width: 1, height: '50vh' }}
+                    >
+                        <Typography>You have no vocabulary. Let's create some to start your journey!</Typography>
+                    </Stack>
+                }
+            </Grid>
+        </Suspense>
 
 
-        {/* Display list voca */}
-        <Grid container spacing={2}>
-            { vocaPagination.map((voca: Vocabulary) => 
-                <Grid key={voca.id} item xs={12} sm={6} md={4} lg={3}>
-                    <VocaCard  voca={voca}/>
-                </Grid>
-            ) }
-        </Grid>
-
-
-        {/* Display pagiantion for list voca */}
-        <PaginationList 
-            ref={paginationListChildRef}
-            arrayFullItems={listVocaSearch}
-            itemPerPage={12}
-            itemPaginationFromParent={vocaPagination}
-            setItemPaginationFromParent={setVocaPagination}
+        {/* Display pagination for list voca */}
+        <PaginationList
+            itemPerPage={vocaStore.itemPerPage}
+            currentPage={vocaStore.currentPage}
+            total={vocaStore.totalVoca}
+            userID={userStore.id}
+            activeGroupTab={groupStore.activeGroupTab}
+            keyword={vocaStore.keyword}
         />
-    </React.Fragment>)
+    </>)
 }

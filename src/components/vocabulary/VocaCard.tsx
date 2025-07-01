@@ -1,4 +1,3 @@
-import React from "react"
 import { Box, Button, Divider, Typography } from "@mui/material"
 import Vocabulary from "../../interfaces/Vocabulary"
 import { AppDispatch } from "../../stores/store"
@@ -15,7 +14,7 @@ type VocaCardProps = {
 }
 
 
-export const VocaCard = ({voca }: VocaCardProps) => {
+const VocaCard = ({voca }: VocaCardProps) => {
 
     // variable
     const navigate = useNavigate();
@@ -50,7 +49,7 @@ export const VocaCard = ({voca }: VocaCardProps) => {
     }
 
     return (
-        <React.Fragment>
+        <>
             {/* Parent Container */}
             <Box sx={{
                 border: '1px solid var(--black)',
@@ -160,6 +159,8 @@ export const VocaCard = ({voca }: VocaCardProps) => {
                 </Box>}
             </Box>
 
-        </React.Fragment>
+        </>
     )
 }
+
+export default VocaCard;

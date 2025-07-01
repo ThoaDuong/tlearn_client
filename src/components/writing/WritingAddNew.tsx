@@ -1,4 +1,4 @@
-import { Add, Cancel, Save } from "@mui/icons-material";
+import { Add, Cancel, Check, Save } from "@mui/icons-material";
 import { Box, Button, CircularProgress, FormControl, Grid, TextField, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,7 @@ export const WritingAddNew = () => {
         titleMessage: "",
         contentMessage: ""
     })
+    const [grammarResult, setGrammarResult] = useState<any>([]);
 
     // redux
     const userStore = useSelector((state: RootState) => state.user);
@@ -121,6 +122,26 @@ export const WritingAddNew = () => {
         dispatch(setEditWritingObject(null));
         navigate(-1);
     }
+
+    const handleCheckGrammar = async () => {
+        const response = await fetch('https://api.languagetoolplus.com/v2/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+            text: content,
+            language: 'en-US'
+        })
+        });
+        const data = await response.json();
+
+        const result: any[] = [];
+        data.matches.forEach((match: any) => {
+            const suggestion = match.replacements.length > 0 ? match.replacements[0].value : '(no suggestion)';
+            result.push(`${match.message} ➜ Suggestion: ${suggestion}`);
+        });
+        setGrammarResult(result);
+        
+    }
     
     return (<React.Fragment>
         <Grid container spacing={3}>
@@ -154,6 +175,13 @@ export const WritingAddNew = () => {
                         <Typography color="error"> {errorObject.contentMessage} </Typography>
                     </FormControl>
 
+                    {/* Display grammar result */} 
+                    <Box>
+                        {grammarResult.map((result: any, index: number) => (
+                            <div key={index}>{result}</div>
+                        ))}
+                    </Box>
+
 
                     {/* Display submit button */}
                     <Box sx={{ display: 'flex', mt: 2 }}>
@@ -175,6 +203,13 @@ export const WritingAddNew = () => {
                             sx={{ ml:1, borderRadius: "30px", px: 3 }}>
                             Save
                         </Button> }
+
+                        {/* Display check grammar button */}
+                        <Button type="button" startIcon={<Check />} variant="contained" color="info"
+                            sx={{ ml:1, borderRadius: "30px", px: 3 }}
+                            onClick={handleCheckGrammar}>
+                            Review Grammar
+                        </Button>
 
                         {/* Display loading */}
                         { writingStore.isLoading && <CircularProgress sx={{ ml:1 }} />}

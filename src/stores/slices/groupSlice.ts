@@ -5,9 +5,10 @@ import { configHeader } from "../../utils/config";
 
 
 export interface groupState{
-    listGroup: Group[],
+    listGroup: { group: Group, totalVoca: number }[],
     tempGroupName: string,
     tempGroup: Group|null,
+    activeGroupTab: Group|null,
     isUpdateGroupSuccess: boolean,
     isAddNewGroupSuccess: boolean,
     isDeleteGroupSuccess: boolean
@@ -17,6 +18,7 @@ const initialState: groupState = {
     listGroup: [],
     tempGroupName: "",
     tempGroup: null,
+    activeGroupTab: null,
     isUpdateGroupSuccess: false,
     isAddNewGroupSuccess: false,
     isDeleteGroupSuccess: false
@@ -87,16 +89,22 @@ const groupSlice = createSlice({
         },
         setTempGroup: (state, action: PayloadAction<Group|null>) => {
             state.tempGroup = action.payload;
+        },
+        setActiveGroupTab: (state, action: PayloadAction<Group|null>) => {
+            state.activeGroupTab = action.payload;
         }
     },
     extraReducers: (builder) => {
         // handle fetch list group by userID
         builder.addCase(fetchGroupsByUserID.fulfilled, (state, action) => {
             // format group match UI interface
-            const groupData: Group[] = action.payload.map((group: any) => ({ 
-                id: group._id, 
-                groupName: group.groupName, 
-                userID: group.userID 
+            const groupData: { group: Group, totalVoca: number }[] = action.payload.map((data: any) => ({
+                group: {
+                    id: data.group?._id,
+                    groupName: data.group?.groupName,
+                    userID: data.group?.userID
+                },
+                totalVoca: data.totalVoca
             }));
             state.listGroup = groupData;
         }),
@@ -135,7 +143,8 @@ export const {
     setIsAddNewGroupSuccess,
     setIsDeleteGroupSuccess,
     setTempGroupName,
-    setTempGroup
+    setTempGroup,
+    setActiveGroupTab
 } = groupSlice.actions;
 
 export default groupSlice.reducer;

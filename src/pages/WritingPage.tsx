@@ -5,18 +5,21 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link as RouterLink } from "react-router-dom"
 import { AppDispatch, RootState } from "../stores/store"
 import { WritingCard } from "../components/writing/WritingCard"
-import { fetchWritingListByUserID, setIsDeleteWritingSuccess } from "../stores/slices/writingSlice"
+import {
+    fetchWritingListByPage,
+    fetchWritingListByUserID,
+    setIsDeleteWritingSuccess,
+    setKeyword
+} from "../stores/slices/writingSlice"
 import { Writing } from "../interfaces/Writing"
-import { PaginationList } from "../components/PaginationList"
+import useDebounce from "../utils/UseDebounce.tsx";
+import {PaginationList} from "../components/PaginationList.tsx";
 
 export const WritingPage = () => {
 
     // variable
     const [searchKeyword, setSearchKeyword] = useState("");
-    const [writingListSearch, setWritingListSearch] = useState<Writing[]>([]);
-
-    // variable pagination
-    const [writingPagination, setWritingPagination] = useState<any>([]); 
+    const debouncedSearch: string = useDebounce({value: searchKeyword, delayTime: 400})
 
     // redux
     const userStore = useSelector((state: RootState) => state.user);
@@ -28,20 +31,26 @@ export const WritingPage = () => {
     // watch user change
     useEffect(() => {
         if(userStore.id){
-            dispatch(fetchWritingListByUserID(userStore.id));
+            // dispatch(fetchWritingListByUserID(userStore.id));
+            dispatch(fetchWritingListByPage({
+                userID: userStore.id,
+                page: 1,
+                limit: 12,
+                keyword: ""
+            }))
         }
     }, [userStore.id])
 
-    // watch writing list
     useEffect(() => {
-        const list = writingStore.listWriting.filter((item: Writing) => 
-            (
-                item.title.toLowerCase().includes(searchKeyword.toLowerCase()) || 
-                item.content.toLowerCase().includes(searchKeyword.toLowerCase())
-            )
-        );
-        setWritingListSearch(list);
-    }, [searchKeyword, writingStore.listWriting])
+        dispatch(setKeyword(debouncedSearch));
+        dispatch(fetchWritingListByPage({
+            userID: userStore.id,
+            page:1,
+            limit: 12,
+            keyword: debouncedSearch || ""
+        }))
+    }, [debouncedSearch]);
+
 
     // watch delete writing
     useEffect(() => {
@@ -102,7 +111,7 @@ export const WritingPage = () => {
         </Toolbar>
 
         {/* Display empty message when have no vocabulary */}
-        {writingPagination.length <= 0 && <Stack
+        {writingStore.totalWriting <= 0 && <Stack
             direction="row"
             justifyContent="center"
             alignItems="center"
@@ -113,7 +122,7 @@ export const WritingPage = () => {
 
         {/* Display list writing */}
         <Grid key="container" container spacing={2}>
-            { writingPagination.map((writingItem: Writing) => (
+            { writingStore.listWriting?.map((writingItem: Writing) => (
                 <Grid key={writingItem.id} item xs={12} sm={6} md={4} lg={3}>
                     <WritingCard writingItem={writingItem}/>
                 </Grid>
@@ -121,11 +130,12 @@ export const WritingPage = () => {
         </Grid>
 
         {/* Display pagiantion for list writing */}
-        <PaginationList 
-            arrayFullItems={writingListSearch}
-            itemPerPage={12}
-            itemPaginationFromParent={writingPagination}
-            setItemPaginationFromParent={setWritingPagination}
+        <PaginationList
+            itemPerPage={writingStore.itemPerPage}
+            currentPage={writingStore.currentPage}
+            total={writingStore.totalWriting}
+            userID={userStore.id}
+            keyword={writingStore.keyword}
         />
     </React.Fragment>)
 }

@@ -12,6 +12,10 @@ export interface WritingState {
     isUpdateWritingSuccess: boolean,
     isLoading: boolean,
     editWritingObject: Writing|null
+    totalWriting: number,
+    itemPerPage: number,
+    currentPage: number,
+    keyword: string,
 }
 
 const initialState: WritingState = {
@@ -20,7 +24,11 @@ const initialState: WritingState = {
     isDeleteWritingSuccess: false,
     isUpdateWritingSuccess: false,
     isLoading: false,
-    editWritingObject: null
+    editWritingObject: null,
+    totalWriting: 0,
+    itemPerPage: 12,
+    currentPage: 1,
+    keyword: ""
 }
 
 // api fetch
@@ -28,6 +36,17 @@ export const fetchWritingListByUserID = createAsyncThunk(
     "fetchWritingListByUserID",
     async (userID: string) => {
         const config = configHeader('get', `/writing/${userID}`);
+
+        const response = await axios(config);
+        return response.data;
+    }
+)
+
+// api fetch by pagge
+export const fetchWritingListByPage = createAsyncThunk(
+    "fetchWritingListByPage",
+    async ({ userID, page, limit, keyword }: { userID: string, page: number, limit: number, keyword?: string }) => {
+        const config = configHeader('get', `/writing/page/${userID}?page=${page}&limit=${limit}&keyword=${keyword}`);
 
         const response = await axios(config);
         return response.data;
@@ -82,6 +101,9 @@ export const writingSlice = createSlice({
         },
         setIsUpdateWritingSuccess: (state, action: PayloadAction<boolean>) => {
             state.isUpdateWritingSuccess = action.payload
+        },
+        setKeyword: (state, action: PayloadAction<string>) => {
+            state.keyword = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -101,8 +123,27 @@ export const writingSlice = createSlice({
             state.listWriting = tempList.reverse();
         }),
         builder.addCase(fetchWritingListByUserID.rejected, (state, action) => {
-            state.isLoading = false,
+            state.isLoading = false;
             console.log('fetch writing error', action);
+        }),
+        //fetch writing list by page
+        builder.addCase(fetchWritingListByPage.pending, (state) => {
+            state.isLoading = true;
+        }),
+        builder.addCase(fetchWritingListByPage.fulfilled, (state, action) => {
+            state.isLoading = false;
+            const tempList = action.payload.writingData?.map((data: any) => ({
+                id: data._id,
+                content: data.content,
+                title: data.title,
+                userID: data.userID
+            }))
+
+            state.listWriting = tempList;
+            state.totalWriting = action.payload.totalWriting;
+        }),
+        builder.addCase(fetchWritingListByPage.rejected, (state, action) => {
+            console.log('fetch writing error', state, action);
         }),
         // add new writing
         builder.addCase(addNewWriting.pending, (state) => {
@@ -152,7 +193,8 @@ export const {
     setIsAddNewWritingSuccess,
     setIsDeleteWritingSuccess,
     setIsUpdateWritingSuccess,
-    setEditWritingObject
+    setEditWritingObject,
+    setKeyword,
 } = writingSlice.actions;
 
 export default writingSlice.reducer;

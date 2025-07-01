@@ -2,6 +2,7 @@ import { FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/mate
 import React from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "../../stores/store"
+import Group from "../../interfaces/Group.ts";
 
 type TitleAndChooseGroupProps = {
     title: string,
@@ -44,10 +45,10 @@ export const TitleAndChooseGroup = ({ title, groupName, setGroupName }: TitleAnd
                     <Typography>All</Typography>
                 </MenuItem>
 
-                {groupStore.listGroup.map((group: any) => (
-                    <MenuItem key={group.id} value={group.groupName}>
+                {groupStore.listGroup.map((item: { group: Group, totalVoca: number }) => (
+                    <MenuItem key={item.group.id} value={item.group.groupName}>
                         <Typography>
-                            {group.groupName}
+                            {item.group.groupName}
                         </Typography>
 
                     </MenuItem>

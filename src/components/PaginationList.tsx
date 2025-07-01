@@ -1,61 +1,60 @@
 import { Pagination, Stack } from "@mui/material"
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react"
+import { useEffect, useState } from "react"
+import {useDispatch} from 'react-redux'
+import { AppDispatch } from "../stores/store.ts";
+import { fetchVocaListByPage, setCurrentPage } from "../stores/slices/vocaSlice.ts";
+import Group from "../interfaces/Group.ts";
 
 type PaginationListProps = {
-    arrayFullItems: any[],
     itemPerPage: number,
-    itemPaginationFromParent: any[],
-    setItemPaginationFromParent: (array: any[]) => void
-}
-export type PaginationListRefType = {
-    setCurrentPageToDefault: () => void,
+    currentPage: number,
+    total: number,
+    userID: string,
+    activeGroupTab?: Group|null,
+    keyword: string
 }
 
 
-export const PaginationList = forwardRef<PaginationListRefType, PaginationListProps>(({ arrayFullItems, itemPerPage, itemPaginationFromParent, setItemPaginationFromParent}, ref) => {
+export const PaginationList = ({ itemPerPage, currentPage, total, userID, activeGroupTab, keyword}: PaginationListProps) => {
 
     // variable
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemPaginationList, setItemPaginationList] = useState<any[][]>([]);
+    // const [currentPage, setCurrentPage] = useState(1);
+    const [count, setCount] = useState<number>(0);
 
-    // watch
-    // watch list arrayFullItems
+    // redux
+    const dispatch: AppDispatch = useDispatch();
+
     useEffect(() => {
-        let tempList = [ ...arrayFullItems ];
-        if (tempList.length > 0){
-            let items = [];
-            while (tempList.length > 0) {
-                items.push(tempList.splice(0, itemPerPage));
-            }
-            setItemPaginationList(items);
-            setItemPaginationFromParent(items[currentPage-1] || []);
+        if(total && itemPerPage){
+            setCount(Math.ceil(total/itemPerPage));
         }
-    }, [arrayFullItems])
+    }, [total, itemPerPage, currentPage, activeGroupTab]);
 
 
 
     // function
-    useImperativeHandle(ref, () => ({
-
-        setCurrentPageToDefault(): any {
-            setCurrentPage(1);
-        }
-    
-    }));
 
     const handleChangePagination = (event: any, value: number) => {
         if (event) {
-            setCurrentPage(value);
+            const queries: { userID: string, page: number, limit: number, keyword?: string, groupID?: string } = {
+                userID: userID,
+                page:value,
+                limit: itemPerPage,
+                keyword: keyword
+            }
+            if(activeGroupTab){
+                queries.groupID = activeGroupTab.id;
+            }
+            dispatch(fetchVocaListByPage(queries))
+            dispatch(setCurrentPage(value));
         }
-        // [value -1]: arrayFullItems start with 0
-        setItemPaginationFromParent(itemPaginationList[value - 1] || [])
     }
 
 
-    return (<React.Fragment>
+    return (<>
         
         {/* position fix at bottom for equal or less than 4 items */}
-        {  itemPaginationFromParent.length > 0 && itemPaginationFromParent.length <= 4 && <Stack spacing={2} sx={{ 
+        {  total > 0 && total <= 4 && <Stack spacing={2} sx={{
             position: 'fixed',
             bottom: 70,
             left: '50%',
@@ -63,21 +62,21 @@ export const PaginationList = forwardRef<PaginationListRefType, PaginationListPr
             color: 'white',
             zIndex: 99,
         }}>
-            <Pagination 
-                count={itemPaginationList.length} 
+            <Pagination
+	            count={count}
                 page={currentPage}
                 onChange={handleChangePagination}
                 color="primary" />
         </Stack>}
 
         {/* Display position under item card for more than 4 items */}
-        { itemPaginationFromParent.length > 4 && <Stack spacing={2} sx={{ display: 'flex', alignItems: 'center', margin: '20px 0' }}>
-            <Pagination 
-                count={itemPaginationList.length} 
+        { total > 4 && <Stack spacing={2} sx={{ display: 'flex', alignItems: 'center', margin: '20px 0' }}>
+            <Pagination
+                count={count}
                 page={currentPage}
                 onChange={handleChangePagination}
                 color="primary" />
         </Stack>}
         
-    </React.Fragment>)
-})
+    </>)
+}
