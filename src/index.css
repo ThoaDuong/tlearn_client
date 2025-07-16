@@ -1,3 +1,16 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*Start tailwind css*/
+.t_head-style{
+    @apply flex items-center justify-between bg-pink-600 py-1;
+}
+.t_container {
+    @apply px-4 md:px-16 xl:px-32
+}
+
 /* All custom colors */
 :root {
     --black: #373A40;
@@ -17,8 +30,8 @@
 
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    /*margin: 0;*/
+    /*padding: 0;*/
 }
 
 
