@@ -27,26 +27,41 @@ export const Footer = ({ isPositionFix }: FooterProps) => {
             </div>
             <div className='w-2/3 flex justify-between'>
                 <div>
-                    <h3 className='font-semibold text-gray-700'>About</h3>
+                    <h3 className='font-semibold text-gray-700'>Quick access</h3>
                     <ul>
+                        <li className='leading-relaxed'>Home</li>
                         <li className='leading-relaxed'>About Us</li>
-                        <li className='leading-relaxed'>Q&A</li>
+                        <li className='leading-relaxed'>Help Center</li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 className='font-semibold text-gray-700'>Contact</h3>
+                    <h3 className='font-semibold text-gray-700'>Vocabulary</h3>
                     <ul>
-                        <li className='leading-relaxed'>About Us</li>
-                        <li className='leading-relaxed'>Q&A</li>
+                        <li className='leading-relaxed'>Level-based</li>
+                        <li className='leading-relaxed'>Topic-related</li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 className='font-semibold text-gray-700'>Recommend Website</h3>
+                    <h3 className='font-semibold text-gray-700'>Writing</h3>
                     <ul>
-                        <li className='leading-relaxed'>lootoo</li>
-                        <li className='leading-relaxed'>kaplay</li>
+                        <li className='leading-relaxed'>Level-based</li>
+                        <li className='leading-relaxed'>Topic-related</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 className='font-semibold text-gray-700'>Social</h3>
+                    <ul>
+                        <li className='my-2 flex gap-3'>
+                            <img className='h-8 w-8 bg-pink-100 rounded-lg p-1' src="https://img.icons8.com/fluency/48/linkedin.png" alt="linkedin"/>
+                            <img className='h-8 w-8 bg-pink-100 rounded-lg p-1' src="https://img.icons8.com/ios-filled/50/github.png" alt="github"/>
+                        </li>
+                        <li className='flex gap-3'>
+                            <img className='h-8 w-8 bg-pink-100 rounded-lg p-1' src="https://img.icons8.com/color/48/youtube-play.png" alt="youtube-play"/>
+                            <img className='h-8 w-8 bg-pink-100 rounded-lg p-1' src="https://img.icons8.com/fluency/48/gmail-new.png" alt="gmail-new"/>
+                        </li>
                     </ul>
                 </div>
             </div>

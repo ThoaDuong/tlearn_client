@@ -1,6 +1,7 @@
 import { userState } from "../stores/slices/userSlice";
 import logoSrc from "../assets/logo-fit.png";
 import tLearnSrc from "../assets/tlearn-fit.png";
+import userSrc from "../assets/images/user-female.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -82,8 +83,8 @@ export const Header = ( props: HeaderProps ) => {
                 {props.userStore.id ?
                     <div className='relative'>
                         {/*User*/}
-                        <button onClick={() => handleToggle()} className='rounded-full p-2 bg-pink-50'>
-                            <img className='h-8 w-8' src='https://img.icons8.com/wired/64/test-account.png' alt='user' />
+                        <button onClick={() => handleToggle()} className='rounded-full p-1 bg-pink-200'>
+                            <img className='h-10 w-10 rounded-full' src={userSrc} alt='user' />
                         </button>
                         <ul className={`absolute z-[99] top-12 right-0 bg-pink-50 min-w-40 rounded-xl ${
                             hasInteracted
