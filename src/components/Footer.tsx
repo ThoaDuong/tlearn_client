@@ -55,9 +55,6 @@ export const Footer = ({ isPositionFix }: FooterProps) => {
         {/*Second line*/}
         <div className='t_container t_head-style'>
             <span className='text-white text-center'>Copyright ©2024. From TLearn with luv.</span>
-            {/*<div className='flex items-center gap-2'>*/}
-            {/*    <img className='w-6 h-6 bg-white rounded-lg p-2' src="https://img.icons8.com/ios/50/github--v1.png" alt="github--v1"/>*/}
-            {/*</div>*/}
         </div>
     </div>)
 }
