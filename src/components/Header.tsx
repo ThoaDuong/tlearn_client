@@ -24,6 +24,7 @@ export const Header = ( props: HeaderProps ) => {
     // nav & user menu variable
     const [toggleSettingList, setToggleSettingList] = useState(false);
     const [hasInteracted, setHasInteracted] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const handleClickSetting = (title: string) => {
         if (title === 'Logout') {
@@ -62,7 +63,7 @@ export const Header = ( props: HeaderProps ) => {
                 </Link>
 
                 {/*Navbar*/}
-                <div className='flex gap-6 items-center'>
+                <div className='flex gap-6 items-center hidden lg:flex'>
                     {
                         navList.map(item => (
                             <Link
@@ -79,7 +80,7 @@ export const Header = ( props: HeaderProps ) => {
             </div>
 
             {/*Right block*/}
-            <div>
+            <div className='hidden lg:flex'>
                 {props.userStore.id ?
                     <div className='relative'>
                         {/*User*/}
@@ -114,6 +115,49 @@ export const Header = ( props: HeaderProps ) => {
                     </div>
                 }
 
+            </div>
+
+            {/* Mobile menu button */}
+            <button className='lg:hidden' onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                <img className='w-7 h-7' src="https://img.icons8.com/ios/50/menu.png" alt="menu"/>
+            </button>
+
+
+        </div>
+
+        {/* Mobile responsive */}
+        <div className={`fixed top-0 left-0 w-72 h-screen bg-pink-100 z-[999] lg:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+            <div className='flex flex-col justify-between h-full'>
+
+                {/* Top block */}
+                <div className='mt-4'>
+                    {/* User profile */}
+                    <div className='flex flex-col items-center justify-between'>
+                        <img className='w-10 h-10 rounded-full' src={userSrc} alt='user' />
+                        <span className='text-sm text-gray-700 font-semibold'>User@gmail.com</span>
+                    </div>
+
+                    {/* Navbar */}
+                    <div className='flex flex-col gap-2 mt-4 mx-2'>
+                        {navList.map(item => (
+                            <Link to={item.slug} key={item.id} 
+                            className={`flex gap-2 items-center py-2 px-4 rounded-3xl text-gray-700 font-semibold hover:bg-gray-50 hover:text-pink-600 ${
+                                window.location.pathname === item.slug ? 'bg-gray-50 text-pink-600' : ''
+                            }`}>    
+                                <img className='w-5 h-5' src={item.icon} alt="book"/>
+                                <span> {item.title} </span>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+                
+
+                {/* Bottom block | Logout */}
+                <button className='flex gap-2 items-center py-2 px-4 mx-2 mb-4 rounded-3xl text-gray-700 font-semibold hover:bg-gray-50 hover:text-pink-600' onClick={() => handleClickSetting('Logout')}>
+                    <img className='w-5 h-5' src='https://img.icons8.com/wired/64/logout-rounded.png' alt='Logout' />
+                    <span>Logout</span>
+                </button>
+                
             </div>
         </div>
     </>
