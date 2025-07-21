@@ -1,46 +1,25 @@
-import { Stack } from "@mui/material"
-import React from "react"
-import { HomeCard } from "../components/HomeCard"
-import homeFirst from "../assets/home/home_first.avif"
-import homeSecond from "../assets/home/home_second.avif"
-import homeThird from "../assets/home/home_third.jpg"
+import { navList } from "../components/Header"
 
 export const HomePage = () => {
-    return (<React.Fragment>
-        <Stack sx={{ margin: {xs: '20px 10px 40px 10px', md: '30px 30px 60px 30px'} }}>
+    return (<>
+        <div className="my-10 text-center text-gray-800">
+            <h1 className="text-4xl font-bold mb-5">Learn with TLearn</h1>
+            <p className="text-lg">TLearn is a language learning platform that makes your learning process faster and easier.</p>
+        </div>
 
-            <HomeCard 
-                imageSrc={homeFirst} 
-                title="Store Vocabulary to Expand Your Knowledge"
-                description=" Build your personal word bank! 
-                    Our platform lets you easily add new words you encounter, whether from reading, conversation, or anywhere else."
-                location="left"
-                slug="voca"
-            />
-
-            <HomeCard 
-                imageSrc={homeSecond} 
-                title="Memorize Vocabularies"
-                description=" Learning shouldn't be boring! Put your memory to the test with a variety of interactive exercises designed to help you solidify new words and their meanings. 
-                    This could include flashcards, matching games, sentence completion, and more."
-                location="right"
-                slug="game"
-            />
-
-            <HomeCard 
-                imageSrc={homeThird} 
-                title="Sharpen Your Writing Skills"
-                description="Capture your thoughts and ideas effortlessly. 
-                    Our writing tool allows you to jot down new vocabulary you learn, create sentences using those words, or simply brainstorm ideas
-                     – all in one convenient place."
-                location="left"
-                slug="writing"
-            />
-
-         
-        </Stack>
-
-
-        
-    </React.Fragment>)
+        <div className="flex justify-center gap-5">
+            <span className="w-40 h-40 flex flex-col items-center justify-center rounded-full bg-pink-50 p-4 gap-2">
+                <img className='w-8 h-8' src="https://img.icons8.com/ios/50/book-and-pencil.png" alt="Vocabulary" />
+                <span className="text-lg font-semibold text-gray-800">Writing</span>
+            </span>
+            <span className="w-40 h-40 flex flex-col items-center justify-center rounded-full bg-pink-50 p-4 gap-2">
+                <img className='w-8 h-8' src="https://img.icons8.com/dotty/80/copybook.png" alt="Vocabulary" />
+                <span className="text-lg font-semibold text-gray-800">Vocabulary</span>
+            </span>
+            <span className="w-40 h-40 flex flex-col items-center justify-center rounded-full bg-pink-50 p-4 gap-2">
+                <img className='w-8 h-8' src="https://img.icons8.com/comic/100/controller.png" alt="Vocabulary" />
+                <span className="text-lg font-semibold text-gray-800">Memorize</span>
+            </span>
+        </div>
+    </>)
 }

@@ -5,7 +5,7 @@ import userSrc from "../assets/images/user-female.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-const navList = [
+export const navList = [
     { id: 1, title: 'Vocabulary', slug: "voca", icon: "https://img.icons8.com/dotty/80/copybook.png" },
     { id: 2, title: 'Memorize Vocabulary', slug: "game", icon: "https://img.icons8.com/comic/100/controller.png" },
     { id: 3, title: 'Writing', slug: "writing", icon: "https://img.icons8.com/ios/50/book-and-pencil.png" },
@@ -63,7 +63,7 @@ export const Header = ( props: HeaderProps ) => {
                 </Link>
 
                 {/*Navbar*/}
-                <div className='flex gap-6 items-center hidden lg:flex'>
+                <div className='hidden lg:flex gap-3 lg:gap-6 items-center'>
                     {
                         navList.map(item => (
                             <Link
