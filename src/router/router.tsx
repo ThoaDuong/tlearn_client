@@ -15,12 +15,14 @@ import { WritingPage } from '../pages/WritingPage';
 import { WritingAddNew } from '../components/writing/WritingAddNew';
 import { HomePage } from '../pages/HomePage';
 import { AboutPage } from '../pages/AboutPage';
+import { TopicPage } from '../pages/TopicPage';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<HomeLayout/>}>
             <Route index element={<HomePage/>} />
             <Route path="login" element={<LoginPage/>} />
+            <Route path="topic" element={<TopicPage />} />
             <Route path="voca">
                 <Route index element={<VocaPage/>} />
                 <Route path="new" element={<VocaAddNew/>} />

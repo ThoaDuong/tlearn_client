@@ -7,7 +7,7 @@ type FooterProps = {
 
 export const Footer = ({ isPositionFix }: FooterProps) => {
 
-    return (<div className={`w-full bottom-0 left-0 static ${isPositionFix ? 'fixed' : 'static'}`}>
+    return (<div className={`w-full mt-20 bottom-0 left-0 static`}>
         {/*First line*/}
         <div className='t_container py-10 bg-gray-50 flex flex-col lg:flex-row items-center gap-5 lg:gap-32'>
             {/*Left*/}
