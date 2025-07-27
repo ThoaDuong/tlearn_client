@@ -58,38 +58,38 @@ export const HomeLayout = () => {
 
    
 
-    return  (<React.Fragment>
+    return  (<>
         <Header userStore={userStore} />
 
         <Container>
 
             {/* fetchUser pending | show loading UI */}
             {userStore.isLoading &&
-                <Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    sx={{ width: 1, height: "75vh" }}
-                >
-                    <Box  sx={{ textAlign: 'center' }}>
-                        <CircularProgress />
-                        <Typography variant="subtitle1">Signing in...</Typography>
-                    </Box>
-                </Stack>}
+                <div className="flex justify-center items-center h-screen">
+                    <img className="animate-spin w-10 h-10" src="https://img.icons8.com/carbon-copy/100/loading.png" alt="loading"/>
+                    <p className="text-2xl font-bold">Loading...</p>
+                </div>
+                }
+                
             
             {/* fetchUser successfully | show data */}
-            {!userStore.isLoading && userStore.id && 
+            {/* {!userStore.isLoading && userStore.id && 
             <Stack ref={outletRef}>
                 <Outlet/>
             </Stack>
-            }
+            } */}
+
+
+            <Stack ref={outletRef}>
+                <Outlet/>
+            </Stack>
 
             {/* fetchUser failure | show login page */}
-            {!userStore.isLoading && !userStore.id && <LoginPage/>}            
+            {/* {!userStore.isLoading && !userStore.id && <LoginPage/>}             */}
 
            
         </Container>
 
         <Footer isPositionFix={ outletHeight > window.innerHeight - 100 ? false : true} />
-    </React.Fragment>)
+    </>)
 }

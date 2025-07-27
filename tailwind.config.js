@@ -10,6 +10,9 @@ export default {
           dark: '#FF1493',
         },
       },
+      backgroundImage: {
+        'card': "url('../public/images/bg-card.png')",
+      },  
       keyframes: {
         'slide-in': {
           '0%': {transform: 'translateX(-100%)', opacity: '0'},

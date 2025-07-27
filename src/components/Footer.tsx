@@ -1,4 +1,4 @@
-import logoSrc from "../assets/logo-fit.png";
+import logoSrc from "../assets/images/header/logo-fit.png";
 
 
 type FooterProps = {

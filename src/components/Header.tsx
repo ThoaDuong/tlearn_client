@@ -1,7 +1,7 @@
 import { userState } from "../stores/slices/userSlice";
-import logoSrc from "../assets/logo-fit.png";
-import tLearnSrc from "../assets/tlearn-fit.png";
-import userSrc from "../assets/images/user-female.png";
+import logoSrc from "../assets/images/header/logo-fit.png";
+import tLearnSrc from "../assets/images/header/tlearn-fit.png";
+import userSrc from "../assets/images/header/user-female.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
