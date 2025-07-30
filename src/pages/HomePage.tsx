@@ -21,12 +21,12 @@ export const HomePage = () => {
                 </span>
                 {/* Memorize - Left Lower */}
                 <span className="absolute z-10 left-0 top-[30%] transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 flex flex-col items-center justify-center rounded-full bg-pink-50 p-4 gap-2">
-                    <img className='w-8 h-8' src="https://img.icons8.com/comic/100/controller.png" alt="Vocabulary" />
+                    <img className='w-8 h-8' src="https://img.icons8.com/comic/100/controller.png" alt="Memorize" />
                     <span className="text-lg font-semibold text-gray-800">Memorize</span>
                 </span>
                 {/* Writing - Right Lower */}
                 <span className="absolute z-10 right-0 top-[30%] transform translate-x-1/2 -translate-y-1/2 w-40 h-40 flex flex-col items-center justify-center rounded-full bg-pink-50 p-4 gap-2">
-                    <img className='w-8 h-8' src="https://img.icons8.com/ios/50/book-and-pencil.png" alt="Vocabulary" />
+                    <img className='w-8 h-8' src="https://img.icons8.com/ios/50/book-and-pencil.png" alt="Writing" />
                     <span className="text-lg font-semibold text-gray-800">Writing</span>
                 </span>
 

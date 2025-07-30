@@ -25,6 +25,7 @@
     "react-router-dom": "^6.21.3",
     "sort-by": "^1.2.0",
     "sweetalert2": "^11.10.6",
+    "swiper": "^11.2.10",
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {

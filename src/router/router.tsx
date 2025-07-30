@@ -16,6 +16,7 @@ import { WritingAddNew } from '../components/writing/WritingAddNew';
 import { HomePage } from '../pages/HomePage';
 import { AboutPage } from '../pages/AboutPage';
 import { TopicPage } from '../pages/TopicPage';
+import { FlashCardPage } from '../pages/FlashCardPage';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -23,6 +24,7 @@ export const router = createBrowserRouter(
             <Route index element={<HomePage/>} />
             <Route path="login" element={<LoginPage/>} />
             <Route path="topic" element={<TopicPage />} />
+            <Route path="flash-card" element={<FlashCardPage />} />
             <Route path="voca">
                 <Route index element={<VocaPage/>} />
                 <Route path="new" element={<VocaAddNew/>} />

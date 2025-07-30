@@ -61,7 +61,7 @@ export const HomeLayout = () => {
     return  (<>
         <Header userStore={userStore} />
 
-        <Container>
+        <div className="t_container mx-10">
 
             {/* fetchUser pending | show loading UI */}
             {userStore.isLoading &&
@@ -69,7 +69,7 @@ export const HomeLayout = () => {
                     <img className="animate-spin w-10 h-10" src="https://img.icons8.com/carbon-copy/100/loading.png" alt="loading"/>
                     <p className="text-2xl font-bold">Loading...</p>
                 </div>
-                }
+            }
                 
             
             {/* fetchUser successfully | show data */}
@@ -88,7 +88,7 @@ export const HomeLayout = () => {
             {/* {!userStore.isLoading && !userStore.id && <LoginPage/>}             */}
 
            
-        </Container>
+        </div>
 
         <Footer isPositionFix={ outletHeight > window.innerHeight - 100 ? false : true} />
     </>)
