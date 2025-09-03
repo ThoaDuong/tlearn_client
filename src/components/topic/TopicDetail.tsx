@@ -1,6 +1,12 @@
+import { Link } from 'react-router-dom';
 import earthSrc from '../../assets/images/home/earth-trans.png'
+import TopicDetail from '../../interfaces/TopicDetail';
 
-export const TopicDetail = () => {
+type TopicDetailProps = {
+    detail: TopicDetail
+}
+
+export const TopicCardDetail = ({ detail }: TopicDetailProps) => {
     return (<>
         <div className="bg-blue-50 rounded-3xl p-4">
             <div className="flex gap-4">
@@ -8,7 +14,7 @@ export const TopicDetail = () => {
                     <img className="w-full h-full rounded-3xl object-cover" src={earthSrc} alt="literature"/>
                 </div>
                 <div className="w-full flex flex-col justify-between">
-                    <h3 className="text-xl font-medium">1. Family and Relationships</h3>
+                    <h3 className="text-xl font-medium">{detail.name}</h3>
                     <div className="flex justify-between gap-4">
                         {/* Left */}
                         <div className="flex gap-2">
@@ -26,16 +32,16 @@ export const TopicDetail = () => {
                         <div className="flex justify-between gap-4">
                             <div className="flex items-center gap-2">
                                 <img className="w-4 h-4" src="https://img.icons8.com/forma-thin-sharp/24/book.png" alt="book"/>
-                                <span className="text-gray-500">32 words</span>
+                                <span className="text-gray-500">{detail.wordDetail.length} words</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <img className="w-4 h-4" src="https://img.icons8.com/fluency-systems-regular/50/clock--v3.png" alt="clock"/>
                                 <span className="text-gray-500">15m</span>
                             </div>
-                            <button className="flex gap-1 items-center bg-blue-200 text-gray-800 px-6 py-2 rounded-3xl">
+                            <Link to={`${detail.id}`} className="flex gap-1 items-center bg-blue-200 text-gray-800 px-6 py-2 rounded-3xl">
                                 <span className="mr-2">Start</span>
                                 <img className="w-4 h-4" src="https://img.icons8.com/ios/50/long-arrow-right.png" alt="long-arrow-right"/>
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from "../stores/store"
 import { fetchUser } from "../stores/slices/userSlice"
 import { LoginPage } from "../pages/LoginPage"
 import { Footer } from "../components/Footer"
+import { fetchTopicList } from "../stores/slices/topicSlice"
 
 export const HomeLayout = () => {
 
@@ -20,14 +21,10 @@ export const HomeLayout = () => {
     const userStore = useSelector((state: RootState) => state.user);
     const dispatch: AppDispatch = useDispatch();
 
-    // run 1 time when fully rendered
     useEffect(() => {
-        if (initial.current) {
-            initial.current = false;
-
-            // get login user information
-            dispatch(fetchUser());
-        }
+        // get login user information
+        dispatch(fetchUser());
+        dispatch(fetchTopicList());
     }, []);
 
     // watch pathname change | for footer position
@@ -80,9 +77,9 @@ export const HomeLayout = () => {
             } */}
 
 
-            <Stack ref={outletRef}>
+            <div ref={outletRef}>
                 <Outlet/>
-            </Stack>
+            </div>
 
             {/* fetchUser failure | show login page */}
             {/* {!userStore.isLoading && !userStore.id && <LoginPage/>}             */}

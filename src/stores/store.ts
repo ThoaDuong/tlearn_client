@@ -3,13 +3,15 @@ import vocabularyReducer from './slices/vocaSlice';
 import groupReducer from './slices/groupSlice';
 import userReducer from './slices/userSlice';
 import writingReducer from "./slices/writingSlice";
+import topicReducer from "./slices/topicSlice";
 
 export const store = configureStore({
     reducer: {
         vocabulary: vocabularyReducer,
         group: groupReducer,
         user: userReducer,
-        writing: writingReducer
+        writing: writingReducer,
+        topic: topicReducer
     }
 })
 

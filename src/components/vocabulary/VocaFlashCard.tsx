@@ -1,7 +1,12 @@
 import rocketSrc from "../../assets/images/topic/rocket-s.png"
 import { useState } from "react";
+import WordDetail from "../../interfaces/WordDetail";
 
-export const VocaFlashCard = () => {
+type VocaFlashCardProps = {
+    detail: WordDetail;
+}
+
+export const VocaFlashCard = ({ detail }: VocaFlashCardProps) => {
     const [isFlip, setIsFlip] = useState(false);
 
     return (
@@ -24,7 +29,9 @@ export const VocaFlashCard = () => {
                     {/* Word block */}
                     <div className="mt-6">
                         <img className="w-[180px] h-[140px] bg-yellow-50 rounded-3xl mx-auto p-2" src={rocketSrc} alt="voca flash card" />
-                        <p className="text-xl text-gray-400 font-medium text-center mt-6">to wear a piece of clothing</p>
+                        <p className="text-2xl text-gray-400 font-medium text-center mt-10">
+                            {detail.meaning}
+                        </p>
                     </div>
 
                     {/* Action */}
@@ -72,7 +79,7 @@ export const VocaFlashCard = () => {
                     <div className="flex flex-col gap-2">
                         <img className="w-[150px] h-[110px] bg-yellow-50 rounded-3xl mx-auto p-2" src={rocketSrc} alt="voca flash card" />
                         <h3 className="text-3xl text-gray-600 font-medium text-center flex items-center justify-center gap-2">
-                            appetizer
+                            {detail.text}
                         </h3>
                         <p className="text-gray-500 flex items-center justify-center gap-1"> 
                             <button className="p-1.5 hover:bg-white rounded-lg transition-all duration-300"
@@ -82,9 +89,11 @@ export const VocaFlashCard = () => {
                             }}>
                                 <img className="w-4 h-4" src="https://img.icons8.com/ios/50/room-sound.png" alt="room-sound"/>
                             </button>
-                            <span>/ˈæpɪtaɪzər/</span>
+                            <span>
+                                {detail.pronunciation}
+                            </span>
                         </p>
-                        <p className="text-gray-500 text-center">[noun]</p>
+                        <p className="text-gray-500 text-center">[{detail.type}]</p>
                     </div>
 
 
@@ -101,8 +110,11 @@ export const VocaFlashCard = () => {
                         </div>
 
                         <ul className="list-disc list-inside text-gray-600">
-                            <li className="text-sm mb-2">The theater downtown is putting on a Shakespeare production.</li>
-                            <li className="text-sm">They are putting on a musical at the local theater next month.</li>
+                            {
+                                detail.examples.map((example: string)  => 
+                                    <li className="text-sm"> {example} </li>
+                                )
+                            }
                         </ul>
                     </div>
                 </div>

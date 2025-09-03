@@ -18,11 +18,9 @@ const VocaCard = ({voca }: VocaCardProps) => {
 
     // variable
     const navigate = useNavigate();
-    
 
     //redux
     const dispatch: AppDispatch = useDispatch();
-
     
     // function
     const callbackConfirmDeleteVoca = (isConfirm: boolean) => {

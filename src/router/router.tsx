@@ -15,16 +15,25 @@ import { WritingPage } from '../pages/WritingPage';
 import { WritingAddNew } from '../components/writing/WritingAddNew';
 import { HomePage } from '../pages/HomePage';
 import { AboutPage } from '../pages/AboutPage';
-import { TopicPage } from '../pages/TopicPage';
 import { FlashCardPage } from '../pages/FlashCardPage';
+import { TopicDetailPage } from '../pages/TopicDetailPage';
+import { TopicPage } from '../pages/TopicPage';
+import AdminPage from '../pages/AdminPage';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<HomeLayout/>}>
             <Route index element={<HomePage/>} />
             <Route path="login" element={<LoginPage/>} />
-            <Route path="topic" element={<TopicPage />} />
-            <Route path="flash-card" element={<FlashCardPage />} />
+            <Route path="topic">
+                <Route index element={<TopicPage />} />
+                <Route path=":topicCardID">
+                    <Route index element={<TopicDetailPage />} />
+                    <Route path=':detailID' element={<FlashCardPage />} />
+                </Route>
+            </Route>
+            {/* <Route path="flash-card/:topicCardID/:detailID" element={<FlashCardPage />} /> */}
+            <Route path='admin' element={<AdminPage />} />
             <Route path="voca">
                 <Route index element={<VocaPage/>} />
                 <Route path="new" element={<VocaAddNew/>} />
